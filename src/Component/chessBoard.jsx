@@ -16,7 +16,7 @@ export default function ChessBoard() {
         for (let y = 0; y < Chars_Horizontally.length; y++) {
             let square = [];
             for (let x = Numbers_Verticlly.length - 1; x >= 0; x--) {
-                square.push([Numbers_Verticlly[x] + Chars_Horizontally[y]]);
+                square.push([Chars_Horizontally[y]] + [Numbers_Verticlly[x]]);
             }
             Board.push(square);
         }
@@ -29,7 +29,7 @@ export default function ChessBoard() {
 
     // ['2g', '4a']
     const colorSwitch = (x) => {
-        let res = x[0].slice()[0];
+        let res = x.slice(-1)[0];
         let color = Math.floor(res);
 
         if (color == 8) {
@@ -43,6 +43,7 @@ export default function ChessBoard() {
         console.log(`color: ${color}`+ ` index: ${GenerateRandomIndex}`)
         return ((color + GenerateRandomIndex) % 2 == 0) ? "white" : "darkblue";
     }
+    
 
     return (
         <div className="chessBoard">
@@ -61,25 +62,25 @@ export default function ChessBoard() {
                                 backgroundColor: colorSwitch(x)
                             }}
                         >
-                         {x[0].slice()[0] == '7' && <Image index={'./black-pawn.png'}/>}
-                         {x[0].slice()[0] == '2' && <Image index={'./white-pawn.png'}/>}
-                         {x[0].slice() == '1a' && <Image index={'./white-rock.png'}/>}
-                         {x[0].slice() == '1b' && <Image index={'./white-knight.png'}/>}
-                         {x[0].slice() == '1c' && <Image index={'./white-bishop.png'}/>}
-                         {x[0].slice() == '1d' && <Image index={'./white-queen.png'}/>}
-                         {x[0].slice() == '1e' && <Image index={'./white-king.png'}/>}
-                         {x[0].slice() == '1f' && <Image index={'./white-bishop.png'}/>}
-                         {x[0].slice() == '1g' && <Image index={'./white-knight.png'}/>}
-                         {x[0].slice() == '1h' && <Image index={'./white-rock.png'}/>}
+                         {x.slice(-1)[0] == '7' && <Image index={'./black-pawn.png'}/>}
+                         {x.slice(-1)[0] == '2' && <Image index={'./white-pawn.png'}/>}
+                         {x.slice() == 'a1' && <Image index={'./white-rock.png'}/>}
+                         {x.slice() == 'b1' && <Image index={'./white-knight.png'}/>}
+                         {x.slice() == 'c1' && <Image index={'./white-bishop.png'}/>}
+                         {x.slice() == 'd1' && <Image index={'./white-queen.png'}/>}
+                         {x.slice() == 'e1' && <Image index={'./white-king.png'}/>}
+                         {x.slice() == 'f1' && <Image index={'./white-bishop.png'}/>}
+                         {x.slice() == 'g1' && <Image index={'./white-knight.png'}/>}
+                         {x.slice() == 'h1' && <Image index={'./white-rock.png'}/>}
 
-                         {x[0].slice() == '8a' && <Image index={'./black-rock.png'}/>}
-                         {x[0].slice() == '8b' && <Image index={'./black-knight.png'}/>}
-                         {x[0].slice() == '8c' && <Image index={'./black-bishop.png'}/>}
-                         {x[0].slice() == '8d' && <Image index={'./black-queen.png'}/>}
-                         {x[0].slice() == '8e' && <Image index={'./black-king.png'}/>}
-                         {x[0].slice() == '8f' && <Image index={'./black-bishop.png'}/>}
-                         {x[0].slice() == '8g' && <Image index={'./black-knight.png'}/>}
-                         {x[0].slice() == '8h' && <Image index={'./black-rock.png'}/>}
+                         {x.slice() == 'a8' && <Image index={'./black-rock.png'}/>}
+                         {x.slice() == 'b8' && <Image index={'./black-knight.png'}/>}
+                         {x.slice() == 'c8' && <Image index={'./black-bishop.png'}/>}
+                         {x.slice() == 'd8' && <Image index={'./black-queen.png'}/>}
+                         {x.slice() == 'e8' && <Image index={'./black-king.png'}/>}
+                         {x.slice() == 'f8' && <Image index={'./black-bishop.png'}/>}
+                         {x.slice() == 'g8' && <Image index={'./black-knight.png'}/>}
+                         {x.slice() == 'h8' && <Image index={'./black-rock.png'}/>}
                         </div>
                     ))}
                 </div>
