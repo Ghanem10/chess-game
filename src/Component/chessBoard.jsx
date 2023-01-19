@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Image from './layout/displayImage';
+import displayPieces from "./layout/displayImage";
+import MovePawn from "./movement/pieces/pawn";
 
 export default function ChessBoard() {
     const [createSquares, setCreateSquare] = useState([]);
@@ -22,6 +23,14 @@ export default function ChessBoard() {
         }
         setCreateSquare(Board);
     }
+    /**
+     * create a state that track up each pawn position.
+     * update that position with whatever value we currently have.
+     */
+
+    function checkPiecePostion(postion) {
+        // TODO
+    }
     
     useEffect(() => {
         createBoard();
@@ -40,7 +49,6 @@ export default function ChessBoard() {
             count += 1;
         }
 
-        console.log(`color: ${color}`+ ` index: ${GenerateRandomIndex}`)
         return ((color + GenerateRandomIndex) % 2 == 0) ? "white" : "darkblue";
     }
     
@@ -59,28 +67,10 @@ export default function ChessBoard() {
                             style={{
                                 width: "59px",
                                 height: "59px",
-                                backgroundColor: colorSwitch(x)
+                                backgroundColor: colorSwitch(x),
+                                backgroundImage:  `url(${displayPieces(x)})`
                             }}
                         >
-                         {x.slice(-1)[0] == '7' && <Image index={'./black-pawn.png'}/>}
-                         {x.slice(-1)[0] == '2' && <Image index={'./white-pawn.png'}/>}
-                         {x.slice() == 'a1' && <Image index={'./white-rock.png'}/>}
-                         {x.slice() == 'b1' && <Image index={'./white-knight.png'}/>}
-                         {x.slice() == 'c1' && <Image index={'./white-bishop.png'}/>}
-                         {x.slice() == 'd1' && <Image index={'./white-queen.png'}/>}
-                         {x.slice() == 'e1' && <Image index={'./white-king.png'}/>}
-                         {x.slice() == 'f1' && <Image index={'./white-bishop.png'}/>}
-                         {x.slice() == 'g1' && <Image index={'./white-knight.png'}/>}
-                         {x.slice() == 'h1' && <Image index={'./white-rock.png'}/>}
-
-                         {x.slice() == 'a8' && <Image index={'./black-rock.png'}/>}
-                         {x.slice() == 'b8' && <Image index={'./black-knight.png'}/>}
-                         {x.slice() == 'c8' && <Image index={'./black-bishop.png'}/>}
-                         {x.slice() == 'd8' && <Image index={'./black-queen.png'}/>}
-                         {x.slice() == 'e8' && <Image index={'./black-king.png'}/>}
-                         {x.slice() == 'f8' && <Image index={'./black-bishop.png'}/>}
-                         {x.slice() == 'g8' && <Image index={'./black-knight.png'}/>}
-                         {x.slice() == 'h8' && <Image index={'./black-rock.png'}/>}
                         </div>
                     ))}
                 </div>

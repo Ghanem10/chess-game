@@ -1,21 +1,22 @@
+let x = ['1','2','3','4','5','6'];
 
 
-const sun = [];
-const Numbers_Verticlly = ['1','2','3','4','5','6','7','8'];
-const Chars_Horizontally = ['a','b','c','d','e','f','g','h'];
+for (let i = 0; i < x.length; i++){
 
-function call() {
-
-    const Board = [];
-    for (let x = Numbers_Verticlly.length - 1; x >= 0; x--) {
-        let square = [];
-        for (let y = 0; y < Chars_Horizontally.length; y++) {
-            square.push([Numbers_Verticlly[x] + Chars_Horizontally[y]]);
-            console.log(Numbers_Verticlly[x] + Chars_Horizontally[y])
-        }
-        Board.push(square);
+    switch(x[i]) {
+        case '1':
+            console.log('x is: ', x[i]);
+            break;
+        case  '2':
+            console.log(x[i] = '22')
+            break;
+        case '3':
+            console.log('x is: ', x[i]);
+            break;
+        case '4':
+            console.log('x is: ', x[i]);
+            break;
+        default:
+            console.log('well, there is nothing to display')
     }
-    console.log(Board)
 }
-
-call();
