@@ -1,22 +1,22 @@
-let x = ['1','2','3','4','5','6'];
 
 
-for (let i = 0; i < x.length; i++){
+// <div>
+// </div>
 
-    switch(x[i]) {
-        case '1':
-            console.log('x is: ', x[i]);
-            break;
-        case  '2':
-            console.log(x[i] = '22')
-            break;
-        case '3':
-            console.log('x is: ', x[i]);
-            break;
-        case '4':
-            console.log('x is: ', x[i]);
-            break;
-        default:
-            console.log('well, there is nothing to display')
+let hash = new Map();
+
+const inserSlash = (element) => {
+    for (let i = 0; i < element.length - 1; i++){
+        if (!hash.has(element[i])) {
+            hash.set(element[i], 1);
+        }
+        if (hash.has(element[i])){
+            if (element[i + 1] !== '/') {
+                hash.set('/', element[i + 1]);
+            }
+        }
     }
+    console.log(hash.keys(), hash.values())
 }
+
+inserSlash('<div><div>')

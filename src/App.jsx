@@ -1,7 +1,7 @@
 
 import React from "react";
 import ChessBoard from './Component/chessBoard';
-import './Component/sass/chessStyle.sass';
+import './Component/sass/chessStyle.scss';
 
 function App() {
     
