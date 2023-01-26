@@ -6,10 +6,25 @@ body {
 .chessBoard {
     display: flex;
     justify-content: center;
-    align-items: center;
     margin-top: 5rem;
 }
 
-.square {
+.square-piece, .square {
+    width: 59px;
+    height: 59px;
+}
+
+.piece {
+    width: 60px;
+    height: 60px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.square-piece:hover {
     cursor: grab;
+}
+
+.square-piece:active {
+    cursor: grabbing;
 }
