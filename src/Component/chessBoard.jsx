@@ -25,14 +25,26 @@ export default function ChessBoard() {
 
     function grabbingPiece(e) {
         const el = e.target;
-
+        
         if (el.classList.contains('piece')) {
+            
             const x = e.clientX - 30;
             const y = e.clientY - 30;
 
+            const MinX = 210;
+            const MaxX = 654;
+            const MinY = 68;
+            const MaxY = 503;
+
             el.style.position = 'absolute';
-            el.style.left = `${x}px`;
-            el.style.top = `${y}px`;
+            
+            if (x > MinX && x < MaxX) {
+                el.style.left = `${x}px`;
+            } 
+            
+            if (y > MinY && y < MaxY) {
+                el.style.top = `${y}px`;
+            }
 
             isActivePiece = el;
         }
@@ -42,21 +54,34 @@ export default function ChessBoard() {
         const Edges = Board.current;
 
         if (isActivePiece && Edges) {
-            const MinX = Edges.offsetLeft + 9.15;
-            const MinY = Edges.offsetTop - 8.12;
+
+            const MaxX = Edges.offsetLeft * 100 - 148;
+            const MinX = Edges.clientHeight / 2 - 23;
+
+            const MinY = Edges.offsetTop - 10;
+            const MaxY = Edges.clientWidth / 2 + 44.5; 
 
             const x = e.clientX - 30;
             const y = e.clientY - 30;
             
-            console.log(x, y)
             isActivePiece.style.position = 'absolute';
-            
-            // Bug fix x and y
-            isActivePiece.style.left = x > MinX ? `${MinX}px` : `${x}px`;
-            isActivePiece.style.top = y < MinY ? `${MinY}px` : `${y}px`;
-           
-            isActivePiece.style.left = x < 214 ? `${214}px` : `${x}px`;
-            isActivePiece.style.top = y > 500 ? `${500}px` : `${y}px`;
+
+            if (x < MinX) {
+                isActivePiece.style.left = `${MinX}px`;
+            } else if (x > MaxX) {
+                isActivePiece.style.left = `${MaxX}px`;
+            }else {
+                isActivePiece.style.left = `${x}px`;
+            }
+
+            if (y > MaxY) {
+                isActivePiece.style.top = `${MaxY}px`;
+            } else if (y < MinY) {
+                isActivePiece.style.top = `${MinY}px`;
+            } else {
+                isActivePiece.style.top = `${y}px`;
+            }
+
         }
     }
 
@@ -85,12 +110,14 @@ export default function ChessBoard() {
     }, []);
 
     return (
-        <div className="chessBoard">
+        <div 
+            className="chessBoard" 
+            ref={Board}
+            >
             {createSquares.map((row, index) => (
                 <div
                     className="row"
                     key={index}
-                    ref={Board}
                 >
                     {row.map((x, index) => (
                         (displayPieces(x)) 

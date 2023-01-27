@@ -21,10 +21,10 @@ body {
     background-position: center;
 }
 
-.square-piece:hover {
+.piece:hover {
     cursor: grab;
 }
 
-.square-piece:active {
+.piece:active {
     cursor: grabbing;
 }
