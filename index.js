@@ -1,22 +1,12 @@
 
 
-// <div>
-// </div>
 
-let hash = new Map();
+const s = 'Hello';
+let t = '';
 
-const inserSlash = (element) => {
-    for (let i = 0; i < element.length - 1; i++){
-        if (!hash.has(element[i])) {
-            hash.set(element[i], 1);
-        }
-        if (hash.has(element[i])){
-            if (element[i + 1] !== '/') {
-                hash.set('/', element[i + 1]);
-            }
-        }
+for (let i = 0; i < s.length; i++) {
+    if (s[i] === 'l') {
+        t = s.replace(/l/g, 'w');
     }
-    console.log(hash.keys(), hash.values())
 }
-
-inserSlash('<div><div>')
+console.log(t)

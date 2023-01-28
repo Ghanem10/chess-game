@@ -26,6 +26,6 @@ export default function displayPieces(x) {
             ? `./black-king-b.png`
             : `./white-king-w.png`;
     }
-
+    
     return temp;
 }

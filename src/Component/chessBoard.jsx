@@ -5,6 +5,8 @@ import displayPieces from "./layout/displayImage";
 export default function ChessBoard() {
     const [createSquares, setCreateSquare] = useState([]);
     const Board = useRef(null);
+
+    const [square, setSquare] = useState([]);
     
     const Numbers_Verticlly = ['1', '2', '3', '4', '5', '6', '7', '8'];
     const Chars_Horizontally = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -23,14 +25,70 @@ export default function ChessBoard() {
         setCreateSquare(Board);
     }
 
+
+    // refactor this function, and Modify the parent state.
+    function obtainPiecesPositions() {
+        const PiecesNames = [
+            'rock', 
+            'knight', 
+            'bishop',
+            'queen',
+            'king',
+            'bishop',
+            'knight', 
+            'rock', 
+        ];
+        let count = 0;
+
+        createSquares.map((row) => {
+            const Pieces = [];
+            row.forEach((x) => {
+                const val = x.slice(-1)[0];
+                const Piece = {
+                    occupid: false,
+                    position: '',
+                    piece: ''
+                };
+    
+                if (val === '2' || val === '7') {
+                    Piece.occupid = true;
+                    Piece.piece = 'pawn';
+                    Piece.position += `${x}`;
+                }
+                
+                if (val === '1' || val === '8') {
+
+                    if (count < PiecesNames.length + 1) {
+                        Piece.occupid = true;
+                        Piece.piece += `${PiecesNames[count]}`;
+                        Piece.position += `${x}`;
+
+                        if (val === '1') {
+                            if (count > 0) {
+                                count-= 1;
+
+                                Piece.occupid = true;
+                                Piece.piece = `${PiecesNames[count]}`;
+                                Piece.position = `${x}`;
+                            }
+                        }
+                    }
+                    count+= 1;
+                }
+                Pieces.push(Piece);
+            });
+            setSquare(Pieces);
+        });
+    }
+
     function grabbingPiece(e) {
         const el = e.target;
+        obtainPiecesPositions();
         
         if (el.classList.contains('piece')) {
-            
             const x = e.clientX - 30;
             const y = e.clientY - 30;
-
+            console.log(square)
             const MinX = 210;
             const MaxX = 654;
             const MinY = 68;
@@ -40,21 +98,22 @@ export default function ChessBoard() {
             
             if (x > MinX && x < MaxX) {
                 el.style.left = `${x}px`;
-            } 
+            }
             
             if (y > MinY && y < MaxY) {
                 el.style.top = `${y}px`;
             }
-
+            
             isActivePiece = el;
         }
+        console.log(square)
     }
     
     function MovingPiece(e) {
         const Edges = Board.current;
-
+       
         if (isActivePiece && Edges) {
-
+            
             const MaxX = Edges.offsetLeft * 100 - 148;
             const MinX = Edges.clientHeight / 2 - 23;
 
@@ -81,8 +140,8 @@ export default function ChessBoard() {
             } else {
                 isActivePiece.style.top = `${y}px`;
             }
-
         }
+        
     }
 
     function dropingPiece() {
@@ -106,7 +165,9 @@ export default function ChessBoard() {
     }
 
     useEffect(() => {
+        
         createBoard();
+
     }, []);
 
     return (
