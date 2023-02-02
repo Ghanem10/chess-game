@@ -1,31 +1,20 @@
 
-export default function displayPieces(x) {
-    let temp = '';
-    if ((x.slice(-1)[0] == '7') || (x.slice(-1)[0] == '2')) {
-        temp = (x.slice(-1)[0] == '7') 
-            ? `./black-pawn-b.png` 
-            : `./white-pawn-w.png`;
-    }else if ((x == 'a8' || x == 'h8') || (x == 'a1' || x == 'h1')) {
-        temp = (x == 'a8' || x == 'h8') 
-            ? `./black-rock-b.png`
-            : `./white-rock-w.png`;
-    }else if ((x == 'b8' || x == 'g8') || (x == 'b1' || x == 'g1')) {
-        temp = ((x == 'b8' || x == 'g8'))
-            ? `./black-knight-b.png`
-            : `./white-knight-w.png`;
-    }else if ((x == 'c8' || x == 'f8') || x == 'c1' || x == 'f1') {
-        temp = (x == 'c8' || x == 'f8')
-            ? `./black-bishop-b.png`
-            : `./white-bishop-w.png`;
-    }else if ((x == 'd8') || (x == 'd1')) {
-        temp = (x == 'd8')
-            ? `./black-queen-b.png`
-            : `./white-queen-w.png`;
-    }else if ((x == 'e8') || (x == 'e1')) {
-        temp = (x == 'e8')
-            ? `./black-king-b.png`
-            : `./white-king-w.png`;
+export default function displayPieces(initialstate) {
+
+    for (let i = 0; i < 8; i++) {
+        initialstate.push({image: './black-pawn-b.png', x: 1, y: i });
+        initialstate.push({image: './white-pawn-w.png', x: 6, y: i });
+    }
+
+    for (let k = 0; k < 8; k++) {
+        const pieces = [
+            'rock', 'knight', 'bishop', 'queen', 
+            'king','bishop', 'knight', 'rock'
+        ];
+        
+        initialstate.push({image: `./black-${pieces[k]}-b.png`, x: 0, y: k });
+        initialstate.push({image: `./white-${pieces[k]}-w.png`, x: 7, y: k });
     }
     
-    return temp;
+    return initialstate;
 }

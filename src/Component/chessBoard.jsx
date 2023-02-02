@@ -1,98 +1,63 @@
 import React, { useEffect, useRef, useState } from "react";
 import displayPieces from "./layout/displayImage";
 
+const Numbers_Verticlly = ['8', '7', '6', '5', '4', '3', '2', '1'];
+const Chars_Horizontally = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+let GenerateRandomIndex = 0, count = 0, isActivePiece = null;
+
+const initialstate = [];
+const Piece = {
+    occupied: Boolean,
+    position: String,
+    image: Image,
+    x: Number,
+    y: Number
+};
 
 export default function ChessBoard() {
-    const [createSquares, setCreateSquare] = useState([]);
+    const [square, setSquare] = useState([]);
+    const [piece, setPiece] = useState(initialstate);
     const Board = useRef(null);
 
-    const [square, setSquare] = useState([]);
-    
-    const Numbers_Verticlly = ['1', '2', '3', '4', '5', '6', '7', '8'];
-    const Chars_Horizontally = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    let GenerateRandomIndex = 0, count = 0, isActivePiece = null;
-    
+
+    displayPieces(initialstate);
+
     function createBoard() {
         const Board = [];
 
         for (let y = 0; y < Chars_Horizontally.length; y++) {
-            let square = [];
-            for (let x = Numbers_Verticlly.length - 1; x >= 0; x--) {
-                square.push([Chars_Horizontally[y]] + [Numbers_Verticlly[x]]);
+            const square = [];
+            for (let x = 0; x < Numbers_Verticlly.length; x++) {
+
+                let image = undefined;
+                
+                Piece.position = `${[Chars_Horizontally[y]] + [Numbers_Verticlly[x]]}`;
+                piece.forEach((t) => {
+                    if (t.x === x && t.y === y) {
+                        image = t.image;
+                    }
+                });
+
+                Piece.image = image;
+                square.push({ 
+                    ...Piece 
+                });
             }
             Board.push(square);
         }
-        setCreateSquare(Board);
-    }
-
-
-    // refactor this function, and Modify the parent state.
-    function obtainPiecesPositions() {
-        const PiecesNames = [
-            'rock', 
-            'knight', 
-            'bishop',
-            'queen',
-            'king',
-            'bishop',
-            'knight', 
-            'rock', 
-        ];
-        let count = 0;
-
-        createSquares.map((row) => {
-            const Pieces = [];
-            row.forEach((x) => {
-                const val = x.slice(-1)[0];
-                const Piece = {
-                    occupid: false,
-                    position: '',
-                    piece: ''
-                };
-    
-                if (val === '2' || val === '7') {
-                    Piece.occupid = true;
-                    Piece.piece = 'pawn';
-                    Piece.position += `${x}`;
-                }
-                
-                if (val === '1' || val === '8') {
-
-                    if (count < PiecesNames.length + 1) {
-                        Piece.occupid = true;
-                        Piece.piece += `${PiecesNames[count]}`;
-                        Piece.position += `${x}`;
-
-                        if (val === '1') {
-                            if (count > 0) {
-                                count-= 1;
-
-                                Piece.occupid = true;
-                                Piece.piece = `${PiecesNames[count]}`;
-                                Piece.position = `${x}`;
-                            }
-                        }
-                    }
-                    count+= 1;
-                }
-                Pieces.push(Piece);
-            });
-            setSquare(Pieces);
-        });
+        setSquare(Board);
     }
 
     function grabbingPiece(e) {
         const el = e.target;
-        obtainPiecesPositions();
         
         if (el.classList.contains('piece')) {
             const x = e.clientX - 30;
             const y = e.clientY - 30;
-            console.log(square)
-            const MinX = 210;
-            const MaxX = 654;
-            const MinY = 68;
-            const MaxY = 503;
+
+            const MinX = 426, MaxX = 873;
+            const MinY = 64, MaxY = 503;
 
             el.style.position = 'absolute';
             
@@ -106,19 +71,17 @@ export default function ChessBoard() {
             
             isActivePiece = el;
         }
-        console.log(square)
     }
     
     function MovingPiece(e) {
         const Edges = Board.current;
-       
         if (isActivePiece && Edges) {
             
-            const MaxX = Edges.offsetLeft * 100 - 148;
-            const MinX = Edges.clientHeight / 2 - 23;
+            const MaxX = Edges.offsetLeft * 100 + 70;
+            const MinX = (Edges.clientHeight / 2) + 197;
 
             const MinY = Edges.offsetTop - 10;
-            const MaxY = Edges.clientWidth / 2 + 44.5; 
+            const MaxY = (Edges.clientWidth / 2) - 174; 
 
             const x = e.clientX - 30;
             const y = e.clientY - 30;
@@ -144,9 +107,25 @@ export default function ChessBoard() {
         
     }
 
-    function dropingPiece() {
+    function dropingPiece(e) {
+        const Edges = Board.current;
 
-        if (isActivePiece) {
+        if (isActivePiece && Edges) {
+
+            const x = Math.round((e.clientX - Edges.offsetLeft) / 100);
+            const y = Math.round((e.clientY - Edges.offsetTop) / 100);
+
+            // fix board indices
+            setPiece((row) => {
+                const s = row.map((t) => {
+                    if (t.x === x && t.y === y) {
+                        t.x = x;
+                        t.y = y;
+                    }
+                    return t;
+                });
+                return s;
+            });
             isActivePiece = null;
         }
     }
@@ -165,9 +144,7 @@ export default function ChessBoard() {
     }
 
     useEffect(() => {
-        
         createBoard();
-
     }, []);
 
     return (
@@ -175,45 +152,33 @@ export default function ChessBoard() {
             className="chessBoard" 
             ref={Board}
             >
-            {createSquares.map((row, index) => (
+            {square.map((row, index) => ( 
                 <div
                     className="row"
                     key={index}
                 >
-                    {row.map((x, index) => (
-                        (displayPieces(x)) 
-                        ? 
-                        (
-                            <div
-                                key={index}
-                                className="square-piece"
-                                style={{
-                                    backgroundColor: colorSwitch(x),
-                                }}
-                            >
-                                <div 
+                    {row.map(({ position, image }, index) => (
+                        <div
+                            key={index}
+                            className="square-piece"
+                            style={{
+                                backgroundColor: colorSwitch(position),
+                            }}
+                            onMouseDown={(e) => grabbingPiece(e)}
+                            onMouseMove={(e) => MovingPiece(e)}
+                            onMouseUp={(e) => dropingPiece(e)}
+                        >
+                            {
+                                image && 
+                                <div
                                     className="piece"
                                     style={{
-                                        backgroundImage: `url(${displayPieces(x)})`,
+                                        backgroundImage: `url(${image})`,
                                     }}
-                                    onMouseDown={(e) => grabbingPiece(e)}
-                                    onMouseMove={(e) => MovingPiece(e)}
-                                    onMouseUp={() => dropingPiece()}
                                 >
                                 </div>
-                            </div>
-                        ) 
-                        : 
-                        (
-                            <div
-                                key={index}
-                                className="square"
-                                style={{
-                                    backgroundColor: colorSwitch(x),
-                                }}
-                            >
-                            </div>
-                        )
+                            }
+                        </div>
                     ))}
                 </div>
             ))}
