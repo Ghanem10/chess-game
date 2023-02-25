@@ -18,12 +18,3 @@ var insert = function(intervals, newInterval) {
     }
 };
 insert(intervals, newInterval);
-
-/**
- * overlapping intervals are elements that begin with tolarent or disparate value.
- * hence, if the first index of the intervals array at index[i] is less than the value
- * in newinterval at index[i] we can simply move or swap these elements or indicies 
- * and if the last indicies at any given index will be inserted at that specific position.
- * The point in this context is we have to maintain the correspond poition of every element 
- * that gets compared with its relative ones of the second array.
- */
