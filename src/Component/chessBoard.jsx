@@ -14,7 +14,7 @@ const Piece = {
     x: Number,
     y: Number
 };
-
+// create rules for the chess board
 export default function ChessBoard() {
     const [square, setSquare] = useState([]);
     const [piece, setPiece] = useState(initialstate);
