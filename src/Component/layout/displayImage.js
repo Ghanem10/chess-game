@@ -2,8 +2,8 @@
 export default function displayPieces(initialstate) {
 
     for (let i = 0; i < 8; i++) {
-        initialstate.push({image: './black-pawn-b.png', x: 1, y: i });
-        initialstate.push({image: './white-pawn-w.png', x: 6, y: i });
+        initialstate.push({image: './black-pawn-b.png', x: i, y: 1 });
+        initialstate.push({image: './white-pawn-w.png', x: i, y: 6 });
     }
 
     for (let k = 0; k < 8; k++) {
@@ -12,8 +12,8 @@ export default function displayPieces(initialstate) {
             'king','bishop', 'knight', 'rock'
         ];
         
-        initialstate.push({image: `./black-${pieces[k]}-b.png`, x: 0, y: k });
-        initialstate.push({image: `./white-${pieces[k]}-w.png`, x: 7, y: k });
+        initialstate.push({image: `./black-${pieces[k]}-b.png`, x: k, y: 0 });
+        initialstate.push({image: `./white-${pieces[k]}-w.png`, x: k, y: 7 });
     }
     
     return initialstate;

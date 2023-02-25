@@ -1,24 +1,24 @@
 
-body {
-    background-color: rgb(83, 83, 83)
-}
-
 .chessBoard {
-    display: flex;
-    justify-content: center;
-    margin-top: 5rem;
+    display: grid;
+    grid-template-columns: repeat(8, 100px);
+    grid-template-rows: repeat(8, 100px);
+    width: 800px;
+    height: 800px;
+    background-color: darkblue;
 }
 
 .square-piece, .square {
-    width: 59px;
-    height: 59px;
+    width: 100px;
+    height: 100px;
 }
 
 .piece {
-    width: 60px;
-    height: 60px;
+    width: 100px; 
+    height: 100px;
     background-repeat: no-repeat;
     background-position: center;
+    background-size: 80px;
 }
 
 .piece:hover {

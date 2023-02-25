@@ -4,7 +4,7 @@ import displayPieces from "./layout/displayImage";
 const Numbers_Verticlly = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const Chars_Horizontally = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-let GenerateRandomIndex = 0, count = 0, isActivePiece = null;
+let GenerateRandomIndex = 0, count = 0;
 
 const initialstate = [];
 const Piece = {
@@ -20,19 +20,20 @@ export default function ChessBoard() {
     const [piece, setPiece] = useState(initialstate);
     const Board = useRef(null);
 
-
-    displayPieces(initialstate);
-
+    const [element, setElement] = useState(null);
+    const [gridx, setGridX] = useState(null);
+    const [gridy, setGridY] = useState(null);
+    
     function createBoard() {
         const Board = [];
 
-        for (let y = 0; y < Chars_Horizontally.length; y++) {
+        for (let x = 0; x < Numbers_Verticlly.length; x++) {
             const square = [];
-            for (let x = 0; x < Numbers_Verticlly.length; x++) {
+            for (let y = 0; y < Chars_Horizontally.length; y++) {
 
                 let image = undefined;
                 
-                Piece.position = `${[Chars_Horizontally[y]] + [Numbers_Verticlly[x]]}`;
+                Piece.position = `${[Chars_Horizontally[x]] + [Numbers_Verticlly[y]]}`;
                 piece.forEach((t) => {
                     if (t.x === x && t.y === y) {
                         image = t.image;
@@ -49,18 +50,25 @@ export default function ChessBoard() {
         setSquare(Board);
     }
 
-    function grabbingPiece(e) {
+    function grabbingPiece(e, p) {
         const el = e.target;
-        
-        if (el.classList.contains('piece')) {
-            const x = e.clientX - 30;
-            const y = e.clientY - 30;
+        const Edges = Board.current;
+
+        if (el.classList.contains('piece') && Edges) {
+            const x = e.clientX - 50;
+            const y = e.clientY - 50;
+
+            const previousX = Math.floor((e.clientX - Edges.offsetLeft) / 100);
+            const previousY = Math.floor((e.clientY - Edges.offsetTop) / 100);
+
+            setGridX(previousX);
+            setGridY(previousY);
 
             const MinX = 426, MaxX = 873;
             const MinY = 64, MaxY = 503;
 
             el.style.position = 'absolute';
-            
+
             if (x > MinX && x < MaxX) {
                 el.style.left = `${x}px`;
             }
@@ -68,40 +76,38 @@ export default function ChessBoard() {
             if (y > MinY && y < MaxY) {
                 el.style.top = `${y}px`;
             }
-            
-            isActivePiece = el;
+            setElement(el);
         }
     }
     
     function MovingPiece(e) {
         const Edges = Board.current;
-        if (isActivePiece && Edges) {
+        if (element && Edges) {
             
-            const MaxX = Edges.offsetLeft * 100 + 70;
-            const MinX = (Edges.clientHeight / 2) + 197;
+            const MinX = Edges.offsetLeft - 15;
+            const MinY = Edges.offsetTop - 15;
+            const MaxX = Edges.offsetLeft + Edges.clientWidth - 60;
+            const MaxY = Edges.offsetTop + Edges.clientHeight - 50; 
 
-            const MinY = Edges.offsetTop - 10;
-            const MaxY = (Edges.clientWidth / 2) - 174; 
-
-            const x = e.clientX - 30;
-            const y = e.clientY - 30;
+            const x = e.clientX - 50;
+            const y = e.clientY - 50;
             
-            isActivePiece.style.position = 'absolute';
+            element.style.position = 'absolute';
 
             if (x < MinX) {
-                isActivePiece.style.left = `${MinX}px`;
+                element.style.left = `${MinX}px`;
             } else if (x > MaxX) {
-                isActivePiece.style.left = `${MaxX}px`;
+                element.style.left = `${MaxX}px`;
             }else {
-                isActivePiece.style.left = `${x}px`;
+                element.style.left = `${x}px`;
             }
 
             if (y > MaxY) {
-                isActivePiece.style.top = `${MaxY}px`;
+                element.style.top = `${MaxY}px`;
             } else if (y < MinY) {
-                isActivePiece.style.top = `${MinY}px`;
+                element.style.top = `${MinY}px`;
             } else {
-                isActivePiece.style.top = `${y}px`;
+                element.style.top = `${y}px`;
             }
         }
         
@@ -110,15 +116,14 @@ export default function ChessBoard() {
     function dropingPiece(e) {
         const Edges = Board.current;
 
-        if (isActivePiece && Edges) {
+        if (element && Edges) {
 
-            const x = Math.round((e.clientX - Edges.offsetLeft) / 100);
-            const y = Math.round((e.clientY - Edges.offsetTop) / 100);
-
-            // fix board indices
+            const x = Math.floor((e.clientX - Edges.offsetLeft) / 100);
+            const y = Math.floor((e.clientY - Edges.offsetTop) / 100);
+            
             setPiece((row) => {
                 const s = row.map((t) => {
-                    if (t.x === x && t.y === y) {
+                    if (t.x === gridx && t.y === gridy) {
                         t.x = x;
                         t.y = y;
                     }
@@ -126,7 +131,7 @@ export default function ChessBoard() {
                 });
                 return s;
             });
-            isActivePiece = null;
+            setElement(null);
         }
     }
 
@@ -145,7 +150,8 @@ export default function ChessBoard() {
 
     useEffect(() => {
         createBoard();
-    }, []);
+        displayPieces(initialstate);
+    }, [piece]);
 
     return (
         <div 
@@ -164,7 +170,7 @@ export default function ChessBoard() {
                             style={{
                                 backgroundColor: colorSwitch(position),
                             }}
-                            onMouseDown={(e) => grabbingPiece(e)}
+                            onMouseDown={(e) => grabbingPiece(e, position)}
                             onMouseMove={(e) => MovingPiece(e)}
                             onMouseUp={(e) => dropingPiece(e)}
                         >

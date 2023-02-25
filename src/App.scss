@@ -1,0 +1,13 @@
+*::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(10, 8, 41);
+}
+
+.app {
+    display: grid;
+    place-content: center;
+    max-height: 100vh;
+}
