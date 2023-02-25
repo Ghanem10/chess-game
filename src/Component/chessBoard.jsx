@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import displayPieces from "./layout/displayImage";
+import piecesRules from "./movement/rules/chessBoardRules";
 
 const Numbers_Verticlly = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const Chars_Horizontally = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -10,6 +11,8 @@ const initialstate = [];
 const Piece = {
     occupied: Boolean,
     position: String,
+    pieceType: String,
+    team: String,
     image: Image,
     x: Number,
     y: Number
@@ -21,8 +24,9 @@ export default function ChessBoard() {
     const Board = useRef(null);
 
     const [element, setElement] = useState(null);
-    const [gridx, setGridX] = useState(null);
-    const [gridy, setGridY] = useState(null);
+    const [gridx, setGridX] = useState(0);
+    const [gridy, setGridY] = useState(0);
+    const rules = new piecesRules();
     
     function createBoard() {
         const Board = [];
@@ -32,15 +36,24 @@ export default function ChessBoard() {
             for (let y = 0; y < Chars_Horizontally.length; y++) {
 
                 let image = undefined;
-                
+                let pieceType = null;
+                let occupied = false;
+                let team = null;
+
                 Piece.position = `${[Chars_Horizontally[x]] + [Numbers_Verticlly[y]]}`;
                 piece.forEach((t) => {
                     if (t.x === x && t.y === y) {
                         image = t.image;
+                        pieceType = t.Piece;
+                        occupied = t.occupied;
+                        team = t.team;
                     }
                 });
 
+                Piece.pieceType = pieceType;
+                Piece.occupied = occupied;
                 Piece.image = image;
+                Piece.team = team;
                 square.push({ 
                     ...Piece 
                 });
@@ -50,7 +63,7 @@ export default function ChessBoard() {
         setSquare(Board);
     }
 
-    function grabbingPiece(e, p) {
+    function grabbingPiece(e) {
         const el = e.target;
         const Edges = Board.current;
 
@@ -124,8 +137,22 @@ export default function ChessBoard() {
             setPiece((row) => {
                 const s = row.map((t) => {
                     if (t.x === gridx && t.y === gridy) {
-                        t.x = x;
-                        t.y = y;
+                        const validMove = rules.isOccupied(gridx, gridy, x, y, t.Piece, t.team);
+
+                        if(t.occupied === true) {
+                            t.occupied = false;
+                        }
+                        if (validMove) {
+                            t.x = x;
+                            t.y = y;
+                            t.Piece = t.Piece;
+                            t.occupied = true;
+                            t.team = t.team;
+                        }else {
+                            element.style.position = 'relative';
+                            element.style.removeProperty('left');
+                            element.style.removeProperty('top');
+                        }
                     }
                     return t;
                 });
@@ -170,7 +197,7 @@ export default function ChessBoard() {
                             style={{
                                 backgroundColor: colorSwitch(position),
                             }}
-                            onMouseDown={(e) => grabbingPiece(e, position)}
+                            onMouseDown={(e) => grabbingPiece(e)}
                             onMouseMove={(e) => MovingPiece(e)}
                             onMouseUp={(e) => dropingPiece(e)}
                         >
