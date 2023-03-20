@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import displayPieces from "./layout/displayImage";
-import piecesRules from "./movement/rules/chessBoardRules";
+import displayPieces from "./layout/SortOutPieces";
+import piecesRules from "./movement/rules/pawnRules";
 
 const Numbers_Verticlly = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const Chars_Horizontally = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -9,15 +9,12 @@ let GenerateRandomIndex = 0, count = 0;
 
 const initialstate = [];
 const Piece = {
-    occupied: Boolean,
     position: String,
-    pieceType: String,
-    team: String,
     image: Image,
     x: Number,
     y: Number
 };
-// create rules for the chess board
+
 export default function ChessBoard() {
     const [square, setSquare] = useState([]);
     const [piece, setPiece] = useState(initialstate);
@@ -36,24 +33,15 @@ export default function ChessBoard() {
             for (let y = 0; y < Chars_Horizontally.length; y++) {
 
                 let image = undefined;
-                let pieceType = null;
-                let occupied = false;
-                let team = null;
 
                 Piece.position = `${[Chars_Horizontally[x]] + [Numbers_Verticlly[y]]}`;
                 piece.forEach((t) => {
                     if (t.x === x && t.y === y) {
                         image = t.image;
-                        pieceType = t.Piece;
-                        occupied = t.occupied;
-                        team = t.team;
                     }
                 });
 
-                Piece.pieceType = pieceType;
-                Piece.occupied = occupied;
                 Piece.image = image;
-                Piece.team = team;
                 square.push({ 
                     ...Piece 
                 });
@@ -68,11 +56,11 @@ export default function ChessBoard() {
         const Edges = Board.current;
 
         if (el.classList.contains('piece') && Edges) {
-            const x = e.clientX - 50;
-            const y = e.clientY - 50;
+            const x = e.clientX - 40;
+            const y = e.clientY - 40;
 
-            const previousX = Math.floor((e.clientX - Edges.offsetLeft) / 100);
-            const previousY = Math.floor((e.clientY - Edges.offsetTop) / 100);
+            const previousX = Math.floor((e.clientX - Edges.offsetLeft) / 75);
+            const previousY = Math.floor((e.clientY - Edges.offsetTop) / 75);
 
             setGridX(previousX);
             setGridY(previousY);
@@ -102,8 +90,8 @@ export default function ChessBoard() {
             const MaxX = Edges.offsetLeft + Edges.clientWidth - 60;
             const MaxY = Edges.offsetTop + Edges.clientHeight - 50; 
 
-            const x = e.clientX - 50;
-            const y = e.clientY - 50;
+            const x = e.clientX - 40;
+            const y = e.clientY - 40;
             
             element.style.position = 'absolute';
 
@@ -131,23 +119,24 @@ export default function ChessBoard() {
 
         if (element && Edges) {
 
-            const x = Math.floor((e.clientX - Edges.offsetLeft) / 100);
-            const y = Math.floor((e.clientY - Edges.offsetTop) / 100);
+            const x = Math.floor((e.clientX - Edges.offsetLeft) / 75);
+            const y = Math.floor((e.clientY - Edges.offsetTop) / 75);
             
             setPiece((row) => {
                 const s = row.map((t) => {
                     if (t.x === gridx && t.y === gridy) {
-                        const validMove = rules.isOccupied(gridx, gridy, x, y, t.Piece, t.team);
-
-                        if(t.occupied === true) {
-                            t.occupied = false;
-                        }
+                        const validMove = rules.isOccupied (
+                            gridx,
+                            gridy,
+                            x, y,
+                            t.Piece,
+                            t.team,
+                            row
+                        );
+                        
                         if (validMove) {
                             t.x = x;
                             t.y = y;
-                            t.Piece = t.Piece;
-                            t.occupied = true;
-                            t.team = t.team;
                         }else {
                             element.style.position = 'relative';
                             element.style.removeProperty('left');
@@ -156,11 +145,27 @@ export default function ChessBoard() {
                     }
                     return t;
                 });
-                return s;
+                return removeDuplicate(s);
             });
             setElement(null);
         }
     }
+
+    function removeDuplicate(pieces) {
+        const newPieces = [];
+        const positions = [];
+        
+        pieces.forEach((piece) => {
+          const pos = `${piece.x}-${piece.y}`;
+          if (!positions.includes(pos)) {
+            newPieces.push(piece);
+            positions.push(pos);
+          }
+        });
+        
+        return newPieces;
+      }
+      
 
     const colorSwitch = (x) => {
         let res = x.slice(-1)[0];

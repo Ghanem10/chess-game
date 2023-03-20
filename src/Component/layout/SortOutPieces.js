@@ -1,4 +1,3 @@
-
 export default function displayPieces(initialstate) {
 
     for (let i = 0; i < 8; i++) {
@@ -7,14 +6,16 @@ export default function displayPieces(initialstate) {
             x: i, y: 1, 
             Piece: 'pawn', 
             team: 'black',
-            occupied: true
+            occupied: true,
+            id: `black-pawn-${i}-b` // Add unique ID for each piece
         });
         initialstate.push({
             image: './white-pawn-w.png', 
             x: i,y: 6, 
             Piece: 'pawn', 
             team: 'white',
-            occupied: true
+            occupied: true,
+            id: `white-pawn-${i}-w` 
         });
     }
 
@@ -30,14 +31,16 @@ export default function displayPieces(initialstate) {
             y: 0, 
             Piece: `${pieces[k]}`, 
             team: 'black',
-            occupied: true
+            occupied: true,
+            id: `black-${pieces[k]}-${k}-b` 
         });
         initialstate.push({
             image: `./white-${pieces[k]}-w.png`, 
             x: k, y: 7, 
             Piece: `${pieces[k]}`, 
             team: 'white',
-            occupied: true
+            occupied: true,
+            id: `white-${pieces[k]}-${k}-w` 
         });
     }
     
