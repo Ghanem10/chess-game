@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import displayPieces from "./layout/SortOutPieces";
-import piecesRules from "./movement/rules/pawnRules";
+import PiecesRules from "./movement/rules/pawnRules";
 
 const Numbers_Verticlly = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const Chars_Horizontally = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -8,12 +8,6 @@ const Chars_Horizontally = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 let GenerateRandomIndex = 0, count = 0;
 
 const initialstate = [];
-const Piece = {
-    position: String,
-    image: Image,
-    x: Number,
-    y: Number
-};
 
 export default function ChessBoard() {
     const [square, setSquare] = useState([]);
@@ -23,30 +17,21 @@ export default function ChessBoard() {
     const [element, setElement] = useState(null);
     const [gridx, setGridX] = useState(0);
     const [gridy, setGridY] = useState(0);
-    const rules = new piecesRules();
+    const rules = new PiecesRules();
     
     function createBoard() {
         const Board = [];
 
         for (let x = 0; x < Numbers_Verticlly.length; x++) {
-            const square = [];
+            const squares = [];
             for (let y = 0; y < Chars_Horizontally.length; y++) {
 
-                let image = undefined;
-
-                Piece.position = `${[Chars_Horizontally[x]] + [Numbers_Verticlly[y]]}`;
-                piece.forEach((t) => {
-                    if (t.x === x && t.y === y) {
-                        image = t.image;
-                    }
-                });
-
-                Piece.image = image;
-                square.push({ 
-                    ...Piece 
+                squares.push({
+                    position: `${[Chars_Horizontally[x]] + [Numbers_Verticlly[y]]}`, 
+                    x: x, y: y
                 });
             }
-            Board.push(square);
+            Board.push(squares);
         }
         setSquare(Board);
     }
@@ -59,11 +44,8 @@ export default function ChessBoard() {
             const x = e.clientX - 40;
             const y = e.clientY - 40;
 
-            const previousX = Math.floor((e.clientX - Edges.offsetLeft) / 75);
-            const previousY = Math.floor((e.clientY - Edges.offsetTop) / 75);
-
-            setGridX(previousX);
-            setGridY(previousY);
+            setGridX(Math.floor((e.clientX - Edges.offsetLeft) / 75));
+            setGridY(Math.floor((e.clientY - Edges.offsetTop) / 75));
 
             const MinX = 426, MaxX = 873;
             const MinY = 64, MaxY = 503;
@@ -121,7 +103,7 @@ export default function ChessBoard() {
 
             const x = Math.floor((e.clientX - Edges.offsetLeft) / 75);
             const y = Math.floor((e.clientY - Edges.offsetTop) / 75);
-            
+
             setPiece((row) => {
                 const s = row.map((t) => {
                     if (t.x === gridx && t.y === gridy) {
@@ -145,8 +127,9 @@ export default function ChessBoard() {
                     }
                     return t;
                 });
-                return removeDuplicate(s);
+                return s;
             });
+
             setElement(null);
         }
     }
@@ -154,49 +137,50 @@ export default function ChessBoard() {
     function removeDuplicate(pieces) {
         const newPieces = [];
         const positions = [];
-        
         pieces.forEach((piece) => {
-          const pos = `${piece.x}-${piece.y}`;
-          if (!positions.includes(pos)) {
+            const pos = `${piece.x}-${piece.y}`;
+            if (!positions.includes(pos)) {
             newPieces.push(piece);
             positions.push(pos);
-          }
+            }
         });
-        
         return newPieces;
-      }
-      
+    }
 
     const colorSwitch = (x) => {
-        let res = x.slice(-1)[0];
-        let color = Math.floor(res);
+        const lastChar = x.slice(-1)[0];
+        const color = Math.floor(lastChar);
+        const isColor = color === 8;
 
-        if (color == 8) {
-            if (count > 0) {
-                GenerateRandomIndex += 1;
-            }
-            count += 1;
+        if (isColor && count > 0) {
+            GenerateRandomIndex += 1;
         }
+        count += isColor ? 1 : 0;
         return ((color + GenerateRandomIndex) % 2 == 0) ? "white" : "darkblue";
     }
 
     useEffect(() => {
+        const newPieces = removeDuplicate(piece);
+        setPiece(newPieces);
+
         createBoard();
         displayPieces(initialstate);
-    }, [piece]);
+    }, []);
 
     return (
         <div 
             className="chessBoard" 
             ref={Board}
             >
-            {square.map((row, index) => ( 
+            {square.map((row, index) => (
                 <div
                     className="row"
                     key={index}
                 >
-                    {row.map(({ position, image }, index) => (
-                        <div
+                 {row.map(({ position, x, y}, index) => {
+                        const currentPiece = piece.find((pre) => pre.x === x && pre.y === y);
+                        return (
+                            <div
                             key={index}
                             className="square-piece"
                             style={{
@@ -207,17 +191,18 @@ export default function ChessBoard() {
                             onMouseUp={(e) => dropingPiece(e)}
                         >
                             {
-                                image && 
+                                currentPiece && 
                                 <div
                                     className="piece"
                                     style={{
-                                        backgroundImage: `url(${image})`,
+                                        backgroundImage: `url(${currentPiece.image})`,
                                     }}
                                 >
                                 </div>
                             }
                         </div>
-                    ))}
+                        )
+                 })}
                 </div>
             ))}
         </div>

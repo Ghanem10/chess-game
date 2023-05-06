@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\Component",
+    "\\src\\Component\\movement",
+    "\\src\\Component\\movement\\rules"
+  ],
+  "SelectedNode": "\\src\\Component\\movement\\rules\\pawnRules.js",
+  "PreviewInSolutionExplorer": false
+}
