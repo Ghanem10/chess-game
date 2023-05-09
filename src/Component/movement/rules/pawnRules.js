@@ -13,6 +13,18 @@ export const PieceType = {
 
 export default class piecesRules {
 
+    isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
+        const PawnDiraction = team === Team.WHITE ? -1 : 1;
+        
+        if (type === PieceType.PAWN) {
+            if ((x - previousX === -1 || x - previousX === 1) && y - previousY === PawnDiraction) {
+                const piece = chessBoard.find((p) => p.x === x && p.y === y - PawnDiraction && p.EnpassantMove);
+                if (piece) return true;
+            }
+        }
+        return false;
+    }
+
     squareOccupiedByOpponent(x, y, chessBoard, team) {
         const piece = chessBoard.find(t => t.x === x && t.y === y && t.team !== team);
         return piece ? true : false;
@@ -42,12 +54,10 @@ export default class piecesRules {
 
             // CAPTURE MOVEMENT
             else if (x - previousX === -1 && y - previousY === PawnDiraction) {
-                console.log("upper left");
                 if (this.squareOccupiedByOpponent(x, y, chessBoard, team)) {
                     return true;
                 }
             }else if (x - previousX === 1 && y - previousY === PawnDiraction) {
-                console.log("upper right");
                 if (this.squareOccupiedByOpponent(x, y, chessBoard, team)) {
                     return true;
                 }

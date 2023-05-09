@@ -1,4 +1,4 @@
-export default function displayPieces(initialstate) {
+export function displayPieces(initialstate) {
 
     for (let i = 0; i < 8; i++) {
         initialstate.push({
@@ -7,6 +7,7 @@ export default function displayPieces(initialstate) {
             Piece: 'pawn', 
             team: 'black',
             occupied: true,
+            EnpassantMove: false,
             id: `black-pawn-${i}-b` // Add unique ID for each piece
         });
         initialstate.push({
@@ -15,6 +16,7 @@ export default function displayPieces(initialstate) {
             Piece: 'pawn', 
             team: 'white',
             occupied: true,
+            EnpassantMove: false,
             id: `white-pawn-${i}-w` 
         });
     }
@@ -45,4 +47,8 @@ export default function displayPieces(initialstate) {
     }
     
     return initialstate;
+}
+
+export function samePosition(p1, x, y) {
+    return p1.x === x && p1.y === y;
 }

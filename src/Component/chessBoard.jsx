@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import displayPieces from "./layout/SortOutPieces";
-import PiecesRules from "./movement/rules/pawnRules";
+import { displayPieces, samePosition } from "./layout/SortOutPieces";
+import PiecesRules, { PieceType, Team } from "./movement/rules/pawnRules";
 
-const Numbers_Verticlly = ['8', '7', '6', '5', '4', '3', '2', '1'];
-const Chars_Horizontally = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
+const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-let GenerateRandomIndex = 0, count = 0;
-
+let GenerateRandomIndex = 0, 
+    count = 0;
 const initialstate = [];
 
 export default function ChessBoard() {
@@ -22,12 +22,12 @@ export default function ChessBoard() {
     function createBoard() {
         const Board = [];
 
-        for (let x = 0; x < Numbers_Verticlly.length; x++) {
+        for (let x = 0; x < NumbersAxie.length; x++) {
             const squares = [];
-            for (let y = 0; y < Chars_Horizontally.length; y++) {
+            for (let y = 0; y < CharsAxie.length; y++) {
 
                 squares.push({
-                    position: `${[Chars_Horizontally[x]] + [Numbers_Verticlly[y]]}`, 
+                    position: `${[CharsAxie[x]] + [NumbersAxie[y]]}`, 
                     x: x, y: y
                 });
             }
@@ -103,10 +103,9 @@ export default function ChessBoard() {
 
             const x = Math.floor((e.clientX - Edges.offsetLeft) / 75);
             const y = Math.floor((e.clientY - Edges.offsetTop) / 75);
-            
             const currentPiece = piece.find(t => t.x === gridx && t.y === gridy);
-            const pieceNextLocation = piece.find(t => t.x === x && t.y === y);
-            
+            const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
+
             if (currentPiece) {
                 const validMove = rules.isOccupied(
                     gridx,
@@ -116,14 +115,40 @@ export default function ChessBoard() {
                     currentPiece.team,
                     piece
                 );
-
-                if (validMove) {
+                const isEnpassantMove = rules.isEnpassantMove(
+                    gridx,
+                    gridy,
+                    x, y,
+                    currentPiece.Piece,
+                    currentPiece.team,
+                    piece
+                );
+                
+                if (isEnpassantMove) {
                     const chessPieces = piece.reduce((result, p) => {
-                        if (p === currentPiece) {
+                        if (samePosition(p, gridx, gridy)) {
+                            p.EnpassantMove = false;
                             p.x = x;
                             p.y = y;
                             result.push(p);
-                        } else if (!(p.x === x && p.y === y)) {
+                        } else if (!(samePosition(p, x, y - PawnDiraction))) {
+                            p.EnpassantMove = false;
+                            result.push(p);
+                        }
+                        return result;
+                    }, []);
+                    setPiece(chessPieces);
+                } else if (validMove) {
+                    const chessPieces = piece.reduce((result, p) => {
+                        if (samePosition(p, gridx, gridy)) {
+                            if (Math.abs(gridy - y) === 2) {
+                                p.EnpassantMove = true;
+                            }
+                            p.x = x;
+                            p.y = y;
+                            result.push(p);
+                        } else if (!(samePosition(p, x, y))) {
+                            p.EnpassantMove = false;
                             result.push(p);
                         }
                         return result;
@@ -165,6 +190,7 @@ export default function ChessBoard() {
     }
 
     useEffect(() => {
+        // fix state to remove this code.
         const newPieces = removeDuplicate(piece);
         setPiece(newPieces);
 
@@ -183,6 +209,7 @@ export default function ChessBoard() {
                     key={index}
                 >
                  {row.map(({ position, x, y}, index) => {
+                        /** Refactor this code */
                         const currentPiece = piece.find((pre) => pre.x === x && pre.y === y);
                         return (
                             <div
