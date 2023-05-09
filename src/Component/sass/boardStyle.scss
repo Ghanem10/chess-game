@@ -19,6 +19,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: 60px;
+    z-index: 50;
 }
 
 .piece:hover {
@@ -27,4 +28,5 @@
 
 .piece:active {
     cursor: grabbing;
+    z-index: 100;
 }

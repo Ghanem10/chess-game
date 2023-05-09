@@ -70,7 +70,7 @@ export default function ChessBoard() {
             const MinX = Edges.offsetLeft - 15;
             const MinY = Edges.offsetTop - 15;
             const MaxX = Edges.offsetLeft + Edges.clientWidth - 60;
-            const MaxY = Edges.offsetTop + Edges.clientHeight - 50; 
+            const MaxY = Edges.offsetTop + Edges.clientHeight - 60; 
 
             const x = e.clientX - 40;
             const y = e.clientY - 40;
@@ -103,33 +103,38 @@ export default function ChessBoard() {
 
             const x = Math.floor((e.clientX - Edges.offsetLeft) / 75);
             const y = Math.floor((e.clientY - Edges.offsetTop) / 75);
+            
+            const currentPiece = piece.find(t => t.x === gridx && t.y === gridy);
+            const pieceNextLocation = piece.find(t => t.x === x && t.y === y);
+            
+            if (currentPiece) {
+                const validMove = rules.isOccupied(
+                    gridx,
+                    gridy,
+                    x, y,
+                    currentPiece.Piece,
+                    currentPiece.team,
+                    piece
+                );
 
-            setPiece((row) => {
-                const s = row.map((t) => {
-                    if (t.x === gridx && t.y === gridy) {
-                        const validMove = rules.isOccupied (
-                            gridx,
-                            gridy,
-                            x, y,
-                            t.Piece,
-                            t.team,
-                            row
-                        );
-                        
-                        if (validMove) {
-                            t.x = x;
-                            t.y = y;
-                        }else {
-                            element.style.position = 'relative';
-                            element.style.removeProperty('left');
-                            element.style.removeProperty('top');
+                if (validMove) {
+                    const chessPieces = piece.reduce((result, p) => {
+                        if (p === currentPiece) {
+                            p.x = x;
+                            p.y = y;
+                            result.push(p);
+                        } else if (!(p.x === x && p.y === y)) {
+                            result.push(p);
                         }
-                    }
-                    return t;
-                });
-                return s;
-            });
-
+                        return result;
+                    }, []);
+                    setPiece(chessPieces);
+                } else {
+                    element.style.position = 'relative';
+                    element.style.removeProperty('left');
+                    element.style.removeProperty('top');
+                }
+            }
             setElement(null);
         }
     }
