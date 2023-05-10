@@ -48,7 +48,3 @@ export function displayPieces(initialstate) {
     
     return initialstate;
 }
-
-export function samePosition(p1, x, y) {
-    return p1.x === x && p1.y === y;
-}

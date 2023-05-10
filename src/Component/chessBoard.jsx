@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { displayPieces, samePosition } from "./layout/SortOutPieces";
-import PiecesRules, { PieceType, Team } from "./movement/rules/pawnRules";
+import { displayPieces } from "./layout/SortOutPieces";
+import { Team, samePosition } from "./movement/functions/func";
+import pawnRules from "./movement/pieces/rules";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -17,7 +18,7 @@ export default function ChessBoard() {
     const [element, setElement] = useState(null);
     const [gridx, setGridX] = useState(0);
     const [gridy, setGridY] = useState(0);
-    const rules = new PiecesRules();
+    const pawn = new pawnRules();
     
     function createBoard() {
         const Board = [];
@@ -107,7 +108,7 @@ export default function ChessBoard() {
             const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
 
             if (currentPiece) {
-                const validMove = rules.isOccupied(
+                const validMove = pawn.isOccupied(
                     gridx,
                     gridy,
                     x, y,
@@ -115,7 +116,7 @@ export default function ChessBoard() {
                     currentPiece.team,
                     piece
                 );
-                const isEnpassantMove = rules.isEnpassantMove(
+                const isEnpassantMove = pawn.isEnpassantMove(
                     gridx,
                     gridy,
                     x, y,
@@ -123,9 +124,9 @@ export default function ChessBoard() {
                     currentPiece.team,
                     piece
                 );
-                
+
                 if (isEnpassantMove) {
-                    const chessPieces = piece.reduce((result, p) => {
+                    const EnpassantPawn = piece.reduce((result, p) => {
                         if (samePosition(p, gridx, gridy)) {
                             p.EnpassantMove = false;
                             p.x = x;
@@ -137,13 +138,11 @@ export default function ChessBoard() {
                         }
                         return result;
                     }, []);
-                    setPiece(chessPieces);
+                    setPiece(EnpassantPawn);
                 } else if (validMove) {
-                    const chessPieces = piece.reduce((result, p) => {
+                    const pawns = piece.reduce((result, p) => {
                         if (samePosition(p, gridx, gridy)) {
-                            if (Math.abs(gridy - y) === 2) {
-                                p.EnpassantMove = true;
-                            }
+                            p.EnpassantMove = Math.abs(gridy - y) === 2;
                             p.x = x;
                             p.y = y;
                             result.push(p);
@@ -153,7 +152,7 @@ export default function ChessBoard() {
                         }
                         return result;
                     }, []);
-                    setPiece(chessPieces);
+                    setPiece(pawns);
                 } else {
                     element.style.position = 'relative';
                     element.style.removeProperty('left');
@@ -162,19 +161,6 @@ export default function ChessBoard() {
             }
             setElement(null);
         }
-    }
-
-    function removeDuplicate(pieces) {
-        const newPieces = [];
-        const positions = [];
-        pieces.forEach((piece) => {
-            const pos = `${piece.x}-${piece.y}`;
-            if (!positions.includes(pos)) {
-            newPieces.push(piece);
-            positions.push(pos);
-            }
-        });
-        return newPieces;
     }
 
     const colorSwitch = (x) => {
@@ -190,10 +176,6 @@ export default function ChessBoard() {
     }
 
     useEffect(() => {
-        // fix state to remove this code.
-        const newPieces = removeDuplicate(piece);
-        setPiece(newPieces);
-
         createBoard();
         displayPieces(initialstate);
     }, []);
