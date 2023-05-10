@@ -13,6 +13,9 @@ export default class pawnRules {
         }
         return false;
     }
+    SquareEmptyOrOccupiedByOpponent =(x, y, chessBoard, team) => {
+        return (!this.squareOccupied(x, y, chessBoard) || this.squareOccupiedByOpponent(x, y, chessBoard, team));
+      }
 
     squareOccupiedByOpponent(x, y, chessBoard, team) {
         const piece = chessBoard.find(t => t.x === x && t.y === y && t.team !== team);
@@ -52,52 +55,61 @@ export default class pawnRules {
                 }
             }
         } else if (type === Type.BISHOP) {
-            const Diagonal = 8;
-            for (let i = 1; i < Diagonal; i++) {
-                
+            const DiagonalWidthHieght = 8;
+            
+            for (let i = 1; i < DiagonalWidthHieght; i++) {
                 // TOP RIGHT
                 if (x > previousX && y < previousY) {
                     const passedPosition = { x: previousX + i, y: previousY - i };
-                    if (this.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
-                        break;
+                    if (passedPosition.x === x && passedPosition.y === y) {
+                        if (this.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+                            return true;
+                        }
+                    } else {
+                        if (this.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+                            break;
+                        }
                     }
-                }
-                // LEGAL MOVE
-                if (x - previousX === i && y - previousY === -i) {
-                    return true;
                 }
                 // TOP LEFT
                 if (x < previousX && y < previousY) {
                     const passedPosition = { x: previousX - i, y: previousY - i };
-                    if (this.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
-                        break;
+                    if (passedPosition.x === x && passedPosition.y === y) {
+                        if (this.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+                            return true;
+                        }
+                    } else {
+                        if (this.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+                            break;
+                        }
                     }
                 }
-                // LEGAL MOVE
-                if (x - previousX === -i && y - previousY === -i) {
-                    return true;
-                }
+
                 // BOTTOM RIGHT
                 if (x > previousX && y > previousY) {
                     const passedPosition = { x: previousX + i, y: previousY + i };
-                    if (this.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
-                        break;
+                    if (passedPosition.x === x && passedPosition.y === y) {
+                        if (this.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+                            return true;
+                        }
+                    } else {
+                        if (this.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+                            break;
+                        }
                     }
-                }
-                // LEGAL MOVE
-                if (x - previousX === i && y - previousY === i) {
-                    return true;
                 }
                 // BOTTOM LEFT
                 if (x < previousX && y > previousY) {
                     const passedPosition = { x: previousX - i, y: previousY + i };
-                    if (this.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
-                        break;
+                    if (passedPosition.x === x && passedPosition.y === y) {
+                        if (this.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+                            return true;
+                        }
+                    } else {
+                        if (this.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+                            break;
+                        }
                     }
-                }
-                // LEGAL MOVE
-                if (x - previousX === -i && y - previousY === i) {
-                    return true;
                 }
             }
             return false;
