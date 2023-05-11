@@ -108,7 +108,7 @@ export default function ChessBoard() {
             const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
 
             if (currentPiece) {
-                const validMove = pieces.isOccupied(
+                const validMove = pieces.isValid(
                     gridx,
                     gridy,
                     x, y,
