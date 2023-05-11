@@ -1,13 +1,13 @@
-import { Team, Type } from '../functions/func';
+import { Team, Type, samePosition } from '../functions/func';
 
-export default class pawnRules {
+export default class piecesRules {
 
     isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
         const PawnDiraction = team === Team.WHITE ? -1 : 1;
         
         if (type === Type.PAWN) {
             if ((x - previousX === -1 || x - previousX === 1) && y - previousY === PawnDiraction) {
-                const piece = chessBoard.find((p) => p.x === x && p.y === y - PawnDiraction && p.EnpassantMove);
+                const piece = chessBoard.find((p) => samePosition(p, x, y - PawnDiraction) && p.EnpassantMove);
                 if (piece) return true;
             }
         }
@@ -18,12 +18,12 @@ export default class pawnRules {
       }
 
     squareOccupiedByOpponent(x, y, chessBoard, team) {
-        const piece = chessBoard.find(t => t.x === x && t.y === y && t.team !== team);
+        const piece = chessBoard.find(t => samePosition(t, x, y) && t.team !== team);
         return piece ? true : false;
     }
 
     squareOccupied(x, y, chessBoard) {
-        const square = chessBoard.find(pre => pre.x === x && pre.y === y);
+        const square = chessBoard.find(pre => samePosition(pre, x, y));
         return square ? true : false;
     }
 
@@ -113,8 +113,32 @@ export default class pawnRules {
                 }
             }
             return false;
+        } else if (type === Type.KNIGHT) {
+            const boardWidthHieght = 2;
+            for (let i = -1; i < boardWidthHieght; i+= 2) {
+                for (let j = -1; j < boardWidthHieght; j++) {
+                    // TOP AND BOTTOM
+                    if (y - previousY === 2 * i) {
+                        if (x - previousX === j) {
+                            if (this.SquareEmptyOrOccupiedByOpponent(x, y, chessBoard, team)) {
+                                return true;
+                            }
+                        }
+                    }
+                    // LEFT AND RIGHT
+                    if (x - previousX === 2 * i) {
+                        if (y - previousY === j) {
+                            if (this.SquareEmptyOrOccupiedByOpponent(x, y, chessBoard, team)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        } else if (type === Type.ROCK) {
+            console.log("ROCK")
         }
-        
         return false;
     }
 }

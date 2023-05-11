@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { displayPieces } from "./layout/SortOutPieces";
 import { Team, samePosition } from "./movement/functions/func";
-import pawnRules from "./movement/pieces/rules";
+import piecesRules from "./movement/pieces/rules";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -18,7 +18,7 @@ export default function ChessBoard() {
     const [element, setElement] = useState(null);
     const [gridx, setGridX] = useState(0);
     const [gridy, setGridY] = useState(0);
-    const pawn = new pawnRules();
+    const pieces = new piecesRules();
     
     function createBoard() {
         const Board = [];
@@ -108,7 +108,7 @@ export default function ChessBoard() {
             const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
 
             if (currentPiece) {
-                const validMove = pawn.isOccupied(
+                const validMove = pieces.isOccupied(
                     gridx,
                     gridy,
                     x, y,
@@ -116,7 +116,7 @@ export default function ChessBoard() {
                     currentPiece.team,
                     piece
                 );
-                const isEnpassantMove = pawn.isEnpassantMove(
+                const isEnpassantMove = pieces.isEnpassantMove(
                     gridx,
                     gridy,
                     x, y,
