@@ -1,5 +1,5 @@
-import { Team, Type, samePosition } from '../functions/func';
-import { pawnMove, bishopMove, knightMove, rockMove } from './piecesEx';
+import { Team, Type, samePosition } from '../../functions/func';
+import { pawnMove, bishopMove, knightMove, rockMove, queenMove, kingMove } from './piecesEx';
 
 export default class piecesRules {
     isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
@@ -42,6 +42,12 @@ export default class piecesRules {
                 break;
             case Type.ROCK:
                 validMove = rockMove(previousX, previousY, x, y, team, chessBoard);
+                break;
+            case Type.QUEEN:
+                validMove = queenMove(previousX, previousY, x, y, team, chessBoard);
+                break;
+            case Type.KING:
+                validMove = kingMove(previousX, previousY, x, y, team, chessBoard);
                 break;
         }
         return validMove;

@@ -1,4 +1,4 @@
-import piecesRules from "./rules";
+import piecesRules from "./rules/rules";
 
 export default function bishopMove(previousX, previousY, x, y, team, chessBoard) {
     const DiagonalWidthHieght = 8;

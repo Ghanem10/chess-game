@@ -1,10 +1,10 @@
-import piecesRules from "./rules";
+import piecesRules from "./rules/rules";
 
 export default function rockMove(previousX, previousY, x, y, team, chessBoard) {
     const boardWidthHieght = 8;
     const rock = new piecesRules();
 
-    // HORIZONTAL MOVEMENT
+    // VERTICAL MOVEMENT
     if (previousX === x) {
         for (let i = 1; i < boardWidthHieght; i++) {
             const multiplier = (y < previousY) ? -1 : 1;
@@ -20,7 +20,7 @@ export default function rockMove(previousX, previousY, x, y, team, chessBoard) {
             }
         }
     } 
-    // VERTICAL MOVEMENT
+    // HORIZONTAL MOVEMENT
     else if (previousY === y) {
         for (let i = 1; i < boardWidthHieght; i++) {
             const multiplier = (x < previousX) ? -1 : 1;

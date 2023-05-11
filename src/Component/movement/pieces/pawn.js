@@ -1,5 +1,5 @@
 import { Team } from "../functions/func";
-import piecesRules from "./rules";
+import piecesRules from "./rules/rules";
 
 export default function pawnMove(previousX, previousY, x, y, team, chessBoard) {
     const initialRow = team === Team.WHITE ? 6 : 1;

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { displayPieces } from "./layout/SortOutPieces";
 import { Team, samePosition } from "./movement/functions/func";
-import piecesRules from "./movement/pieces/rules";
+import piecesRules from "./movement/pieces/rules/rules";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
