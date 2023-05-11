@@ -137,7 +137,41 @@ export default class piecesRules {
             }
             return false;
         } else if (type === Type.ROCK) {
-            console.log("ROCK")
+            const boardWidthHieght = 8;
+            // HORIZONTAL MOVEMENT
+            if (previousX === x) {
+                for (let i = 1; i < boardWidthHieght; i++) {
+                    const multiplier = (y < previousY) ? -1 : 1;
+                    const passedPosition = { x: previousX, y: previousY + (i * multiplier) };
+                    if (passedPosition.x === x && passedPosition.y === y) {
+                        if (this.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+                            return true;
+                        }
+                    } else {
+                        if (this.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+                            break;
+                        }
+                    }
+                }
+            } 
+            // VERTICAL MOVEMENT
+            else if (previousY === y) {
+                for (let i = 1; i < boardWidthHieght; i++) {
+                    const multiplier = (x < previousX) ? -1 : 1;
+                    const passedPosition = { x: previousX + (i * multiplier), y: previousY };
+                    if (passedPosition.x === x && passedPosition.y === y) {
+                        console.log("virtically")
+                        if (this.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+                            return true;
+                        }
+                    }else {
+                        if (this.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+                            break;
+                        }
+                    }
+                }
+            }
+            return false;
         }
         return false;
     }
