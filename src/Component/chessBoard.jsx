@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { displayPieces } from "./layout/SortOutPieces";
-import { Team, samePosition } from "./movement/functions/func";
+import { Type, Team, samePosition } from "./movement/functions/func";
 import piecesRules from "./movement/pieces/rules/rules";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
@@ -13,7 +13,11 @@ const initialstate = [];
 export default function ChessBoard() {
     const [square, setSquare] = useState([]);
     const [piece, setPiece] = useState(initialstate);
+    const [pawnPromotion, setPawnPromotion] = useState();
+    const [someY, setSomeY] = useState(null);
+    const [someX, setSomeX] = useState(null);
     const Board = useRef(null);
+    const titleRef = useRef();
 
     const [element, setElement] = useState(null);
     const [gridx, setGridX] = useState(0);
@@ -104,6 +108,8 @@ export default function ChessBoard() {
 
             const x = Math.floor((e.clientX - Edges.offsetLeft) / 75);
             const y = Math.floor((e.clientY - Edges.offsetTop) / 75);
+            setSomeX(x);
+            setSomeY(y);
             const currentPiece = piece.find(t => t.x === gridx && t.y === gridy);
             const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
 
@@ -145,6 +151,12 @@ export default function ChessBoard() {
                             p.EnpassantMove = Math.abs(gridy - y) === 2;
                             p.x = x;
                             p.y = y;
+
+                            const promotionPawn = p.team === Team.WHITE ? 0 : 7;
+                            if (y === promotionPawn && p.Piece === Type.PAWN) {
+                                titleRef.current.classList.remove("hide-title");
+                                setPawnPromotion(p);
+                            }
                             result.push(p);
                         } else if (!(samePosition(p, x, y))) {
                             p.EnpassantMove = false;
@@ -163,6 +175,26 @@ export default function ChessBoard() {
         }
     }
 
+    function promotPawn(PieceType) {
+        const updatePromotedPieces = piece.reduce((result, p) => {
+            const promotionPawnTeam = p.team === Team.WHITE ? "w" : "b";
+            if (samePosition(p, someX, someY)) {
+                p.Piece = PieceType;
+                p.image = `${PieceType}-${promotionPawnTeam}.png`;
+            }
+            result.push(p);
+            return result;
+        }, []);
+        setPawnPromotion(updatePromotedPieces);
+        titleRef.current.classList.add("hide-title");
+    }
+    function pieceTeamColor () {
+        if (pawnPromotion) {
+            return pawnPromotion.team === Team.WHITE ? "w" : "b";
+        } else {
+            return "w";
+          }
+    }
     const colorSwitch = (x) => {
         const lastChar = x.slice(-1)[0];
         const color = Math.floor(lastChar);
@@ -181,44 +213,54 @@ export default function ChessBoard() {
     }, []);
 
     return (
-        <div 
-            className="chessBoard" 
-            ref={Board}
-            >
-            {square.map((row, index) => (
-                <div
-                    className="row"
-                    key={index}
-                >
-                 {row.map(({ position, x, y}, index) => {
-                        /** Refactor this code */
-                        const currentPiece = piece.find((pre) => pre.x === x && pre.y === y);
-                        return (
-                            <div
-                            key={index}
-                            className="square-piece"
-                            style={{
-                                backgroundColor: colorSwitch(position),
-                            }}
-                            onMouseDown={(e) => grabbingPiece(e)}
-                            onMouseMove={(e) => MovingPiece(e)}
-                            onMouseUp={(e) => dropingPiece(e)}
-                        >
-                            {
-                                currentPiece && 
-                                <div
-                                    className="piece"
-                                    style={{
-                                        backgroundImage: `url(${currentPiece.image})`,
-                                    }}
-                                >
-                                </div>
-                            }
-                        </div>
-                        )
-                 })}
+        <>
+            <div id="Pawn-promotion" className="hide-title" ref={titleRef}>
+                <div className="body-promotion">
+                    <img onClick={() => promotPawn(Type.ROCK)} src={`rock-${pieceTeamColor()}.png`}></img>
+                    <img onClick={() => promotPawn(Type.QUEEN)} src={`queen-${pieceTeamColor()}.png`}></img>
+                    <img onClick={() => promotPawn(Type.BISHOP)} src={`bishop-${pieceTeamColor()}.png`}></img>
+                    <img onClick={() => promotPawn(Type.KNIGHT)} src={`knight-${pieceTeamColor()}.png`}></img>
                 </div>
-            ))}
-        </div>
+            </div>
+            <div 
+                className="chessBoard" 
+                ref={Board}
+                >
+                {square.map((row, index) => (
+                    <div
+                        className="row"
+                        key={index}
+                    >
+                    {row.map(({ position, x, y}, index) => {
+                            /** Refactor this code */
+                            const currentPiece = piece.find((pre) => pre.x === x && pre.y === y);
+                            return (
+                                <div
+                                key={index}
+                                className="square-piece"
+                                style={{
+                                    backgroundColor: colorSwitch(position),
+                                }}
+                                onMouseDown={(e) => grabbingPiece(e)}
+                                onMouseMove={(e) => MovingPiece(e)}
+                                onMouseUp={(e) => dropingPiece(e)}
+                            >
+                                {
+                                    currentPiece && 
+                                    <div
+                                        className="piece"
+                                        style={{
+                                            backgroundImage: `url(${currentPiece.image})`,
+                                        }}
+                                    >
+                                    </div>
+                                }
+                            </div>
+                            )
+                    })}
+                    </div>
+                ))}
+            </div>
+        </>
     );
 }

@@ -47,7 +47,7 @@ export default class piecesRules {
                 validMove = queenMove(previousX, previousY, x, y, team, chessBoard);
                 break;
             case Type.KING:
-                validMove = kingMove(previousX, previousY, x, y, team, chessBoard);
+                validMove = kingMove(previousX, previousY, x, y, type, team, chessBoard);
                 break;
         }
         return validMove;

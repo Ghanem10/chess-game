@@ -30,3 +30,38 @@
     cursor: grabbing;
     z-index: 100;
 }
+
+#Pawn-promotion {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    right: 0;
+}
+
+.hide-title {
+    display: none;
+}
+
+.body-promotion {
+    position: absolute;
+    top: calc(50% - 100px);
+    left: calc(50% - 300px);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 190px;
+    width: 600px;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.body-promotion > img {
+    height: 60px;
+    padding: 20px;
+    border-radius: 50%;
+}
+
+.body-promotion > img:hover {
+    background-color: rgb(230, 230, 230);
+    cursor: pointer;
+}

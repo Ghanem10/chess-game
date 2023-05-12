@@ -1,7 +1,7 @@
 import { samePosition } from "../functions/func";
 import piecesRules from "./rules/rules";
 
-export default function kingMove(previousX, previousY, x, y, team, chessBoard) {
+export default function kingMove(previousX, previousY, x, y, type, team, chessBoard) {
     const boardWidthHeight = 2;
     const king = new piecesRules();
     

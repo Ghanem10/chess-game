@@ -26,7 +26,6 @@ export default function rockMove(previousX, previousY, x, y, team, chessBoard) {
             const multiplier = (x < previousX) ? -1 : 1;
             const passedPosition = { x: previousX + (i * multiplier), y: previousY };
             if (passedPosition.x === x && passedPosition.y === y) {
-                console.log("virtically")
                 if (rock.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
                     return true;
                 }
