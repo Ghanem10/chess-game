@@ -1,9 +1,8 @@
-import { samePosition } from "../functions/func";
-import piecesRules from "./rules/rules";
+import { samePosition } from "../constants/functions";
+import { squareOccupied, SquareEmptyOrOccupiedByOpponent } from "./rules/reference";
 
-export default function queenMove(previousX, previousY, x, y, team, chessBoard) {
+export const queenMove = (previousX, previousY, x, y, team, chessBoard) => {
     const boardWidthHeight = 8;
-    const queen = new piecesRules();
 
     for (let i = 1; i < boardWidthHeight; i++) {
         // HORIZONTAL MOVEMENT
@@ -11,11 +10,11 @@ export default function queenMove(previousX, previousY, x, y, team, chessBoard) 
             const multiplier = (x < previousX) ? -1 : 1;
             const passedPosition = { x: previousX + (i * multiplier), y: previousY };
             if (samePosition(passedPosition, x, y)) {
-                if (queen.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+                if (SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
                     return true;
                 }
             }else {
-                if (queen.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+                if (squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
                     break;
                 }
             }
@@ -25,11 +24,11 @@ export default function queenMove(previousX, previousY, x, y, team, chessBoard) 
             const multiplier = (y < previousY) ? -1 : 1;
             const passedPosition = { x: previousX, y: previousY + (i * multiplier) };
             if (samePosition(passedPosition, x, y)) {
-                if (queen.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+                if (SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
                     return true;
                 }
             }else {
-                if (queen.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+                if (squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
                     break;
                 }
             }
@@ -41,11 +40,11 @@ export default function queenMove(previousX, previousY, x, y, team, chessBoard) 
             const passedPosition = { x: previousX + (i * multiplierX), y: previousY + (i * multiplierY) };
             
             if (passedPosition.x === x && passedPosition.y === y) {
-                if (queen.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+                if (SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
                     return true;
                 }
             }else {
-                if (queen.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+                if (squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
                     break;
                 }
             }

@@ -39,6 +39,17 @@
     right: 0;
 }
 
+#PiecesPromotion {
+    width: 60px; 
+    height: 80px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60px;
+    height: 50px;
+    padding: 20px;
+    border-radius: 50%;
+}
+
 .hide-title {
     display: none;
 }
@@ -55,13 +66,7 @@
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-.body-promotion > img {
-    height: 60px;
-    padding: 20px;
-    border-radius: 50%;
-}
-
-.body-promotion > img:hover {
+#PiecesPromotion:hover {
     background-color: rgb(230, 230, 230);
     cursor: pointer;
 }

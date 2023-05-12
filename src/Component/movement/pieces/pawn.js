@@ -1,30 +1,36 @@
-import { Team } from "../functions/func";
-import piecesRules from "./rules/rules";
+import { Team, Type, samePosition } from "../constants/functions";
+import { squareOccupied, squareOccupiedByOpponent } from "./rules/reference";
 
-export default function pawnMove(previousX, previousY, x, y, team, chessBoard) {
+export const pawnMove = (previousX, previousY, x, y, team, chessBoard) => {
     const initialRow = team === Team.WHITE ? 6 : 1;
     const PawnDiraction = team === Team.WHITE ? -1 : 1;
-    const pawn = new piecesRules();
 
     // LEGEL MOVEMENT
     if (previousX === x && (y - previousY === PawnDiraction)) {
-        if (!pawn.squareOccupied(x, y, chessBoard)) {
+        if (!squareOccupied(x, y, chessBoard)) {
             return true;
         }
     } else if (previousY === initialRow && previousX === x && (y - previousY === PawnDiraction * 2)) {
-        if (!pawn.squareOccupied(x, y, chessBoard) && !pawn.squareOccupied(x, y - PawnDiraction, chessBoard)) {
+        if (!squareOccupied(x, y, chessBoard) && !squareOccupied(x, y - PawnDiraction, chessBoard)) {
             return true;
         }
     }
     // CAPTURE MOVEMENT
     else if (x - previousX === -1 && y - previousY === PawnDiraction) {
-        if (pawn.squareOccupiedByOpponent(x, y, chessBoard, team)) {
+        if (squareOccupiedByOpponent(x, y, chessBoard, team)) {
             return true;
         }
     }else if (x - previousX === 1 && y - previousY === PawnDiraction) {
-        if (pawn.squareOccupiedByOpponent(x, y, chessBoard, team)) {
+        if (squareOccupiedByOpponent(x, y, chessBoard, team)) {
             return true;
         }
     }
     return false;
+}
+
+export function getPossiblePawnMoves(preX, preY, team, x, y, chessBoard) {
+    const PawnDiraction = team === Team.WHITE ? -1 : 1;
+    if (y - preY === PawnDiraction || y - preY === PawnDiraction * 2) {
+        console.log("PAWN");
+    }
 }

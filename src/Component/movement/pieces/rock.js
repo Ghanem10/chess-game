@@ -1,8 +1,7 @@
-import piecesRules from "./rules/rules";
+import { squareOccupied, SquareEmptyOrOccupiedByOpponent } from "./rules/reference";
 
-export default function rockMove(previousX, previousY, x, y, team, chessBoard) {
+export const rockMove = (previousX, previousY, x, y, team, chessBoard) => {
     const boardWidthHieght = 8;
-    const rock = new piecesRules();
 
     // VERTICAL MOVEMENT
     if (previousX === x) {
@@ -10,11 +9,11 @@ export default function rockMove(previousX, previousY, x, y, team, chessBoard) {
             const multiplier = (y < previousY) ? -1 : 1;
             const passedPosition = { x: previousX, y: previousY + (i * multiplier) };
             if (passedPosition.x === x && passedPosition.y === y) {
-                if (rock.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+                if (SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
                     return true;
                 }
             } else {
-                if (rock.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+                if (squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
                     break;
                 }
             }
@@ -26,11 +25,11 @@ export default function rockMove(previousX, previousY, x, y, team, chessBoard) {
             const multiplier = (x < previousX) ? -1 : 1;
             const passedPosition = { x: previousX + (i * multiplier), y: previousY };
             if (passedPosition.x === x && passedPosition.y === y) {
-                if (rock.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+                if (SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
                     return true;
                 }
             }else {
-                if (rock.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+                if (squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
                     break;
                 }
             }

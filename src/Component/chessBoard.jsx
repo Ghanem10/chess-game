@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { displayPieces } from "./layout/SortOutPieces";
-import { Type, Team, samePosition } from "./movement/functions/func";
-import piecesRules from "./movement/pieces/rules/rules";
+import { displayPieces } from "./layout/pieceImages";
+import { Type, Team, samePosition } from "./movement/constants/functions";
+import piecesRules from "./movement/pieces/rules/generalRules";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -41,7 +41,17 @@ export default function ChessBoard() {
         setSquare(Board);
     }
 
+    // function updateValideMoves() {
+    //     setPiece((currentPieces) => {
+    //         return currentPieces.map((p) => {
+    //             p.possibleMoves = pieces.getValidMove(gridx, gridy, p.x, p.y, p.team, p.Piece, currentPieces);
+    //             return p;
+    //         });
+    //     });
+    // }
+
     function grabbingPiece(e) {
+        // updateValideMoves();
         const el = e.target;
         const Edges = Board.current;
 
@@ -56,11 +66,9 @@ export default function ChessBoard() {
             const MinY = 64, MaxY = 503;
 
             el.style.position = 'absolute';
-
             if (x > MinX && x < MaxX) {
                 el.style.left = `${x}px`;
             }
-            
             if (y > MinY && y < MaxY) {
                 el.style.top = `${y}px`;
             }
@@ -216,10 +224,10 @@ export default function ChessBoard() {
         <>
             <div id="Pawn-promotion" className="hide-title" ref={titleRef}>
                 <div className="body-promotion">
-                    <img onClick={() => promotPawn(Type.ROCK)} src={`rock-${pieceTeamColor()}.png`}></img>
-                    <img onClick={() => promotPawn(Type.QUEEN)} src={`queen-${pieceTeamColor()}.png`}></img>
-                    <img onClick={() => promotPawn(Type.BISHOP)} src={`bishop-${pieceTeamColor()}.png`}></img>
-                    <img onClick={() => promotPawn(Type.KNIGHT)} src={`knight-${pieceTeamColor()}.png`}></img>
+                    <div id="PiecesPromotion" onClick={() => promotPawn(Type.ROCK)} style={{ backgroundImage: `url(rock-${pieceTeamColor()}.png)`}}></div>
+                    <div id="PiecesPromotion" onClick={() => promotPawn(Type.QUEEN)} style={{ backgroundImage: `url(queen-${pieceTeamColor()}.png)`}}></div>
+                    <div id="PiecesPromotion" onClick={() => promotPawn(Type.BISHOP)} style={{ backgroundImage: `url(bishop-${pieceTeamColor()}.png)`}}></div>
+                    <div id="PiecesPromotion" onClick={() => promotPawn(Type.KNIGHT)} style={{ backgroundImage: `url(knight-${pieceTeamColor()}.png)`}}></div>
                 </div>
             </div>
             <div 

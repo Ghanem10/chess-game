@@ -1,5 +1,6 @@
-import { Team, Type, samePosition } from '../../functions/func';
-import { pawnMove, bishopMove, knightMove, rockMove, queenMove, kingMove } from './piecesEx';
+import { Team, Type, samePosition } from '../../constants/functions';
+import { getPossiblePawnMoves } from '../pawn';
+import { pawnMove, bishopMove, knightMove, rockMove, queenMove, kingMove } from './piecesIndex';
 
 export default class piecesRules {
     isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
@@ -13,20 +14,7 @@ export default class piecesRules {
         }
         return false;
     }
-    SquareEmptyOrOccupiedByOpponent =(x, y, chessBoard, team) => {
-        return (!this.squareOccupied(x, y, chessBoard) || this.squareOccupiedByOpponent(x, y, chessBoard, team));
-      }
-
-    squareOccupiedByOpponent(x, y, chessBoard, team) {
-        const piece = chessBoard.find(t => samePosition(t, x, y) && t.team !== team);
-        return piece ? true : false;
-    }
-
-    squareOccupied(x, y, chessBoard) {
-        const square = chessBoard.find(pre => samePosition(pre, x, y));
-        return square ? true : false;
-    }
-
+    
     isValid(previousX, previousY, x, y, type, team, chessBoard) {
         let validMove = false;
 
@@ -47,7 +35,7 @@ export default class piecesRules {
                 validMove = queenMove(previousX, previousY, x, y, team, chessBoard);
                 break;
             case Type.KING:
-                validMove = kingMove(previousX, previousY, x, y, type, team, chessBoard);
+                validMove = kingMove(previousX, previousY, x, y, team, chessBoard);
                 break;
         }
         return validMove;

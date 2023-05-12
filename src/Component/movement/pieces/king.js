@@ -1,9 +1,8 @@
-import { samePosition } from "../functions/func";
-import piecesRules from "./rules/rules";
+import { samePosition } from "../constants/functions";
+import { squareOccupied, SquareEmptyOrOccupiedByOpponent } from "./rules/reference";
 
-export default function kingMove(previousX, previousY, x, y, type, team, chessBoard) {
+export const kingMove = (previousX, previousY, x, y, team, chessBoard) => {
     const boardWidthHeight = 2;
-    const king = new piecesRules();
     
     for (let i = 1; i < boardWidthHeight; i++) {
 
@@ -13,11 +12,11 @@ export default function kingMove(previousX, previousY, x, y, type, team, chessBo
         const passedPosition = { x: previousX + (i * multiplierX), y: previousY + (i * multiplierY) };
         
         if (samePosition(passedPosition, x, y)) {
-            if (king.SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
+            if (SquareEmptyOrOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, team)) {
                 return true;
             }
         }else {
-            if (king.squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            if (squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
                 break;
             }
         }
