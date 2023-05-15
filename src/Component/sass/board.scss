@@ -8,11 +8,29 @@
     margin-top: 1rem;
 }
 
-.square-piece, .square {
+.white-square {
     width: 75px;
     height: 75px;
-}
-
+    background-color: white;
+  }
+  
+  .darkblue-square {
+    width: 75px;
+    height: 75px;
+    background-color: rgb(61, 139, 74);
+  }
+  
+  .highlight-square::before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgb(0, 0, 0, 0.4);
+    transform: translate(140%, 140%);
+  }
+  
+  
 .piece {
     width: 75px; 
     height: 75px;

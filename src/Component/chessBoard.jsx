@@ -2,20 +2,24 @@ import React, { useEffect, useRef, useState } from "react";
 import { displayPieces } from "./layout/pieceImages";
 import { Type, Team, samePosition } from "./movement/constants/functions";
 import piecesRules from "./movement/pieces/rules/generalRules";
+import Squares from "./layout/squares";
+import PawnPromotion from "./layout/pawnPromotion";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-let GenerateRandomIndex = 0, 
-    count = 0;
 const initialstate = [];
 
 export default function ChessBoard() {
+    // TODO
+    // Use React hook useReducer to manage the component state.
+
     const [square, setSquare] = useState([]);
     const [piece, setPiece] = useState(initialstate);
     const [pawnPromotion, setPawnPromotion] = useState();
     const [someY, setSomeY] = useState(null);
     const [someX, setSomeX] = useState(null);
+    const [highlightSquare, setHighlighSquare] = useState([]);
     const Board = useRef(null);
     const titleRef = useRef();
 
@@ -41,17 +45,21 @@ export default function ChessBoard() {
         setSquare(Board);
     }
 
-    // function updateValideMoves() {
-    //     setPiece((currentPieces) => {
-    //         return currentPieces.map((p) => {
-    //             p.possibleMoves = pieces.getValidMove(gridx, gridy, p.x, p.y, p.team, p.Piece, currentPieces);
-    //             return p;
-    //         });
-    //     });
-    // }
+    function updatePieceValidPositions(gridx, gridy) {
+        setPiece((currentP) => {
+            const update = currentP.map((p) => {
+                if (samePosition(p, gridx, gridy)) {
+                    p.possibleMoves = pieces.getValidMove(p, currentP);
+                    setHighlighSquare(p.possibleMoves);
+                }
+                return p;
+            });
+            return update;
+        });
+    }
 
     function grabbingPiece(e) {
-        // updateValideMoves();
+        
         const el = e.target;
         const Edges = Board.current;
 
@@ -109,11 +117,13 @@ export default function ChessBoard() {
         
     }
 
+    
+
     function dropingPiece(e) {
         const Edges = Board.current;
 
         if (element && Edges) {
-
+            
             const x = Math.floor((e.clientX - Edges.offsetLeft) / 75);
             const y = Math.floor((e.clientY - Edges.offsetTop) / 75);
             setSomeX(x);
@@ -183,53 +193,24 @@ export default function ChessBoard() {
         }
     }
 
-    function promotPawn(PieceType) {
-        const updatePromotedPieces = piece.reduce((result, p) => {
-            const promotionPawnTeam = p.team === Team.WHITE ? "w" : "b";
-            if (samePosition(p, someX, someY)) {
-                p.Piece = PieceType;
-                p.image = `${PieceType}-${promotionPawnTeam}.png`;
-            }
-            result.push(p);
-            return result;
-        }, []);
-        setPawnPromotion(updatePromotedPieces);
-        titleRef.current.classList.add("hide-title");
-    }
-    function pieceTeamColor () {
-        if (pawnPromotion) {
-            return pawnPromotion.team === Team.WHITE ? "w" : "b";
-        } else {
-            return "w";
-          }
-    }
-    const colorSwitch = (x) => {
-        const lastChar = x.slice(-1)[0];
-        const color = Math.floor(lastChar);
-        const isColor = color === 8;
-
-        if (isColor && count > 0) {
-            GenerateRandomIndex += 1;
-        }
-        count += isColor ? 1 : 0;
-        return ((color + GenerateRandomIndex) % 2 == 0) ? "white" : "darkblue";
-    }
-
+    // TODO
+    // Check why the gridx, gridy are not updating properly.
     useEffect(() => {
         createBoard();
+        updatePieceValidPositions(gridx, gridy);
         displayPieces(initialstate);
-    }, []);
+    }, [gridx, gridy]);
 
     return (
         <>
-            <div id="Pawn-promotion" className="hide-title" ref={titleRef}>
-                <div className="body-promotion">
-                    <div id="PiecesPromotion" onClick={() => promotPawn(Type.ROCK)} style={{ backgroundImage: `url(rock-${pieceTeamColor()}.png)`}}></div>
-                    <div id="PiecesPromotion" onClick={() => promotPawn(Type.QUEEN)} style={{ backgroundImage: `url(queen-${pieceTeamColor()}.png)`}}></div>
-                    <div id="PiecesPromotion" onClick={() => promotPawn(Type.BISHOP)} style={{ backgroundImage: `url(bishop-${pieceTeamColor()}.png)`}}></div>
-                    <div id="PiecesPromotion" onClick={() => promotPawn(Type.KNIGHT)} style={{ backgroundImage: `url(knight-${pieceTeamColor()}.png)`}}></div>
-                </div>
-            </div>
+            <PawnPromotion 
+                someX={someX}
+                someY={someY}
+                pawnPromotion={pawnPromotion}
+                setPawnPromotion={setPawnPromotion}
+                titleRef={titleRef}
+                piece={piece}
+            />
             <div 
                 className="chessBoard" 
                 ref={Board}
@@ -239,32 +220,21 @@ export default function ChessBoard() {
                         className="row"
                         key={index}
                     >
-                    {row.map(({ position, x, y}, index) => {
-                            /** Refactor this code */
-                            const currentPiece = piece.find((pre) => pre.x === x && pre.y === y);
-                            return (
-                                <div
+                    {row.map(({ position, x, y }, index) => {
+                        return (
+                            <Squares 
                                 key={index}
-                                className="square-piece"
-                                style={{
-                                    backgroundColor: colorSwitch(position),
-                                }}
-                                onMouseDown={(e) => grabbingPiece(e)}
-                                onMouseMove={(e) => MovingPiece(e)}
-                                onMouseUp={(e) => dropingPiece(e)}
-                            >
-                                {
-                                    currentPiece && 
-                                    <div
-                                        className="piece"
-                                        style={{
-                                            backgroundImage: `url(${currentPiece.image})`,
-                                        }}
-                                    >
-                                    </div>
-                                }
-                            </div>
-                            )
+                                piece={piece}
+                                x={x} y={y}
+                                square={square}
+                                highlightSquare={highlightSquare}
+                                position={position}
+                                element={element}
+                                grabbingPiece={grabbingPiece}
+                                MovingPiece={MovingPiece}
+                                dropingPiece={dropingPiece}
+                            />
+                        )
                     })}
                     </div>
                 ))}

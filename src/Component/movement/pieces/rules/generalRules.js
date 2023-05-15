@@ -40,4 +40,13 @@ export default class piecesRules {
         }
         return validMove;
     }
+
+    getValidMove(piece, chessBoard) {
+        switch(piece.Piece) {
+            case Type.PAWN:
+                return getPossiblePawnMoves(piece, chessBoard);
+            default:
+                return [];
+        }
+    }
 }

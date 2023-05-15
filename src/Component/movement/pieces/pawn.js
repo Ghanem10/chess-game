@@ -1,4 +1,4 @@
-import { Team, Type, samePosition } from "../constants/functions";
+import { Team } from "../constants/functions";
 import { squareOccupied, squareOccupiedByOpponent } from "./rules/reference";
 
 export const pawnMove = (previousX, previousY, x, y, team, chessBoard) => {
@@ -28,9 +28,18 @@ export const pawnMove = (previousX, previousY, x, y, team, chessBoard) => {
     return false;
 }
 
-export function getPossiblePawnMoves(preX, preY, team, x, y, chessBoard) {
-    const PawnDiraction = team === Team.WHITE ? -1 : 1;
-    if (y - preY === PawnDiraction || y - preY === PawnDiraction * 2) {
-        console.log("PAWN");
+// TODO
+// Add Enpassant and attack possible moves for a pawn.
+
+export function getPossiblePawnMoves(pawn, chessBoard) {
+    const possiblePositions = [];
+    const initialRow = pawn.team === Team.WHITE ? 6 : 1;
+    const PawnDiraction = pawn.team === Team.WHITE ? -1 : 1;
+    if (!squareOccupied(pawn.x, pawn.y + PawnDiraction, chessBoard)) {
+        possiblePositions.push({ x: pawn.x, y: pawn.y + PawnDiraction });
+        if (pawn.y === initialRow && !squareOccupied(pawn.x, pawn.y + PawnDiraction * 2, chessBoard)) {
+            possiblePositions.push({ x: pawn.x, y: pawn.y + PawnDiraction * 2 });
+        }
     }
+    return possiblePositions;
 }
