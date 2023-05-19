@@ -36,10 +36,22 @@ export default function PawnPromotion(props) {
     return (
         <div id="Pawn-promotion" className="hide-title" ref={titleRef}>
             <div className="body-promotion">
-                <div id="PiecesPromotion" onClick={() => promotPawn(Type.ROCK)} style={{ backgroundImage: `url(rock-${pieceTeamColor()}.png)`}}></div>
-                <div id="PiecesPromotion" onClick={() => promotPawn(Type.QUEEN)} style={{ backgroundImage: `url(queen-${pieceTeamColor()}.png)`}}></div>
-                <div id="PiecesPromotion" onClick={() => promotPawn(Type.BISHOP)} style={{ backgroundImage: `url(bishop-${pieceTeamColor()}.png)`}}></div>
-                <div id="PiecesPromotion" onClick={() => promotPawn(Type.KNIGHT)} style={{ backgroundImage: `url(knight-${pieceTeamColor()}.png)`}}></div>
+                <div id="PiecesPromotion" 
+                    onClick={() => promotPawn(Type.ROCK)} 
+                    style={{ backgroundImage: `url(rock-${pieceTeamColor()}.png)`}}
+                ></div>
+                <div id="PiecesPromotion" 
+                    onClick={() => promotPawn(Type.QUEEN)} 
+                    style={{ backgroundImage: `url(queen-${pieceTeamColor()}.png)`}}
+                ></div>
+                <div id="PiecesPromotion" 
+                    onClick={() => promotPawn(Type.BISHOP)} 
+                    style={{ backgroundImage: `url(bishop-${pieceTeamColor()}.png)`}}
+                ></div>
+                <div id="PiecesPromotion" 
+                    onClick={() => promotPawn(Type.KNIGHT)} 
+                    style={{ backgroundImage: `url(knight-${pieceTeamColor()}.png)`}}
+                ></div>
             </div>
         </div>
     );
