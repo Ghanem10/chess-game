@@ -11,7 +11,7 @@ export default function Squares(props) {
         y,
         position,
         highlightSquare,
-        element
+        state
     } = props;
 
     const currentPiece = piece.find((pre) => pre.x === x && pre.y === y);
@@ -40,7 +40,7 @@ export default function Squares(props) {
         updatedClassName = isColor ? "darkblue-square" : "white-square"; 
     }
 
-    if (element !== null) {
+    if (state.activePiece !== null) {
         if (Array.isArray(highlightSquare) && highlightSquare.length > 0) {
             for (let i = 0; i < highlightSquare.length; i++) {
                 if (highlightSquare[i].x === x && highlightSquare[i].y === y) {

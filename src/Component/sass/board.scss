@@ -1,60 +1,62 @@
+$width: 75px;
 
 .chessBoard {
-    display: grid;
-    grid-template-columns: repeat(8, 75px);
-    grid-template-rows: repeat(8, 75px);
-    width: 600px;
-    height: 600px;
-    margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(8, $width);
+  grid-template-rows: repeat(8, $width);
+  width: $width * 8;
+  height: $width * 8;
+  margin-top: 1rem;
+}
+
+.white-square,
+.darkblue-square {
+  width: $width;
+  height: $width;
 }
 
 .white-square {
-    width: 75px;
-    height: 75px;
-    background-color: white;
-  }
-  
-  .darkblue-square {
-    width: 75px;
-    height: 75px;
-    background-color: rgb(61, 139, 74);
-  }
-  
-  .highlight-square::before {
-    content: "";
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: rgb(0, 0, 0, 0.4);
-    transform: translate(140%, 140%);
-  }
-  
-  
+  background-color: white;
+}
+
+.darkblue-square {
+  background-color: rgb(61, 139, 74);
+}
+
+.highlight-square::before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.4);
+  transform: translate(140%, 140%);
+}
+
 .piece {
-    width: 75px; 
-    height: 75px;
-    background-repeat: no-repeat;
-    background-position: center;
+  width: $width;
+  height: $width;
+  background-repeat: no-repeat;
+  background-position: center;
     background-size: 60px;
     z-index: 50;
 }
 
 .piece:hover {
-    cursor: grab;
+  cursor: grab;
 }
 
 .piece:active {
-    cursor: grabbing;
-    z-index: 100;
+  cursor: grabbing;
+  z-index: 100;
 }
 
 #Pawn-promotion {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    top: 0;
-    right: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  right: 0;
 }
 
 #PiecesPromotion {
@@ -69,22 +71,22 @@
 }
 
 .hide-title {
-    display: none;
+  display: none;
 }
 
 .body-promotion {
-    position: absolute;
-    top: calc(50% - 100px);
-    left: calc(50% - 300px);
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    height: 190px;
-    width: 600px;
-    background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: calc(50% - 100px);
+  left: calc(50% - 300px);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 190px;
+  width: $width * 8;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 #PiecesPromotion:hover {
-    background-color: rgb(230, 230, 230);
-    cursor: pointer;
+  background-color: rgb(230, 230, 230);
+  cursor: pointer;
 }

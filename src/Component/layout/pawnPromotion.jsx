@@ -4,8 +4,7 @@ import { samePosition, Type, Team } from "../movement/constants/functions";
 export default function PawnPromotion(props) {
 
     let {
-        someX,
-        someY,
+        x, y,
         pawnPromotion,
         setPawnPromotion,
         titleRef,
@@ -15,7 +14,7 @@ export default function PawnPromotion(props) {
     function promotPawn(PieceType) {
         const updatePromotedPieces = piece.reduce((result, p) => {
             const promotionPawnTeam = p.team === Team.WHITE ? "w" : "b";
-            if (samePosition(p, someX, someY)) {
+            if (samePosition(p, x, y)) {
                 p.Piece = PieceType;
                 p.image = `${PieceType}-${promotionPawnTeam}.png`;
             }

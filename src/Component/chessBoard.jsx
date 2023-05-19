@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import { displayPieces } from "./layout/pieceImages";
 import { Type, Team, samePosition } from "./movement/constants/functions";
 import piecesRules from "./movement/pieces/rules/generalRules";
 import Squares from "./layout/squares";
 import PawnPromotion from "./layout/pawnPromotion";
+import stateManagement, { SQUARES } from "./movement/state/stateManagement";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -11,45 +12,54 @@ const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 const initialstate = [];
 
 export default function ChessBoard() {
-    // TODO
-    // Use React hook useReducer to manage the component state.
-
-    const [square, setSquare] = useState([]);
+    const [state, dispatch] = useReducer(stateManagement, { 
+        squares: [], 
+        coordinates: {
+            GridX: -1,
+            GridY: -1
+        },
+        nextPosition: {
+            x: -1,
+            y: -1
+        },
+        activePiece: null,
+    });
     const [piece, setPiece] = useState(initialstate);
     const [pawnPromotion, setPawnPromotion] = useState();
-    const [someY, setSomeY] = useState(null);
-    const [someX, setSomeX] = useState(null);
     const [highlightSquare, setHighlighSquare] = useState([]);
+    
+    const rules = new piecesRules();
     const Board = useRef(null);
     const titleRef = useRef();
 
-    const [element, setElement] = useState(null);
-    const [gridx, setGridX] = useState(0);
-    const [gridy, setGridY] = useState(0);
-    const pieces = new piecesRules();
     
     function createBoard() {
         const Board = [];
 
         for (let x = 0; x < NumbersAxie.length; x++) {
-            const squares = [];
+            const square = [];
             for (let y = 0; y < CharsAxie.length; y++) {
 
-                squares.push({
+                square.push({
                     position: `${[CharsAxie[x]] + [NumbersAxie[y]]}`, 
                     x: x, y: y
                 });
             }
-            Board.push(squares);
+            Board.push(square);
         }
-        setSquare(Board);
+        dispatch({
+            type: SQUARES.ADD_SQUARES,
+            payload: {
+                squares: Board
+            },
+        });
     }
 
     function updatePieceValidPositions(gridx, gridy) {
         setPiece((currentP) => {
             const update = currentP.map((p) => {
                 if (samePosition(p, gridx, gridy)) {
-                    p.possibleMoves = pieces.getValidMove(p, currentP);
+                    p.possibleMoves = rules.getValidMove(p, currentP);
                     setHighlighSquare(p.possibleMoves);
                 }
                 return p;
@@ -60,34 +70,51 @@ export default function ChessBoard() {
 
     function grabbingPiece(e) {
         
-        const el = e.target;
+        const Element = e.target;
         const Edges = Board.current;
 
-        if (el.classList.contains('piece') && Edges) {
+        if (Element.classList.contains('piece') && Edges) {
             const x = e.clientX - 40;
             const y = e.clientY - 40;
 
-            setGridX(Math.floor((e.clientX - Edges.offsetLeft) / 75));
-            setGridY(Math.floor((e.clientY - Edges.offsetTop) / 75));
-
+            const gridx = Math.floor((e.clientX - Edges.offsetLeft) / 75);
+            const gridy = Math.floor((e.clientY - Edges.offsetTop) / 75);
+            
+            dispatch({
+                type: SQUARES.COORDINATES_X_Y,
+                payload: {
+                    coordinates: {
+                        GridX: gridx,
+                        GridY: gridy
+                    }
+                },
+            });
+            
             const MinX = 426, MaxX = 873;
             const MinY = 64, MaxY = 503;
 
-            el.style.position = 'absolute';
+            Element.style.position = 'absolute';
             if (x > MinX && x < MaxX) {
-                el.style.left = `${x}px`;
+                Element.style.left = `${x}px`;
             }
             if (y > MinY && y < MaxY) {
-                el.style.top = `${y}px`;
+                Element.style.top = `${y}px`;
             }
-            setElement(el);
+            dispatch({
+                type: SQUARES.SET_ACTIVE_PIECE,
+                payload: {
+                    activePiece: Element,
+                }
+            });
+
+            updatePieceValidPositions(gridx, gridy);
         }
     }
     
     function MovingPiece(e) {
         const Edges = Board.current;
-        if (element && Edges) {
-            
+        if (state.activePiece && Edges) {
+
             const MinX = Edges.offsetLeft - 15;
             const MinY = Edges.offsetTop - 15;
             const MaxX = Edges.offsetLeft + Edges.clientWidth - 60;
@@ -96,22 +123,22 @@ export default function ChessBoard() {
             const x = e.clientX - 40;
             const y = e.clientY - 40;
             
-            element.style.position = 'absolute';
+            state.activePiece.style.position = 'absolute';
 
             if (x < MinX) {
-                element.style.left = `${MinX}px`;
+                state.activePiece.style.left = `${MinX}px`;
             } else if (x > MaxX) {
-                element.style.left = `${MaxX}px`;
+                state.activePiece.style.left = `${MaxX}px`;
             }else {
-                element.style.left = `${x}px`;
+                state.activePiece.style.left = `${x}px`;
             }
 
             if (y > MaxY) {
-                element.style.top = `${MaxY}px`;
+                state.activePiece.style.top = `${MaxY}px`;
             } else if (y < MinY) {
-                element.style.top = `${MinY}px`;
+                state.activePiece.style.top = `${MinY}px`;
             } else {
-                element.style.top = `${y}px`;
+                state.activePiece.style.top = `${y}px`;
             }
         }
         
@@ -122,27 +149,36 @@ export default function ChessBoard() {
     function dropingPiece(e) {
         const Edges = Board.current;
 
-        if (element && Edges) {
+        if (state.activePiece && Edges) {
             
             const x = Math.floor((e.clientX - Edges.offsetLeft) / 75);
             const y = Math.floor((e.clientY - Edges.offsetTop) / 75);
-            setSomeX(x);
-            setSomeY(y);
-            const currentPiece = piece.find(t => t.x === gridx && t.y === gridy);
+            
+            dispatch({
+                type: SQUARES.UPDATE_NEXT_X_Y,
+                payload: {
+                    nextPosition: {
+                       x: x, y: y
+                    },
+                }
+            });
+
+            const currentPiece = piece
+                .find(t => t.x === state.coordinates.GridX && t.y === state.coordinates.GridY);
             const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
 
             if (currentPiece) {
-                const validMove = pieces.isValid(
-                    gridx,
-                    gridy,
+                const validMove = rules.isValid(
+                    state.coordinates.GridX,
+                    state.coordinates.GridY,
                     x, y,
                     currentPiece.Piece,
                     currentPiece.team,
                     piece
                 );
-                const isEnpassantMove = pieces.isEnpassantMove(
-                    gridx,
-                    gridy,
+                const isEnpassantMove = rules.isEnpassantMove(
+                    state.coordinates.GridX,
+                    state.coordinates.GridY,
                     x, y,
                     currentPiece.Piece,
                     currentPiece.team,
@@ -151,7 +187,7 @@ export default function ChessBoard() {
 
                 if (isEnpassantMove) {
                     const EnpassantPawn = piece.reduce((result, p) => {
-                        if (samePosition(p, gridx, gridy)) {
+                        if (samePosition(p, state.coordinates.GridX, state.coordinates.GridY)) {
                             p.EnpassantMove = false;
                             p.x = x;
                             p.y = y;
@@ -165,8 +201,8 @@ export default function ChessBoard() {
                     setPiece(EnpassantPawn);
                 } else if (validMove) {
                     const pawns = piece.reduce((result, p) => {
-                        if (samePosition(p, gridx, gridy)) {
-                            p.EnpassantMove = Math.abs(gridy - y) === 2;
+                        if (samePosition(p, state.coordinates.GridX, state.coordinates.GridY)) {
+                            p.EnpassantMove = Math.abs(state.coordinates.GridY - y) === 2;
                             p.x = x;
                             p.y = y;
 
@@ -184,28 +220,31 @@ export default function ChessBoard() {
                     }, []);
                     setPiece(pawns);
                 } else {
-                    element.style.position = 'relative';
-                    element.style.removeProperty('left');
-                    element.style.removeProperty('top');
+                    state.activePiece.style.position = 'relative';
+                    state.activePiece.style.removeProperty('left');
+                    state.activePiece.style.removeProperty('top');
                 }
             }
-            setElement(null);
+
+            dispatch({
+                type: SQUARES.SET_ACTIVE_PIECE,
+                payload: {
+                    activePiece: null
+                },
+            });
         }
     }
 
-    // TODO
-    // Check why the gridx, gridy are not updating properly.
     useEffect(() => {
         createBoard();
-        updatePieceValidPositions(gridx, gridy);
         displayPieces(initialstate);
-    }, [gridx, gridy]);
+    }, []);
 
     return (
         <>
             <PawnPromotion 
-                someX={someX}
-                someY={someY}
+                x={state.nextPosition.x}
+                y={state.nextPosition.y}
                 pawnPromotion={pawnPromotion}
                 setPawnPromotion={setPawnPromotion}
                 titleRef={titleRef}
@@ -215,7 +254,7 @@ export default function ChessBoard() {
                 className="chessBoard" 
                 ref={Board}
                 >
-                {square.map((row, index) => (
+                {state.squares.map((row, index) => (
                     <div
                         className="row"
                         key={index}
@@ -226,10 +265,9 @@ export default function ChessBoard() {
                                 key={index}
                                 piece={piece}
                                 x={x} y={y}
-                                square={square}
                                 highlightSquare={highlightSquare}
                                 position={position}
-                                element={element}
+                                state={state}
                                 grabbingPiece={grabbingPiece}
                                 MovingPiece={MovingPiece}
                                 dropingPiece={dropingPiece}
