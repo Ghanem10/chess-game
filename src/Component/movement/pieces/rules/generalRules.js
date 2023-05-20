@@ -1,6 +1,18 @@
 import { Team, Type, samePosition } from '../../constants/functions';
-import { getPossiblePawnMoves } from '../pawn';
-import { pawnMove, bishopMove, knightMove, rockMove, queenMove, kingMove } from './piecesIndex';
+import { 
+    pawnMove, 
+    bishopMove, 
+    knightMove, 
+    rockMove, 
+    queenMove, 
+    kingMove,
+    getPossiblePawnMoves,
+    getPossibleBishopMoves, 
+    getPossibleKnightMoves, 
+    getPossibleKingMoves,
+    getPossibleQueenMoves,
+    getPossibleRookMoves
+} from './piecesIndex';
 
 export default class piecesRules {
     isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
@@ -45,6 +57,16 @@ export default class piecesRules {
         switch(piece.Piece) {
             case Type.PAWN:
                 return getPossiblePawnMoves(piece, chessBoard);
+            case Type.BISHOP:
+                return getPossibleBishopMoves(piece, chessBoard);
+            case Type.KNIGHT:
+                return getPossibleKnightMoves(piece, chessBoard);
+            case Type.KING:
+                return getPossibleKingMoves(piece, chessBoard);
+            case Type.QUEEN:
+                return getPossibleQueenMoves(piece, chessBoard);
+            case Type.ROCK:
+                return getPossibleRookMoves(piece, chessBoard);
             default:
                 return [];
         }

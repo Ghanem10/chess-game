@@ -52,3 +52,73 @@ export const queenMove = (previousX, previousY, x, y, team, chessBoard) => {
     }
     return false;
 }
+
+export function getPossibleQueenMoves(queen, chessBoard) {
+    const possiblePositions = [];
+    const boardWidthHeight = 8;
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: queen.x + i, y: queen.y + i };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: queen.x - i, y: queen.y + i };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: queen.x - i, y: queen.y - i };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: queen.x + i, y: queen.y - i };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: queen.x, y: queen.y + i };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: queen.x, y: queen.y - i };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: queen.x + i, y: queen.y };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: queen.x - i, y: queen.y };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    return possiblePositions;
+}

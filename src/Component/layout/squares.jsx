@@ -1,7 +1,5 @@
 import React from "react";
 
-let idx = 0;
-
 export default function Squares(props) {
     const {
         grabbingPiece,

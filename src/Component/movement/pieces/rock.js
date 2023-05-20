@@ -37,3 +37,41 @@ export const rockMove = (previousX, previousY, x, y, team, chessBoard) => {
     }
     return false;
 }
+
+export function getPossibleRookMoves(rook, chessBoard) {
+    const possiblePositions = [];
+    const boardWidthHeight = 8;
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: rook.x, y: rook.y + i };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: rook.x, y: rook.y - i };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: rook.x + i, y: rook.y };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    for (let i = 1; i < boardWidthHeight; i++) {
+        const passedPosition = { x: rook.x - i, y: rook.y };
+        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+        } else {
+            break;
+        }
+    }
+    return possiblePositions;
+}
