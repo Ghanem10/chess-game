@@ -1,6 +1,6 @@
 import { Position } from "../movement/constants/functions";
 
-export function displayPieces(initialstate) {
+export function addChessPieces(initialstate) {
     for (let i = 0; i < 8; i++) {
         initialstate.push({
             image: './pawn-b.png', 

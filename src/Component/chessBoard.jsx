@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
-import { displayPieces } from "./layout/pieceImages";
+import { addChessPieces, displayPieces } from "./layout/pieceImages";
 import { Type, Team, samePosition } from "./movement/constants/functions";
 import piecesRules from "./movement/pieces/rules/generalRules";
 import Squares from "./layout/squares";
@@ -237,7 +237,7 @@ export default function ChessBoard() {
 
     useEffect(() => {
         createBoard();
-        displayPieces(initialstate);
+        addChessPieces(initialstate);
     }, []);
 
     return (
