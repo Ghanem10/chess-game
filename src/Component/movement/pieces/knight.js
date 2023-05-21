@@ -1,4 +1,4 @@
-import { SquareEmptyOrOccupiedByOpponent, squareOccupied } from "./rules/reference";
+import { SquareEmptyOrOccupiedByOpponent, squareOccupied } from "../rules/reference";
 
 export const knightMove = (previousX, previousY, x, y, team, chessBoard) => {
     const boardWidthHieght = 2;

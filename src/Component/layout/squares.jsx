@@ -44,14 +44,14 @@ export default function Squares(props) {
             onMouseMove={(e) => MovingPiece(e)}
             onMouseUp={(e) => dropingPiece(e)}
         >
-        {currentPiece && (
-            <div
-            className="piece"
-            style={{
-                backgroundImage: `url(${currentPiece.image})`,
-            }}
-            ></div>
-        )}
+            {currentPiece && (
+                <div
+                className="piece"
+                style={{
+                    backgroundImage: `url(${currentPiece.image})`,
+                }}
+                ></div>
+            )}
         </div>
     );
 }

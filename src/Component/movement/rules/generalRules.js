@@ -1,4 +1,4 @@
-import { Team, Type, samePosition } from '../../constants/functions';
+import { Team, Type, samePosition } from '../constants/functions';
 import { 
     pawnMove, 
     bishopMove, 
@@ -69,6 +69,14 @@ export default class piecesRules {
                 return getPossibleRookMoves(piece, chessBoard);
             default:
                 return [];
+        }
+    }
+
+    movesCalculator(chessBoard) {
+        for (const piece of chessBoard) {
+            piece.possibleMoves = this.getValidMove(piece, chessBoard);
+            
+            
         }
     }
 }

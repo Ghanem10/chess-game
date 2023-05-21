@@ -1,4 +1,4 @@
-import { squareOccupied, SquareEmptyOrOccupiedByOpponent } from "./rules/reference";
+import { squareOccupied, SquareEmptyOrOccupiedByOpponent } from "../rules/reference";
 
 export const rockMove = (previousX, previousY, x, y, team, chessBoard) => {
     const boardWidthHieght = 8;

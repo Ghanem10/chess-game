@@ -1,5 +1,5 @@
 import { samePosition } from "../constants/functions";
-import { squareOccupied, SquareEmptyOrOccupiedByOpponent } from "./rules/reference";
+import { squareOccupied, SquareEmptyOrOccupiedByOpponent } from "../rules/reference";
 
 export const queenMove = (previousX, previousY, x, y, team, chessBoard) => {
     const boardWidthHeight = 8;

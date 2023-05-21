@@ -1,5 +1,4 @@
-import { squareOccupied, SquareEmptyOrOccupiedByOpponent } from "./rules/reference";
-import { samePosition, Team } from "../constants/functions";
+import { squareOccupied, SquareEmptyOrOccupiedByOpponent } from "../rules/reference";
 
 export const bishopMove = (previousX, previousY, x, y, team, chessBoard) => {
     const DiagonalWidthHieght = 8;

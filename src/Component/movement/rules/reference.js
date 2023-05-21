@@ -1,4 +1,4 @@
-import { samePosition } from "../../constants/functions";
+import { samePosition } from "../constants/functions";
 
 export const squareOccupiedByOpponent = (x, y, chessBoard, team) => {
     const piece = chessBoard.find(t => samePosition(t, x, y) && t.team !== team);
