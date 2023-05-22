@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useRef } from "react";
-import Squares from "../layout/squares";
-import PawnPromotion from "../layout/pawnPromotion";
-import stateManagement, { SQUARES } from "../movement/state/stateManagement";
+import Squares from "../../layout/squares";
+import PawnPromotion from "../../layout/pawnPromotion";
+import stateManagement, { SQUARES } from "../state/stateManagement";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -106,9 +106,7 @@ export default function ChessBoard({ playMove, piece, updatePossibleMoves, highl
             }
         }
         
-    }
-
-    
+    }    
 
     function dropingPiece(e) {
         const Edges = Board.current;

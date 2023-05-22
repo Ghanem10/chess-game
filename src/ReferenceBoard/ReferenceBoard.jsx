@@ -15,7 +15,7 @@ import {
     getPossibleRookMoves
 } from '../movement/rules/piecesIndex';
 import { addChessPieces } from '../layout/pieceImages';
-import ChessBoard from '../chessBoard/chessBoard';
+import ChessBoard from '../Component/chessBoard/chessBoard';
 
 const initialstate = [];
 
