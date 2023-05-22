@@ -6,7 +6,7 @@ import stateManagement, { SQUARES } from "../state/stateManagement";
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-export default function ChessBoard({ playMove, piece, updatePossibleMoves, highlightSquare, pawnPromotion, setPawnPromotion }) {
+export default function ChessBoard({ successMove, piece, updatePossibleMoves, highlightSquare, pawnPromotion, setPawnPromotion }) {
     const [state, dispatch] = useReducer(stateManagement, { 
         squares: [], 
         coordinates: { GridX: -1, GridY: -1 },
@@ -129,9 +129,9 @@ export default function ChessBoard({ playMove, piece, updatePossibleMoves, highl
                 .find(t => t.x === state.coordinates.GridX && t.y === state.coordinates.GridY);
 
             if (currentPiece) {
-                const move = playMove(state, x, y, currentPiece, titleRef);
+                const playMove = successMove(state, x, y, currentPiece, titleRef);
 
-                if (!move) {
+                if (!playMove) {
                     state.activePiece.style.position = 'relative';
                     state.activePiece.style.removeProperty('left');
                     state.activePiece.style.removeProperty('top');

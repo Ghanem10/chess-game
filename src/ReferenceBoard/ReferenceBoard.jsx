@@ -7,15 +7,10 @@ import {
     rockMove, 
     queenMove, 
     kingMove,
-    getPossiblePawnMoves,
-    getPossibleBishopMoves, 
-    getPossibleKnightMoves, 
-    getPossibleKingMoves,
-    getPossibleQueenMoves,
-    getPossibleRookMoves
 } from '../movement/rules/piecesIndex';
 import { addChessPieces } from '../layout/pieceImages';
 import ChessBoard from '../Component/chessBoard/chessBoard';
+import Board from '../model/piecesReference';
 
 const initialstate = [];
 
@@ -24,13 +19,14 @@ export default function ReferenceBoard() {
     const [highlightSquare, setHighlighSquare] = useState([]);
     const [pawnPromotion, setPawnPromotion] = useState();
 
+    const board = new Board(piece);
+
     useEffect(() => {
         addChessPieces(initialstate);
     }, []);
-
-    function playMove(state, x, y, currentPiece, titleRef) {
+    
+    function successMove(state, x, y, currentPiece, titleRef) {
         const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
-
         const validMove = isValid(
             state.coordinates.GridX,
             state.coordinates.GridY,
@@ -47,52 +43,26 @@ export default function ReferenceBoard() {
             currentPiece.team,
             piece
         );
+        
+        const playMove = board.playMove(
+            x, y, 
+            titleRef, 
+            state, 
+            setPawnPromotion, 
+            enpassantMove, 
+            PawnDiraction, 
+            setPiece, 
+            validMove
+        );
 
-        if (enpassantMove) {
-            const EnpassantPawn = piece.reduce((result, p) => {
-                if (samePosition(p, state.coordinates.GridX, state.coordinates.GridY)) {
-                    p.EnpassantMove = false;
-                    p.x = x;
-                    p.y = y;
-                    result.push(p);
-                } else if (!(samePosition(p, x, y - PawnDiraction))) {
-                    p.EnpassantMove = false;
-                    result.push(p);
-                }
-                return result;
-            }, []);
-            setPiece(EnpassantPawn);
-        } else if (validMove) {
-            const pawns = piece.reduce((result, p) => {
-                if (samePosition(p, state.coordinates.GridX, state.coordinates.GridY)) {
-                    p.EnpassantMove = Math.abs(state.coordinates.GridY - y) === 2;
-                    p.x = x;
-                    p.y = y;
-
-                    const promotionPawn = p.team === Team.WHITE ? 0 : 7;
-                    if (y === promotionPawn && p.Piece === Type.PAWN) {
-                        titleRef.current.classList.remove("hide-title");
-                        setPawnPromotion(p);
-                    }
-                    result.push(p);
-                } else if (!(samePosition(p, x, y))) {
-                    p.EnpassantMove = false;
-                    result.push(p);
-                }
-                return result;
-            }, []);
-            setPiece(pawns);
-        } else {
-            return false;
-        }
-        return true;
+        return playMove;
     }
     
     function updatePossibleMoves(gridx, gridy) {
         setPiece((currentP) => {
             const update = currentP.map((p) => {
                 if (samePosition(p, gridx, gridy)) {
-                    p.possibleMoves = getValidMove(p, currentP);
+                    p.possibleMoves = board.getValidMove(p, currentP);
                     setHighlighSquare(p.possibleMoves);
                 }
                 return p;
@@ -139,29 +109,10 @@ export default function ReferenceBoard() {
         return validMove;
     }
 
-    function getValidMove(piece, chessBoard) {
-        switch(piece.Piece) {
-            case Type.PAWN:
-                return getPossiblePawnMoves(piece, chessBoard);
-            case Type.BISHOP:
-                return getPossibleBishopMoves(piece, chessBoard);
-            case Type.KNIGHT:
-                return getPossibleKnightMoves(piece, chessBoard);
-            case Type.KING:
-                return getPossibleKingMoves(piece, chessBoard);
-            case Type.QUEEN:
-                return getPossibleQueenMoves(piece, chessBoard);
-            case Type.ROCK:
-                return getPossibleRookMoves(piece, chessBoard);
-            default:
-                return [];
-        }
-    }
-
     return (
         <>
             <ChessBoard 
-                playMove={playMove}
+                successMove={successMove}
                 piece={piece}
                 highlightSquare={highlightSquare}
                 pawnPromotion={pawnPromotion}
