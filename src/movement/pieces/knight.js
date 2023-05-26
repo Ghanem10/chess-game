@@ -1,4 +1,4 @@
-import { SquareEmptyOrOccupiedByOpponent, squareOccupied } from "../rules/reference";
+import { SquareEmptyOrOccupiedByOpponent, squareOccupied, squareOccupiedByOpponent } from "../rules/reference";
 
 export const knightMove = (previousX, previousY, x, y, team, chessBoard) => {
     const boardWidthHieght = 2;
@@ -31,12 +31,20 @@ export function getPossibleKnightMoves(knight, chessBoard) {
     const boardWidthHieght = 2;
     for (let i = -1; i < boardWidthHieght; i+= 2) {
         for (let j = -1; j < boardWidthHieght; j+= 2) {
+            const Left = knight.x + 2 * i < 8;
+            const Right = knight.y + j < 8;
+            const Up = knight.x + j < 8;
+            const Bottom= knight.y + 2 * i < 8;
             // LEFT AND RIGHT
-            if (!squareOccupied(knight.x + 2 * i, knight.y + j, chessBoard)) {
+            if (!squareOccupied(knight.x + 2 * i, knight.y + j, chessBoard) && Left && Right) {
+                possiblePositions.push({ x: knight.x + 2 * i, y: knight.y + j });
+            } else if (squareOccupiedByOpponent(knight.x + 2 * i, knight.y + j, chessBoard, knight.team)) {
                 possiblePositions.push({ x: knight.x + 2 * i, y: knight.y + j });
             }
             // UP AND BOTTOM
-            if (!squareOccupied(knight.x + j, knight.y + 2 * i, chessBoard)) {
+            if (!squareOccupied(knight.x + j, knight.y + 2 * i, chessBoard) && Up && Bottom) {
+                possiblePositions.push({ x: knight.x + j, y: knight.y + 2 * i });
+            } else if (squareOccupiedByOpponent(knight.x + j, knight.y + 2 * i, chessBoard, knight.team)) {
                 possiblePositions.push({ x: knight.x + j, y: knight.y + 2 * i });
             }
         }

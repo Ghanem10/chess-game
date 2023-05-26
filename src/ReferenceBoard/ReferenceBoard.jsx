@@ -19,7 +19,7 @@ export default function ReferenceBoard() {
     const [highlightSquare, setHighlighSquare] = useState([]);
     const [pawnPromotion, setPawnPromotion] = useState();
 
-    const board = new Board(piece);
+    const board = new Board(piece, setHighlighSquare, highlightSquare);
 
     useEffect(() => {
         addChessPieces(initialstate);
@@ -58,18 +58,7 @@ export default function ReferenceBoard() {
         return playMove;
     }
     
-    function updatePossibleMoves(gridx, gridy) {
-        setPiece((currentP) => {
-            const update = currentP.map((p) => {
-                if (samePosition(p, gridx, gridy)) {
-                    p.possibleMoves = board.getValidMove(p, currentP);
-                    setHighlighSquare(p.possibleMoves);
-                }
-                return p;
-            });
-            return update;
-        });
-    }
+    const updatePossibleMoves = (gridx, gridy) => board.calculateAllMoves(gridx, gridy);
 
     function isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
         const PawnDiraction = team === Team.WHITE ? -1 : 1;

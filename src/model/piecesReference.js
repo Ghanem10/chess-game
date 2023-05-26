@@ -9,8 +9,10 @@ import {
 } from '../movement/rules/piecesIndex';
 
 export default class Board {
-    constructor(piece) {
+    constructor(piece, setHighlight, highlight) {
         this.piece = piece;
+        this.setHighlight = setHighlight;
+        this.highlight = highlight;
     }
 
     samePosition(piece, x, y) {
@@ -68,14 +70,63 @@ export default class Board {
         return true;
     }
 
-    calculateAllMoves() {
-        for (const piece of this.piece) {
-            if (Array.isArray(piece.possibleMoves)) {
-                piece.possibleMoves = this.getValidMove(piece, this.piece);
-                console.log(piece.possibleMoves);
+    isKing(piece) {
+        return piece.Piece === Type.KING;
+    }
+    
+    opponentMatchPosition(king, opponent) {
+        if (Array.isArray(opponent)) {
+            const t = opponent.some(t => king.x === t.x && king.y === t.y);
+            if (t) {
+                console.log(opponent, king);
             }
         }
     }
+
+    opponentMatchPosition(king, opponent) {
+        if (Array.isArray(opponent)) {
+          const match = opponent.some(op => king.x === op.x && king.y === op.y);
+          return match;
+        }
+        return false;
+      }
+      
+      calculateAllMoves(gridx, gridy) {
+        this.piece.map((p) => {
+          if (this.samePosition(p, gridx, gridy)) {
+            p.possibleMoves = this.getValidMove(p, this.piece);
+            this.setHighlight(p.possibleMoves);
+          }
+          return p;
+        });
+      
+        const kingPosition = this.piece.find(t => t.Piece === Type.KING && t.team === Team.WHITE);
+      
+        if (Array.isArray(kingPosition.possibleMoves)) {
+          const validMoves = [];
+      
+          for (const kingMove of kingPosition.possibleMoves) {
+            let isValidMove = true;
+      
+            for (const piece of this.piece) {
+              if (piece.team === Team.BLACK) continue;
+              if (piece.Piece === Type.PAWN) continue;
+      
+              if (this.opponentMatchPosition(kingMove, piece.possibleMoves)) {
+                isValidMove = false;
+                break;
+              }
+            }
+      
+            if (isValidMove) {
+              validMoves.push(kingMove);
+            }
+          }
+      
+          console.log(validMoves);
+        }
+      }
+      
 
     getValidMove(piece, chessBoard) {
         switch(piece.Piece) {

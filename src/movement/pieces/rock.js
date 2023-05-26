@@ -1,4 +1,4 @@
-import { squareOccupied, SquareEmptyOrOccupiedByOpponent } from "../rules/reference";
+import { squareOccupied, SquareEmptyOrOccupiedByOpponent, squareOccupiedByOpponent } from "../rules/reference";
 
 export const rockMove = (previousX, previousY, x, y, team, chessBoard) => {
     const boardWidthHieght = 8;
@@ -46,6 +46,9 @@ export function getPossibleRookMoves(rook, chessBoard) {
         if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
             possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
         } else {
+            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, rook.team)) {
+                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+            }
             break;
         }
     }
@@ -54,6 +57,9 @@ export function getPossibleRookMoves(rook, chessBoard) {
         if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
             possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
         } else {
+            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, rook.team)) {
+                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+            }
             break;
         }
     }
@@ -62,6 +68,9 @@ export function getPossibleRookMoves(rook, chessBoard) {
         if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
             possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
         } else {
+            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, rook.team)) {
+                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+            }
             break;
         }
     }
@@ -70,6 +79,9 @@ export function getPossibleRookMoves(rook, chessBoard) {
         if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
             possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
         } else {
+            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, rook.team)) {
+                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+            }
             break;
         }
     }
