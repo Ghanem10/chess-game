@@ -55,102 +55,38 @@ export const queenMove = (previousX, previousY, x, y, team, chessBoard) => {
 
 export function getPossibleQueenMoves(queen, chessBoard) {
     const possiblePositions = [];
-    const boardWidthHeight = 8;
-    for (let i = 1; i < boardWidthHeight; i++) {
-        const passedPosition = { x: queen.x + i, y: queen.y + i };
-        const insideBoardPositions = passedPosition.x < 8 && passedPosition.y < 8 && passedPosition.x > -1 && passedPosition.y > -1;
-        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, queen.team)) {
-                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+    const directions = [
+        { dx: 1, dy: 1 },
+        { dx: -1, dy: 1 },
+        { dx: -1, dy: -1 },
+        { dx: 1, dy: -1 },
+        { dx: 0, dy: 1 },
+        { dx: 0, dy: -1 },
+        { dx: 1, dy: 0 },
+        { dx: -1, dy: 0 }
+    ];
+
+    for (const direction of directions) {
+        let { x, y } = queen;
+        while (true) {
+            x += direction.dx;
+            y += direction.dy;
+
+            if (!isInsideBoard(x, y)) break;
+            if (!squareOccupied(x, y, chessBoard)) {
+                possiblePositions.push({ x, y });
+            } else {
+            if (squareOccupiedByOpponent(x, y, chessBoard, queen.team)) {
+                possiblePositions.push({ x, y });
             }
-            break;
-        }
-    }
-    for (let i = 1; i < boardWidthHeight; i++) {
-        const passedPosition = { x: queen.x - i, y: queen.y + i };
-        const insideBoardPositions = passedPosition.x < 8 && passedPosition.y < 8 && passedPosition.x > -1 && passedPosition.y > -1;
-        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, queen.team)) {
-                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+                break;
             }
-            break;
-        }
-    }
-    for (let i = 1; i < boardWidthHeight; i++) {
-        const passedPosition = { x: queen.x - i, y: queen.y - i };
-        const insideBoardPositions = passedPosition.x < 8 && passedPosition.y < 8 && passedPosition.x > -1 && passedPosition.y > -1;
-        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, queen.team)) {
-                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-            }
-            break;
-        }
-    }
-    for (let i = 1; i < boardWidthHeight; i++) {
-        const passedPosition = { x: queen.x + i, y: queen.y - i };
-        const insideBoardPositions = passedPosition.x < 8 && passedPosition.y < 8 && passedPosition.x > -1 && passedPosition.y > -1;
-        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, queen.team)) {
-                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-            }
-            break;
-        }
-    }
-    for (let i = 1; i < boardWidthHeight; i++) {
-        const passedPosition = { x: queen.x, y: queen.y + i };
-               const insideBoardPositions = passedPosition.x < 8 && passedPosition.y < 8 && passedPosition.x > -1 && passedPosition.y > -1;
-        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, queen.team)) {
-                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-            }
-            break;
-        }
-    }
-    for (let i = 1; i < boardWidthHeight; i++) {
-        const passedPosition = { x: queen.x, y: queen.y - i };
-        const insideBoardPositions = passedPosition.x < 8 && passedPosition.y < 8 && passedPosition.x > -1 && passedPosition.y > -1;
-        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, queen.team)) {
-                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-            }
-            break;
-        }
-    }
-    for (let i = 1; i < boardWidthHeight; i++) {
-        const passedPosition = { x: queen.x + i, y: queen.y };
-        const insideBoardPositions = passedPosition.x < 8 && passedPosition.y < 8 && passedPosition.x > -1 && passedPosition.y > -1;
-        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, queen.team)) {
-                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-            }
-            break;
-        }
-    }
-    for (let i = 1; i < boardWidthHeight; i++) {
-        const passedPosition = { x: queen.x - i, y: queen.y };
-        const insideBoardPositions = passedPosition.x < 8 && passedPosition.y < 8 && passedPosition.x > -1 && passedPosition.y > -1;
-        if(!squareOccupied(passedPosition.x, passedPosition.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, queen.team)) {
-                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-            }
-            break;
         }
     }
     return possiblePositions;
 }
+
+function isInsideBoard(x, y) {
+    return x >= 0 && y >= 0 && x < 8 && y < 8;
+}
+  

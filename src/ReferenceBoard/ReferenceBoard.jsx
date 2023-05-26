@@ -35,7 +35,7 @@ export default function ReferenceBoard() {
             currentPiece.team,
             piece
         );
-        const enpassantMove = isEnpassantMove(
+        const enpassantMove = board.isEnpassantMove(
             state.coordinates.GridX,
             state.coordinates.GridY,
             x, y,
@@ -59,18 +59,6 @@ export default function ReferenceBoard() {
     }
     
     const updatePossibleMoves = (gridx, gridy) => board.calculateAllMoves(gridx, gridy);
-
-    function isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
-        const PawnDiraction = team === Team.WHITE ? -1 : 1;
-        
-        if (type === Type.PAWN) {
-            if ((x - previousX === -1 || x - previousX === 1) && y - previousY === PawnDiraction) {
-                const piece = chessBoard.find((p) => samePosition(p, x, y - PawnDiraction) && p.EnpassantMove);
-                if (piece) return true;
-            }
-        }
-        return false;
-    }
 
     function isValid(previousX, previousY, x, y, type, team, chessBoard) {
         let validMove = false;

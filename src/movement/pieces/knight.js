@@ -28,26 +28,27 @@ export const knightMove = (previousX, previousY, x, y, team, chessBoard) => {
 
 export function getPossibleKnightMoves(knight, chessBoard) {
     const possiblePositions = [];
-    const boardWidthHieght = 2;
-    for (let i = -1; i < boardWidthHieght; i+= 2) {
-        for (let j = -1; j < boardWidthHieght; j+= 2) {
-            const Left = knight.x + 2 * i < 8;
-            const Right = knight.y + j < 8;
-            const Up = knight.x + j < 8;
-            const Bottom= knight.y + 2 * i < 8;
-            // LEFT AND RIGHT
-            if (!squareOccupied(knight.x + 2 * i, knight.y + j, chessBoard) && Left && Right) {
-                possiblePositions.push({ x: knight.x + 2 * i, y: knight.y + j });
-            } else if (squareOccupiedByOpponent(knight.x + 2 * i, knight.y + j, chessBoard, knight.team)) {
-                possiblePositions.push({ x: knight.x + 2 * i, y: knight.y + j });
-            }
-            // UP AND BOTTOM
-            if (!squareOccupied(knight.x + j, knight.y + 2 * i, chessBoard) && Up && Bottom) {
-                possiblePositions.push({ x: knight.x + j, y: knight.y + 2 * i });
-            } else if (squareOccupiedByOpponent(knight.x + j, knight.y + 2 * i, chessBoard, knight.team)) {
-                possiblePositions.push({ x: knight.x + j, y: knight.y + 2 * i });
+    const boardWidthHeight = 8;
+    const knightMoves = [
+        { x: -2, y: -1 }, // Move 1
+        { x: -2, y: 1 }, // Move 2
+        { x: -1, y: -2 }, // Move 3
+        { x: -1, y: 2 }, // Move 4
+        { x: 1, y: -2 }, // Move 5
+        { x: 1, y: 2 }, // Move 6
+        { x: 2, y: -1 }, // Move 7
+        { x: 2, y: 1 }, // Move 8
+    ];
+
+    for (const move of knightMoves) {
+        const newX = knight.x + move.x;
+        const newY = knight.y + move.y;
+
+        if (newX >= 0 && newY >= 0 && newX < boardWidthHeight && newY < boardWidthHeight) {
+            if (!squareOccupied(newX, newY, chessBoard) || squareOccupiedByOpponent(newX, newY, chessBoard, knight.team)) {
+                possiblePositions.push({ x: newX, y: newY });
             }
         }
     }
-    return possiblePositions;
+  return possiblePositions;
 }

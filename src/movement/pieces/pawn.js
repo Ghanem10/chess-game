@@ -28,18 +28,34 @@ export const pawnMove = (previousX, previousY, x, y, team, chessBoard) => {
     return false;
 }
 
-// TODO
-// Add Enpassant and attack possible moves for a pawn.
-
 export function getPossiblePawnMoves(pawn, chessBoard) {
     const possiblePositions = [];
+
     const initialRow = pawn.team === Team.WHITE ? 6 : 1;
-    const PawnDiraction = pawn.team === Team.WHITE ? -1 : 1;
-    if (!squareOccupied(pawn.x, pawn.y + PawnDiraction, chessBoard)) {
-        possiblePositions.push({ x: pawn.x, y: pawn.y + PawnDiraction });
-        if (pawn.y === initialRow && !squareOccupied(pawn.x, pawn.y + PawnDiraction * 2, chessBoard)) {
-            possiblePositions.push({ x: pawn.x, y: pawn.y + PawnDiraction * 2 });
+    const pawnDirection = pawn.team === Team.WHITE ? -1 : 1;
+  
+    // Forward move
+    const forwardPosition = { x: pawn.x, y: pawn.y + pawnDirection };
+    if (!squareOccupied(forwardPosition.x, forwardPosition.y, chessBoard)) {
+        possiblePositions.push(forwardPosition);
+        if (pawn.y === initialRow) {
+            const doubleForwardPosition = { x: pawn.x, y: pawn.y + pawnDirection * 2 };
+            if (!squareOccupied(doubleForwardPosition.x, doubleForwardPosition.y, chessBoard)) {
+                possiblePositions.push(doubleForwardPosition);
+            }
         }
     }
+  
+    // Attack moves
+    const attackLeftPosition = { x: pawn.x - 1, y: pawn.y + pawnDirection };
+    const attackRightPosition = { x: pawn.x + 1, y: pawn.y + pawnDirection };
+    if (squareOccupiedByOpponent(attackLeftPosition.x, attackLeftPosition.y, chessBoard, pawn.team)) {
+        possiblePositions.push(attackLeftPosition);
+    }
+    if (squareOccupiedByOpponent(attackRightPosition.x, attackRightPosition.y, chessBoard, pawn.team)) {
+        possiblePositions.push(attackRightPosition);
+    }
+
     return possiblePositions;
+    // En-passant moves
 }

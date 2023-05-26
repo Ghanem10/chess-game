@@ -63,58 +63,32 @@ export const bishopMove = (previousX, previousY, x, y, team, chessBoard) => {
 
 export function getPossibleBishopMoves(bishop, chessBoard) {
     const possiblePositions = [];
-    const DiagonalWidthHieght = 8;
-    // TOP RIGHT
-    for (let i = 1; i < DiagonalWidthHieght; i++) {
-        const passedPositionRight = { x: bishop.x + i, y: bishop.y - i };
-        const insideBoardPositions = passedPositionRight.x < 8 && passedPositionRight.y < 8 && passedPositionRight.x > -1 && passedPositionRight.y > -1;
-        if (!squareOccupied(passedPositionRight.x, passedPositionRight.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPositionRight.x, y: passedPositionRight.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPositionRight.x, passedPositionRight.y, chessBoard, bishop.team)) {
-                possiblePositions.push({ x: passedPositionRight.x, y: passedPositionRight.y });
+    const diagonalWidthHeight = 8;
+    
+    function traverseDiagonal(dx, dy) {
+        for (let i = 1; i < diagonalWidthHeight; i++) {
+            const passedPosition = { x: bishop.x + i * dx, y: bishop.y + i * dy };
+            const insideBoardPositions =
+            passedPosition.x < 8 &&
+            passedPosition.y < 8 &&
+            passedPosition.x > -1 &&
+            passedPosition.y > -1;
+    
+            if (!squareOccupied(passedPosition.x, passedPosition.y, chessBoard) && insideBoardPositions) {
+                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+            } else {
+                if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, bishop.team)) {
+                    possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+                }
+                break;
             }
-            break;
         }
     }
-    // TOP LEFT
-    for (let i = 1; i < DiagonalWidthHieght; i++) {
-        const passedPositionLeft = { x: bishop.x - i, y: bishop.y - i };
-        const insideBoardPositions = passedPositionLeft.x < 8 && passedPositionLeft.y < 8 && passedPositionLeft.x > -1 && passedPositionLeft.y > -1;
-        if (!squareOccupied(passedPositionLeft.x, passedPositionLeft.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPositionLeft.x, y: passedPositionLeft.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPositionLeft.x, passedPositionLeft.y, chessBoard, bishop.team)) {
-                possiblePositions.push({ x: passedPositionLeft.x, y: passedPositionLeft.y });
-            }
-            break;
-        }
-    }
-    // BOTTOM RIGHT
-    for (let i = 1; i < DiagonalWidthHieght; i++) {
-        const passedPositionBRight = { x: bishop.x + i, y: bishop.y + i };
-        const insideBoardPositions = passedPositionBRight.x < 8 && passedPositionBRight.y < 8 && passedPositionBRight.x > -1 && passedPositionBRight.y > -1;
-        if (!squareOccupied(passedPositionBRight.x, passedPositionBRight.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPositionBRight.x, y: passedPositionBRight.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPositionBRight.x, passedPositionBRight.y, chessBoard, bishop.team)) {
-                possiblePositions.push({ x: passedPositionBRight.x, y: passedPositionBRight.y });
-            }
-            break;
-        }
-    }
-    // BOTTOM LEFT
-    for (let i = 1; i < DiagonalWidthHieght; i++) {
-        const passedPositionBLeft = { x: bishop.x - i, y: bishop.y + i };
-        const insideBoardPositions = passedPositionBLeft.x < 8 && passedPositionBLeft.y < 8 && passedPositionBLeft.x > -1 && passedPositionBLeft.y > -1;
-        if (!squareOccupied(passedPositionBLeft.x, passedPositionBLeft.y, chessBoard) && insideBoardPositions) {
-            possiblePositions.push({ x: passedPositionBLeft.x, y: passedPositionBLeft.y });
-        } else {
-            if (squareOccupiedByOpponent(passedPositionBLeft.x, passedPositionBLeft.y, chessBoard, bishop.team)) {
-                possiblePositions.push({ x: passedPositionBLeft.x, y: passedPositionBLeft.y });
-            }
-            break;
-        }
-    }
+  
+    traverseDiagonal(1, -1); // TOP RIGHT
+    traverseDiagonal(-1, -1); // TOP LEFT
+    traverseDiagonal(1, 1); // BOTTOM RIGHT
+    traverseDiagonal(-1, 1); // BOTTOM LEFT
+  
     return possiblePositions;
-}
+}  

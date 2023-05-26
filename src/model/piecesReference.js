@@ -85,48 +85,58 @@ export default class Board {
 
     opponentMatchPosition(king, opponent) {
         if (Array.isArray(opponent)) {
-          const match = opponent.some(op => king.x === op.x && king.y === op.y);
-          return match;
+            const match = opponent.some(op => king.x === op.x && king.y === op.y);
+            return match;
         }
         return false;
-      }
+    }
       
       calculateAllMoves(gridx, gridy) {
         this.piece.map((p) => {
-          if (this.samePosition(p, gridx, gridy)) {
-            p.possibleMoves = this.getValidMove(p, this.piece);
-            this.setHighlight(p.possibleMoves);
-          }
-          return p;
+            if (this.samePosition(p, gridx, gridy)) {
+                p.possibleMoves = this.getValidMove(p, this.piece);
+                this.setHighlight(p.possibleMoves);
+            }
+            return p;
         });
       
         const kingPosition = this.piece.find(t => t.Piece === Type.KING && t.team === Team.WHITE);
-      
+        
         if (Array.isArray(kingPosition.possibleMoves)) {
-          const validMoves = [];
+            const validMoves = [];
       
-          for (const kingMove of kingPosition.possibleMoves) {
-            let isValidMove = true;
-      
-            for (const piece of this.piece) {
-              if (piece.team === Team.BLACK) continue;
-              if (piece.Piece === Type.PAWN) continue;
-      
-              if (this.opponentMatchPosition(kingMove, piece.possibleMoves)) {
-                isValidMove = false;
-                break;
-              }
+            for (const kingMove of kingPosition.possibleMoves) {
+                let isValidMove = true;
+        
+                for (const piece of this.piece) {
+                    if (piece.team === Team.BLACK) continue;
+                    if (piece.Piece === Type.PAWN) continue;
+            
+                    if (this.opponentMatchPosition(kingMove, piece.possibleMoves)) {
+                        isValidMove = false;
+                        break;
+                    }
+                }
+        
+                if (isValidMove) {
+                   validMoves.push(kingMove);
+                }
             }
-      
-            if (isValidMove) {
-              validMoves.push(kingMove);
-            }
-          }
-      
-          console.log(validMoves);
+            console.log(validMoves);
         }
-      }
+    }
       
+    isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
+        const PawnDiraction = team === Team.WHITE ? -1 : 1;
+        
+        if (type === Type.PAWN) {
+            if ((x - previousX === -1 || x - previousX === 1) && y - previousY === PawnDiraction) {
+                const piece = chessBoard.find((p) => this.samePosition(p, x, y - PawnDiraction) && p.EnpassantMove);
+                if (piece) return true;
+            }
+        }
+        return false;
+    }
 
     getValidMove(piece, chessBoard) {
         switch(piece.Piece) {
