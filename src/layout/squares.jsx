@@ -18,7 +18,7 @@ export default function Squares(props) {
     const lastChar = position.slice(-1)[0];
     const number = parseInt(lastChar, 10);
     const isColor = number % 2 === 0;
-    let updatedClassName = "";
+    let updatedClassName, t = "";
 
     
     const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -33,8 +33,14 @@ export default function Squares(props) {
         Array.isArray(highlightSquare) &&
         highlightSquare.some(square => square.x === x && square.y === y)
       ) {
-        updatedClassName += " highlight-square";
-      }
+        // attacked piece.
+        if (currentPiece) {
+            t += `${currentPiece.team}`;
+        } else {
+            // otherwise highlight square.
+            updatedClassName += " highlight-square";
+        }
+    }
     
     return (
         <div
@@ -46,7 +52,7 @@ export default function Squares(props) {
         >
             {currentPiece && (
                 <div
-                className="piece"
+                className={`piece ${t}`}
                 style={{
                     backgroundImage: `url(${currentPiece.image})`,
                 }}

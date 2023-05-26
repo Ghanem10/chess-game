@@ -122,7 +122,7 @@ export default class Board {
                    validMoves.push(kingMove);
                 }
             }
-            console.log(validMoves);
+            // console.log(validMoves);
         }
     }
       

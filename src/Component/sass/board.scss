@@ -33,13 +33,32 @@ $width: 75px;
   transform: translate(140%, 140%);
 }
 
+// attacked piece
+.black::before {
+  content: "";
+  display: block;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  border: 3px solid rgba(2, 0, 0, 0.952);
+}
+
+.white::before {
+  content: "";
+  display: block;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  border: 3px solid rgba(2, 0, 0, 0.616);
+}
+
 .piece {
   width: $width;
   height: $width;
   background-repeat: no-repeat;
   background-position: center;
-    background-size: 60px;
-    z-index: 50;
+  background-size: 60px;
+  z-index: 50;
 }
 
 .piece:hover {
