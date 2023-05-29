@@ -30,7 +30,7 @@ export default function PawnPromotion(props) {
             return pawnPromotion.team === Team.WHITE ? "w" : "b";
         } else {
             return "w";
-          }
+        }
     }
     
     return (

@@ -1,5 +1,6 @@
 import { Team } from "../constants/functions";
 import { squareOccupied, squareOccupiedByOpponent } from "../rules/reference";
+import { getPossibleKingMoves } from "./king";
 
 export const pawnMove = (previousX, previousY, x, y, team, chessBoard) => {
     const initialRow = team === Team.WHITE ? 6 : 1;
@@ -58,4 +59,20 @@ export function getPossiblePawnMoves(pawn, chessBoard) {
 
     return possiblePositions;
     // En-passant moves
+}
+
+// fix the bug in the previous function.
+export function pawnAttacks(pawn, chessBoard) {
+    const possiblePositions = [];
+    const pawnDirection = pawn.team === Team.WHITE ? -1 : 1;
+    const attackLeftPosition = { x: pawn.x - 1, y: pawn.y + pawnDirection };
+    const attackRightPosition = { x: pawn.x + 1, y: pawn.y + pawnDirection };
+    if (!squareOccupied(attackLeftPosition.x, attackLeftPosition.y, chessBoard, pawn.team)) {
+        possiblePositions.push(attackLeftPosition);
+    }
+    if (!squareOccupied(attackRightPosition.x, attackRightPosition.y, chessBoard, pawn.team)) {
+        possiblePositions.push(attackRightPosition);
+    }
+
+    return possiblePositions;
 }

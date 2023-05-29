@@ -7,7 +7,7 @@ export function addChessPieces(initialstate) {
             x: i, y: 1, 
             Piece: 'pawn', 
             team: 'black',
-            possibleMoves: Position,
+            possibleMoves: [],
             EnpassantMove: false,
         });
         initialstate.push({
@@ -15,7 +15,7 @@ export function addChessPieces(initialstate) {
             x: i,y: 6, 
             Piece: 'pawn', 
             team: 'white',
-            possibleMoves: Position,
+            possibleMoves: [],
             EnpassantMove: false,
         });
     }
@@ -30,14 +30,14 @@ export function addChessPieces(initialstate) {
             image: `./${pieces[k]}-b.png`, 
             x: k, 
             y: 0, 
-            possibleMoves: Position,
+            possibleMoves: [],
             Piece: `${pieces[k]}`, 
             team: 'black',
         });
         initialstate.push({
             image: `./${pieces[k]}-w.png`, 
             x: k, y: 7, 
-            possibleMoves: Position,
+            possibleMoves: [],
             Piece: `${pieces[k]}`, 
             team: 'white',
         });

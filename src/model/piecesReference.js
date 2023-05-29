@@ -5,7 +5,8 @@ import {
     getPossibleKnightMoves, 
     getPossibleKingMoves,
     getPossibleQueenMoves,
-    getPossibleRookMoves
+    getPossibleRookMoves,
+    pawnAttacks
 } from '../movement/rules/piecesIndex';
 
 export default class Board {
@@ -69,73 +70,10 @@ export default class Board {
         }
         return true;
     }
-
-    isKing(piece) {
-        return piece.Piece === Type.KING;
-    }
     
     opponentMatchPosition(king, opponent) {
-        if (Array.isArray(opponent)) {
-            const t = opponent.some(t => king.x === t.x && king.y === t.y);
-            if (t) {
-                console.log(opponent, king);
-            }
-        }
-    }
-
-    opponentMatchPosition(king, opponent) {
-        if (Array.isArray(opponent)) {
-            const match = opponent.some(op => king.x === op.x && king.y === op.y);
-            return match;
-        }
-        return false;
-    }
-      
-      calculateAllMoves(gridx, gridy) {
-        this.piece.map((p) => {
-            if (this.samePosition(p, gridx, gridy)) {
-                p.possibleMoves = this.getValidMove(p, this.piece);
-                this.setHighlight(p.possibleMoves);
-            }
-            return p;
-        });
-      
-        const kingPosition = this.piece.find(t => t.Piece === Type.KING && t.team === Team.WHITE);
-        
-        if (Array.isArray(kingPosition.possibleMoves)) {
-            const validMoves = [];
-      
-            for (const kingMove of kingPosition.possibleMoves) {
-                let isValidMove = true;
-        
-                for (const piece of this.piece) {
-                    if (piece.team === Team.BLACK) continue;
-                    if (piece.Piece === Type.PAWN) continue;
-            
-                    if (this.opponentMatchPosition(kingMove, piece.possibleMoves)) {
-                        isValidMove = false;
-                        break;
-                    }
-                }
-        
-                if (isValidMove) {
-                   validMoves.push(kingMove);
-                }
-            }
-            // console.log(validMoves);
-        }
-    }
-      
-    isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
-        const PawnDiraction = team === Team.WHITE ? -1 : 1;
-        
-        if (type === Type.PAWN) {
-            if ((x - previousX === -1 || x - previousX === 1) && y - previousY === PawnDiraction) {
-                const piece = chessBoard.find((p) => this.samePosition(p, x, y - PawnDiraction) && p.EnpassantMove);
-                if (piece) return true;
-            }
-        }
-        return false;
+        const match = opponent.some(op => king.x === op.x && king.y === op.y);
+        return match ? true : false;
     }
 
     getValidMove(piece, chessBoard) {
@@ -155,5 +93,78 @@ export default class Board {
             default:
                 return [];
         }
+    }
+    
+    calculateAllMoves(gridx, gridy) {
+        this.piece.map((p) => {
+            if (this.samePosition(p, gridx, gridy)) {
+                p.possibleMoves = this.getValidMove(p, this.piece);
+                this.setHighlight(p.possibleMoves);
+            }
+            return p;
+        });
+      
+        this.checkingTheKing(gridx, gridy);
+    }
+    
+    checkingTheKing(gridx, gridy) {
+        const king = {
+            [Team.WHITE]: this.piece.find(t => t.Piece === Type.KING && t.team === Team.WHITE),
+            [Team.BLACK]: this.piece.find(t => t.Piece === Type.KING && t.team === Team.BLACK)
+        }
+
+        const validKingMoves = (king) => {
+            const validMoves = [];
+            for (const kingMove of king.possibleMoves) {
+                let isValidMove = true;
+                for (const piece of this.piece) {
+                    if (piece.team === king.team) continue;
+                    const possibleMovesPiece = this.getValidMove(piece, this.piece);
+                    if (piece.Piece === Type.PAWN) {
+                        const possiblePawn = pawnAttacks(piece, this.piece);
+                        if (this.opponentMatchPosition(kingMove, possiblePawn)) {
+                            isValidMove = false;
+                        }
+                    } 
+                    else if (this.opponentMatchPosition(kingMove, possibleMovesPiece)) {
+                        isValidMove = false;
+                    }
+                }
+
+                if (isValidMove) {
+                    validMoves.push(kingMove);
+                }
+            }
+            return validMoves;
+        }; 
+
+        const whiteKing = validKingMoves(king[Team.WHITE]);
+        const blackKing = validKingMoves(king[Team.BLACK]);
+
+        this.piece.map((p) => {
+            if (this.samePosition(p, gridx, gridy)) {
+                if (p.Piece === Type.KING && p.team === Team.WHITE) {
+                    p.possibleMoves = whiteKing;
+                } else if (p.Piece === Type.KING && p.team === Team.BLACK) {
+                    p.possibleMoves = blackKing;
+                } else {
+                    p.possibleMoves = this.getValidMove(p, this.piece);
+                }
+                this.setHighlight(p.possibleMoves);
+            }
+            return p;
+        });
+    }
+    
+    isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
+        const PawnDiraction = team === Team.WHITE ? -1 : 1;
+        
+        if (type === Type.PAWN) {
+            if ((x - previousX === -1 || x - previousX === 1) && y - previousY === PawnDiraction) {
+                const piece = chessBoard.find((p) => this.samePosition(p, x, y - PawnDiraction) && p.EnpassantMove);
+                if (piece) return true;
+            }
+        }
+        return false;
     }
 }

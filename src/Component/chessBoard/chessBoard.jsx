@@ -108,7 +108,7 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
         
     }    
 
-    function dropingPiece(e) {
+    function droppingPiece(e) {
         const Edges = Board.current;
 
         if (state.activePiece && Edges) {
@@ -181,7 +181,7 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
                                 state={state}
                                 grabbingPiece={grabbingPiece}
                                 MovingPiece={MovingPiece}
-                                dropingPiece={dropingPiece}
+                                droppingPiece={droppingPiece}
                             />
                         )
                     })}

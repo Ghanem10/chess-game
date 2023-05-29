@@ -1,4 +1,4 @@
-import { samePosition } from "../constants/functions";
+import { Type, samePosition } from "../constants/functions";
 import { squareOccupied, SquareEmptyOrOccupiedByOpponent, squareOccupiedByOpponent } from "../rules/reference";
 
 export const kingMove = (previousX, previousY, x, y, team, chessBoard) => {
@@ -32,10 +32,15 @@ export function getPossibleKingMoves(king, chessBoard) {
 
         if (i === 0 && j === 0) continue;
             const passedPosition = { x: king.x + i, y: king.y + j };
+            const insideBoardPositions =
+            passedPosition.x < 8 &&
+            passedPosition.y < 8 &&
+            passedPosition.x > -1 &&
+            passedPosition.y > -1;
 
-            if (!squareOccupied(passedPosition.x, passedPosition.y, chessBoard)) {
+            if (!squareOccupied(passedPosition.x, passedPosition.y, chessBoard) && insideBoardPositions) {
                 possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
-            } else if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, king.team)) {
+            } else if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, king.team) && insideBoardPositions) {
                 possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
             }
         }

@@ -4,7 +4,7 @@ export default function Squares(props) {
     const {
         grabbingPiece,
         MovingPiece,
-        dropingPiece,
+        droppingPiece,
         index,
         piece,
         x,
@@ -30,7 +30,6 @@ export default function Squares(props) {
 
     if (
         state.activePiece !== null &&
-        Array.isArray(highlightSquare) &&
         highlightSquare.some(square => square.x === x && square.y === y)
       ) {
         // attacked piece.
@@ -48,7 +47,7 @@ export default function Squares(props) {
             className={updatedClassName}
             onMouseDown={(e) => grabbingPiece(e)}
             onMouseMove={(e) => MovingPiece(e)}
-            onMouseUp={(e) => dropingPiece(e)}
+            onMouseUp={(e) => droppingPiece(e)}
         >
             {currentPiece && (
                 <div
