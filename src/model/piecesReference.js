@@ -72,7 +72,8 @@ export default class Board {
     }
     
     opponentMatchPosition(king, opponent) {
-        const match = opponent.some(op => king.x === op.x && king.y === op.y);
+        const match = opponent.filter(op => king.x === op.x && king.y === op.y);
+        if (match.length <= 0) return;
         return match ? true : false;
     }
 
@@ -117,6 +118,12 @@ export default class Board {
             const validMoves = [];
             for (const kingMove of king.possibleMoves) {
                 let isValidMove = true;
+                const hasProtection = this.piece
+                    .find(p => this.samePosition(p, kingMove.x, kingMove.y) && p.team !== king.Piece);
+                if (hasProtection) {
+                    this.piece = this.piece
+                        .filter(p => !this.samePosition(p, kingMove.x, kingMove.y));
+                }
                 for (const piece of this.piece) {
                     if (piece.team === king.team) continue;
                     const possibleMovesPiece = this.getValidMove(piece, this.piece);

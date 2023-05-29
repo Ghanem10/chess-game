@@ -25,16 +25,15 @@ export default function ReferenceBoard() {
         addChessPieces(initialstate);
     }, []);
     
+    // update the piece position based on its possible moves.
+    const t = (s, b, c) => {
+        const m = s.some(a => a.x === b && a.y === c);
+        return m ? true : false;
+    }
+
     function successMove(state, x, y, currentPiece, titleRef) {
         const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
-        const validMove = isValid(
-            state.coordinates.GridX,
-            state.coordinates.GridY,
-            x, y,
-            currentPiece.Piece,
-            currentPiece.team,
-            piece
-        );
+        const validMove = t(currentPiece.possibleMoves, x, y);
         const enpassantMove = board.isEnpassantMove(
             state.coordinates.GridX,
             state.coordinates.GridY,
@@ -59,32 +58,6 @@ export default function ReferenceBoard() {
     }
     
     const updatePossibleMoves = (gridx, gridy) => board.calculateAllMoves(gridx, gridy);
-
-    function isValid(previousX, previousY, x, y, type, team, chessBoard) {
-        let validMove = false;
-
-        switch(type) {
-            case Type.PAWN:
-                validMove = pawnMove(previousX, previousY, x, y, team, chessBoard);
-                break;
-            case Type.BISHOP:
-                validMove = bishopMove(previousX, previousY, x, y, team, chessBoard);
-                break;
-            case Type.KNIGHT:
-                validMove = knightMove(previousX, previousY, x, y, team, chessBoard);
-                break;
-            case Type.ROCK:
-                validMove = rockMove(previousX, previousY, x, y, team, chessBoard);
-                break;
-            case Type.QUEEN:
-                validMove = queenMove(previousX, previousY, x, y, team, chessBoard);
-                break;
-            case Type.KING:
-                validMove = kingMove(previousX, previousY, x, y, team, chessBoard);
-                break;
-        }
-        return validMove;
-    }
 
     return (
         <>
