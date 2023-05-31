@@ -1,4 +1,5 @@
 import React from "react";
+import { Type } from "../movement/constants/functions";
 
 export default function Squares(props) {
     const {
@@ -19,7 +20,7 @@ export default function Squares(props) {
     const number = parseInt(lastChar, 10);
     const isColor = number % 2 === 0;
     let updatedClassName, t = "";
-
+    let king = "";
     
     const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
     const charIndex = chars.indexOf(position.charAt(0));
@@ -27,14 +28,15 @@ export default function Squares(props) {
     const isWhiteSquare = charIndex % 2 === 0;
     const squareColor = isColor ? isWhiteSquare : !isWhiteSquare;
     updatedClassName = squareColor ? "white-square" : "darkblue-square";
-
-    if (
-        state.activePiece !== null &&
-        highlightSquare.some(square => square.x === x && square.y === y)
-      ) {
+    const availableSquares = highlightSquare.some(square => square.x === x && square.y === y);
+    if (state.activePiece !== null && availableSquares) {
         // attacked piece.
         if (currentPiece) {
-            t += `${currentPiece.team}`;
+            if (currentPiece.Piece === Type.KING) {
+                king += `${currentPiece.Piece}`;
+            } else {
+                t += `${currentPiece.team}`;
+            }
         } else {
             // otherwise highlight square.
             updatedClassName += " highlight-square";
@@ -51,7 +53,7 @@ export default function Squares(props) {
         >
             {currentPiece && (
                 <div
-                className={`piece ${t}`}
+                className={`piece ${t} ${king}`}
                 style={{
                     backgroundImage: `url(${currentPiece.image})`,
                 }}

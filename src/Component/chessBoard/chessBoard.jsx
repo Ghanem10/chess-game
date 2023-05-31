@@ -144,6 +144,8 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
                     activePiece: null
                 },
             });
+            // fix bug
+            updatePossibleMoves(x, y);
         }
     }
 

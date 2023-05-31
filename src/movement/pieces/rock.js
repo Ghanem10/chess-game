@@ -1,4 +1,4 @@
-import { squareOccupied, SquareEmptyOrOccupiedByOpponent, squareOccupiedByOpponent } from "../rules/reference";
+import { squareOccupied, SquareEmptyOrOccupiedByOpponent, squareOccupiedByOpponent, squareOccupiedByKing } from "../rules/reference";
 
 export const rockMove = (previousX, previousY, x, y, team, chessBoard) => {
     const boardWidthHieght = 8;
@@ -54,6 +54,8 @@ export function getPossibleRookMoves(rook, chessBoard) {
 
       while (newX >= 0 && newY >= 0 && newX < boardWidthHeight && newY < boardWidthHeight) {
         if (!squareOccupied(newX, newY, chessBoard)) {
+            possiblePositions.push({ x: newX, y: newY });
+        } else if (squareOccupiedByKing(newX, newY, chessBoard, rook.team)) {
             possiblePositions.push({ x: newX, y: newY });
         } else {
             if (squareOccupiedByOpponent(newX, newY, chessBoard, rook.team)) {

@@ -1,6 +1,5 @@
 import { Team } from "../constants/functions";
 import { squareOccupied, squareOccupiedByOpponent } from "../rules/reference";
-import { getPossibleKingMoves } from "./king";
 
 export const pawnMove = (previousX, previousY, x, y, team, chessBoard) => {
     const initialRow = team === Team.WHITE ? 6 : 1;

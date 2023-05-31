@@ -1,5 +1,5 @@
 import { samePosition } from "../constants/functions";
-import { squareOccupied, SquareEmptyOrOccupiedByOpponent, squareOccupiedByOpponent } from "../rules/reference";
+import { squareOccupied, SquareEmptyOrOccupiedByOpponent, squareOccupiedByOpponent, squareOccupiedByKing } from "../rules/reference";
 
 export const queenMove = (previousX, previousY, x, y, team, chessBoard) => {
     const boardWidthHeight = 8;
@@ -75,10 +75,13 @@ export function getPossibleQueenMoves(queen, chessBoard) {
             if (!isInsideBoard(x, y)) break;
             if (!squareOccupied(x, y, chessBoard)) {
                 possiblePositions.push({ x, y });
+                
+            } else if (squareOccupiedByKing(x, y, chessBoard, queen.team)) {
+                    possiblePositions.push({ x, y });
             } else {
-            if (squareOccupiedByOpponent(x, y, chessBoard, queen.team)) {
-                possiblePositions.push({ x, y });
-            }
+                if (squareOccupiedByOpponent(x, y, chessBoard, queen.team)) {
+                    possiblePositions.push({ x, y });
+                } 
                 break;
             }
         }

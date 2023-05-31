@@ -10,10 +10,16 @@ import {
 } from '../movement/rules/piecesIndex';
 
 export default class Board {
-    constructor(piece, setHighlight, highlight) {
+    constructor(piece, setHighlight, highlight, piecesTurns) {
         this.piece = piece;
         this.setHighlight = setHighlight;
         this.highlight = highlight;
+        this.piecesTurns = piecesTurns;
+    }
+
+    currentTeam() {
+        const team = this.piecesTurns % 2 === 0 ? Team.BLACK : Team.WHITE;
+        return team;
     }
 
     samePosition(piece, x, y) {
@@ -98,10 +104,11 @@ export default class Board {
     
     calculateAllMoves(gridx, gridy) {
         this.piece.map((p) => {
-            if (this.samePosition(p, gridx, gridy)) {
-                p.possibleMoves = this.getValidMove(p, this.piece);
-                this.setHighlight(p.possibleMoves);
+            p.possibleMoves = this.getValidMove(p, this.piece);
+            if (p.team !== this.currentTeam()) {
+                p.possibleMoves = [];
             }
+            this.setHighlight(p.possibleMoves);
             return p;
         });
       
@@ -154,8 +161,9 @@ export default class Board {
                     p.possibleMoves = whiteKing;
                 } else if (p.Piece === Type.KING && p.team === Team.BLACK) {
                     p.possibleMoves = blackKing;
-                } else {
-                    p.possibleMoves = this.getValidMove(p, this.piece);
+                } 
+                if (p.team !== this.currentTeam()) {
+                    p.possibleMoves = [];
                 }
                 this.setHighlight(p.possibleMoves);
             }

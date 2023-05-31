@@ -1,25 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Team, Type, samePosition } from '../movement/constants/functions';
-import {
-    pawnMove, 
-    bishopMove, 
-    knightMove, 
-    rockMove, 
-    queenMove, 
-    kingMove,
-} from '../movement/rules/piecesIndex';
+import { Team } from '../movement/constants/functions';
 import { addChessPieces } from '../layout/pieceImages';
 import ChessBoard from '../Component/chessBoard/chessBoard';
 import Board from '../model/piecesReference';
 
 const initialstate = [];
+let piecesTurns = 1;
 
 export default function ReferenceBoard() {
     const [piece, setPiece] = useState(initialstate);
     const [highlightSquare, setHighlighSquare] = useState([]);
     const [pawnPromotion, setPawnPromotion] = useState();
 
-    const board = new Board(piece, setHighlighSquare, highlightSquare);
+    const board = new Board(piece, setHighlighSquare, highlightSquare, piecesTurns);
 
     useEffect(() => {
         addChessPieces(initialstate);
@@ -42,7 +35,15 @@ export default function ReferenceBoard() {
             currentPiece.team,
             piece
         );
-        
+        // en-passant move has a bug.
+        if (currentPiece.team === Team.WHITE 
+            && piecesTurns % 2 !== 1) {
+            return false;
+        } else if (currentPiece.team === Team.BLACK 
+            && piecesTurns % 2 !== 0) {
+            return false;
+        }
+
         const playMove = board.playMove(
             x, y, 
             titleRef, 
@@ -53,8 +54,7 @@ export default function ReferenceBoard() {
             setPiece, 
             validMove
         );
-
-        return playMove;
+        playMove && piecesTurns++;
     }
     
     const updatePossibleMoves = (gridx, gridy) => board.calculateAllMoves(gridx, gridy);

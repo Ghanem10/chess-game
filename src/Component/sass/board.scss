@@ -51,6 +51,12 @@ $width: 75px;
   border-radius: 50%;
   border: 3px solid rgba(2, 0, 0, 0.616);
 }
+.king {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background-color: rgba(255, 0, 0, 0.884);
+}
 
 .piece {
   width: $width;

@@ -1,4 +1,9 @@
-import { squareOccupied, SquareEmptyOrOccupiedByOpponent, squareOccupiedByOpponent } from "../rules/reference";
+import { 
+    squareOccupied, 
+    SquareEmptyOrOccupiedByOpponent, 
+    squareOccupiedByOpponent, 
+    squareOccupiedByKing 
+} from "../rules/reference";
 
 export const bishopMove = (previousX, previousY, x, y, team, chessBoard) => {
     const DiagonalWidthHieght = 8;
@@ -75,6 +80,8 @@ export function getPossibleBishopMoves(bishop, chessBoard) {
             passedPosition.y > -1;
     
             if (!squareOccupied(passedPosition.x, passedPosition.y, chessBoard) && insideBoardPositions) {
+                possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
+            } else if (squareOccupiedByKing(passedPosition.x, passedPosition.y, chessBoard, bishop.team)) {
                 possiblePositions.push({ x: passedPosition.x, y: passedPosition.y });
             } else {
                 if (squareOccupiedByOpponent(passedPosition.x, passedPosition.y, chessBoard, bishop.team)) {
