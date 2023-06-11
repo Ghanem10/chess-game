@@ -3,11 +3,13 @@
 }
 
 body {
-    background-color: rgb(31, 31, 31);
+    background-color: #312e2b;
+    margin: 0;
+    padding: 0;
 }
 
 .app {
-    display: grid;
-    place-content: center;
-    max-height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

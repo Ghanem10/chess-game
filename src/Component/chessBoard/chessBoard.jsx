@@ -2,11 +2,12 @@ import React, { useEffect, useReducer, useRef } from "react";
 import Squares from "../../layout/squares";
 import PawnPromotion from "../../layout/pawnPromotion";
 import stateManagement, { SQUARES } from "../state/stateManagement";
+import TimerPlayer from "../../interface/timer/timerPlayer";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-export default function ChessBoard({ successMove, piece, updatePossibleMoves, highlightSquare, pawnPromotion, setPawnPromotion }) {
+export default function ChessBoard({ successMove, piece, updatePossibleMoves, highlightSquare, pawnPromotion, setPawnPromotion, piecesTurns }) {
     const [state, dispatch] = useReducer(stateManagement, { 
         squares: [], 
         coordinates: { GridX: -1, GridY: -1 },
@@ -47,8 +48,8 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
             const x = e.clientX - 40;
             const y = e.clientY - 40;
 
-            const gridx = Math.floor((e.clientX - Edges.offsetLeft) / 75);
-            const gridy = Math.floor((e.clientY - Edges.offsetTop) / 75);
+            const gridx = Math.floor((e.clientX - Edges.offsetLeft) / 65);
+            const gridy = Math.floor((e.clientY - Edges.offsetTop) / 65);
             
             dispatch({
                 type: SQUARES.COORDINATES_X_Y,
@@ -113,8 +114,8 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
 
         if (state.activePiece && Edges) {
             
-            const x = Math.floor((e.clientX - Edges.offsetLeft) / 75);
-            const y = Math.floor((e.clientY - Edges.offsetTop) / 75);
+            const x = Math.floor((e.clientX - Edges.offsetLeft) / 65);
+            const y = Math.floor((e.clientY - Edges.offsetTop) / 65);
             
             dispatch({
                 type: SQUARES.UPDATE_NEXT_X_Y,
@@ -163,32 +164,37 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
                 titleRef={titleRef}
                 piece={piece}
             />
-            <div 
-                className="chessBoard" 
-                ref={Board}
-                >
-                {state.squares.map((row, index) => (
-                    <div
-                        className="row"
-                        key={index}
+            <div className="container">
+                <TimerPlayer 
+                    piecesTurns={piecesTurns}
+                />
+                <div 
+                    className="chessBoard" 
+                    ref={Board}
                     >
-                    {row.map(({ position, x, y }, index) => {
-                        return (
-                            <Squares 
-                                key={index}
-                                piece={piece}
-                                x={x} y={y}
-                                highlightSquare={highlightSquare}
-                                position={position}
-                                state={state}
-                                grabbingPiece={grabbingPiece}
-                                MovingPiece={MovingPiece}
-                                droppingPiece={droppingPiece}
-                            />
-                        )
-                    })}
-                    </div>
-                ))}
+                    {state.squares.map((row, index) => (
+                        <div
+                            className="row"
+                            key={index}
+                        >
+                        {row.map(({ position, x, y }, index) => {
+                            return (
+                                <Squares 
+                                    key={index}
+                                    piece={piece}
+                                    x={x} y={y}
+                                    highlightSquare={highlightSquare}
+                                    position={position}
+                                    state={state}
+                                    grabbingPiece={grabbingPiece}
+                                    MovingPiece={MovingPiece}
+                                    droppingPiece={droppingPiece}
+                                />
+                            )
+                        })}
+                        </div>
+                    ))}
+                </div>
             </div>
         </>
     );

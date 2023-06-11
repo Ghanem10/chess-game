@@ -5,7 +5,7 @@ import ChessBoard from '../Component/chessBoard/chessBoard';
 import Board from '../model/piecesReference';
 
 const initialstate = [];
-let piecesTurns = 1;
+export let piecesTurns = 1;
 
 export default function ReferenceBoard() {
     const [piece, setPiece] = useState(initialstate);
@@ -62,6 +62,7 @@ export default function ReferenceBoard() {
     return (
         <>
             <ChessBoard 
+                piecesTurns={piecesTurns}
                 successMove={successMove}
                 piece={piece}
                 highlightSquare={highlightSquare}

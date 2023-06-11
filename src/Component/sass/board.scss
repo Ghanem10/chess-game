@@ -1,12 +1,19 @@
-$width: 75px;
+$width: 65px;
+$height: 65px;
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 51%;
+  height: 99.7vh;
+}
 
 .chessBoard {
   display: grid;
-  grid-template-columns: repeat(8, $width);
+  grid-template-columns: repeat(8, $height);
   grid-template-rows: repeat(8, $width);
-  width: $width * 8;
-  height: $width * 8;
-  margin-top: 1rem;
+  width: fit-content;
 }
 
 .white-square,
@@ -16,11 +23,11 @@ $width: 75px;
 }
 
 .white-square {
-  background-color: white;
+  background-color: #eeeed2;
 }
 
 .darkblue-square {
-  background-color: rgb(61, 139, 74);
+  background-color: #769656;
 }
 
 .highlight-square::before {
@@ -30,41 +37,26 @@ $width: 75px;
   height: 20px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.4);
-  transform: translate(140%, 140%);
+  transform: translate(112%, 114%);
 }
 
 // attacked piece
-.black::before {
-  content: "";
-  display: block;
-  width: 75px;
-  height: 75px;
-  border-radius: 50%;
-  border: 3px solid rgba(2, 0, 0, 0.952);
-}
-
+.black::before,
 .white::before {
   content: "";
   display: block;
-  width: 75px;
-  height: 75px;
+  width: $width;
+  height: $height;
   border-radius: 50%;
-  border: 3px solid rgba(2, 0, 0, 0.616);
-}
-.king {
-  width: 75px;
-  height: 75px;
-  border-radius: 50%;
-  background-color: rgba(255, 0, 0, 0.884);
+  border: 3px solid rgba(53, 53, 53, 0.952);
 }
 
 .piece {
   width: $width;
-  height: $width;
+  height: $height;
   background-repeat: no-repeat;
   background-position: center;
   background-size: 60px;
-  z-index: 50;
 }
 
 .piece:hover {
@@ -73,7 +65,7 @@ $width: 75px;
 
 .piece:active {
   cursor: grabbing;
-  z-index: 100;
+  z-index: 1;
 }
 
 #Pawn-promotion {
@@ -86,11 +78,10 @@ $width: 75px;
 
 #PiecesPromotion {
     width: 60px; 
-    height: 80px;
+    height: 50px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 60px;
-    height: 50px;
     padding: 20px;
     border-radius: 50%;
 }
@@ -101,14 +92,17 @@ $width: 75px;
 
 .body-promotion {
   position: absolute;
-  top: calc(50% - 100px);
-  left: calc(50% - 300px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-32%, -50%);
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   height: 190px;
-  width: $width * 8;
+  width: 520px; /* Adjust the maximum width for small screens */
   background-color: rgba(0, 0, 0, 0.8);
+  gap: 10px;
+  box-sizing: border-box;
 }
 
 #PiecesPromotion:hover {
