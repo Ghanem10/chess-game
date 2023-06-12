@@ -8,55 +8,67 @@ import {
   faNewspaper, 
   faPalette, 
   faSun, 
-  faUser 
+  faUser,
+  faEllipsis
 } from '@fortawesome/free-solid-svg-icons';
 
 export default function SideBar() {
     return (
-        <div className='side-bar-container'>
+        <>
             <div className='title'>
                 <ul className='items'>
-                  <h1>Chess.io</h1>
+                  <h1><span>Chess.io</span></h1>
                   <li>
                     <FontAwesomeIcon 
                       icon={faChessBoard}
                       id='icon-one'
-                    /> Play</li>
+                    /> 
+                    <span>Play</span>
+                  </li>
                   <li>
                     <FontAwesomeIcon 
                       icon={faUser}
                       id='icon-two'
-                    /> Social</li>
+                    /> 
+                    <span>Social</span>
+                  </li>
                   <li>
                     <FontAwesomeIcon 
                       icon={faPalette}
                       id='icon-three'
-                    /> Themes</li>
+                    /> 
+                    <span>Theme</span>
+                  </li>
                   <li>
                     <FontAwesomeIcon 
                       icon={faNewspaper}
                       id='icon-four'
-                    /> News</li>
+                    /> 
+                    <span>News</span>
+                  </li>
                 </ul>
                 <div className='btn-side'>
                     <button className='sign-up'>Sign up</button>
                     <button className='login'>Login</button>
                     <input className='input-box' placeholder='Search'/>
                 </div>
+                <div className='options'>
+                    <FontAwesomeIcon icon={faEllipsis} />
+                </div>
                 <div className='icons-support'>
                     <ul className='support'>
                         <li>
-                          <FontAwesomeIcon icon={faSun} /> Light UI
+                          <FontAwesomeIcon icon={faSun} /> <span>Light UI</span>
                         </li>
                         <li>
-                          <FontAwesomeIcon icon={faGear} /> Settings
+                          <FontAwesomeIcon icon={faGear} /> <span>Settings</span>
                         </li>
                         <li>
-                          <FontAwesomeIcon icon={faCircleQuestion} /> Help
+                          <FontAwesomeIcon icon={faCircleQuestion} /> <span>Help</span>
                         </li>
                     </ul>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

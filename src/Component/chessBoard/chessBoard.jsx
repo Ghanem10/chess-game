@@ -1,8 +1,9 @@
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import Squares from "../../layout/squares";
 import PawnPromotion from "../../layout/pawnPromotion";
 import stateManagement, { SQUARES } from "../state/stateManagement";
 import TimerPlayer from "../../interface/timer/timerPlayer";
+import ListOptions from "../../interface/recordmoves/moves";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -14,6 +15,7 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
         nextPosition: { x: -1, y: -1 },
         activePiece: null,
     });
+    const [startGame, setStartGame] = useState(false);
     const Board = useRef(null);
     const titleRef = useRef();
 
@@ -167,6 +169,7 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
             <div className="container">
                 <TimerPlayer 
                     piecesTurns={piecesTurns}
+                    startGame={startGame}
                 />
                 <div 
                     className="chessBoard" 
@@ -196,6 +199,9 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
                     ))}
                 </div>
             </div>
+            <ListOptions 
+                setStartGame={setStartGame}
+            />
         </>
     );
 }

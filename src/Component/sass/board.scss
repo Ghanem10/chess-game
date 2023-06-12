@@ -2,11 +2,16 @@ $width: 65px;
 $height: 65px;
 
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 51%;
-  height: 99.7vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 51%;
+    margin-right: auto;
+    margin-left: 4rem;
+    @media (max-width: 1300px) {
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .chessBoard {
@@ -19,7 +24,7 @@ $height: 65px;
 .white-square,
 .darkblue-square {
   width: $width;
-  height: $width;
+  height: $height;
 }
 
 .white-square {
@@ -29,6 +34,7 @@ $height: 65px;
 .darkblue-square {
   background-color: #769656;
 }
+
 
 .highlight-square::before {
   content: "";
@@ -94,7 +100,7 @@ $height: 65px;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-32%, -50%);
+  transform: translate(-59.02%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
