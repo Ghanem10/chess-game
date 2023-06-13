@@ -20,16 +20,24 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
 .light {
     background-color: rgb(224, 224, 224);
     
-    .game-timer {
-        background-color: hsl(36, 88%, 93%);
-    }
     
-    h1 {
-        color: rgb(0, 0, 0);
-    }
-    
-    span {
-        color: rgb(0, 0, 0);
+    .game-type {
+        .game-timer {
+            background-color: hsl(36, 88%, 93%);
+            
+            #icon {
+                color: gold;
+            }
+            
+            span {
+                color: rgb(0, 0, 0);
+            }
+        }
+        
+        h1 {
+            color: rgb(0, 0, 0);
+        }
+        
     }
     
     .rematch {
@@ -38,18 +46,6 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
 
     .new-game {
         background-color: #769656;
-    } 
-
-    .rematch:hover {
-        color: white;
-        background-color: #8f8982;
-        box-shadow: $btn-shadow;
-    }
-
-    .new-game:hover {
-        color: white;
-        background-color: #85b357;
-        box-shadow: $btn-shadow;
     }
 }
 
@@ -63,32 +59,34 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     justify-content: center;
     align-items: center;
     width: 100%;
+
+    .game-timer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        height: 50px;
+        border-radius: 9px;
+        background-color: #383633;
+        
+        #icon {
+            color: gold;
+        }
+        
+        span {
+            padding-left: 10px;
+            color: white;
+            font-size: 23px;
+        }
+    }
+    
+    h1 {
+        font-family: $font;
+        color: white;
+    }
+    
 }
 
-.game-timer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80%;
-    height: 50px;
-    border-radius: 9px;
-    background-color: #383633;
-}
-
-h1 {
-    font-family: $font;
-    color: white;
-}
-
-#icon {
-    color: gold;
-}
-
-span {
-    padding-left: 10px;
-    color: white;
-    font-size: 23px;
-}
 
 .game-start-btn {
     display: flex;

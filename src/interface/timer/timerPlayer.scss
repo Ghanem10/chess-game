@@ -12,35 +12,32 @@ $font2: 'Karla', serif;
     font-family: $font2;
     font-size: 25px;
     font-weight: 600;
-    @media (max-width: 1300px) {
-        padding-right: 1rem;
+    .opponent,
+    .ours {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 55px;
+        color: #81817793;
+        background-color: #1b1b1a93;
+        width: 100%;
+        min-width: 5rem;
+    }
+    
+    .opponent {
+        margin-bottom: 2rem;
+    }
+      
+    .white-player {
+        color: rgb(20, 20, 20);
+        background-color: #ffffff;
+    }
+    .black-player {
+        color: rgb(27, 27, 27);
+        background-color: #ffffff;
     }
 }
 
-.opponent,
-.ours {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 55px;
-    color: #81817793;
-    background-color: #1b1b1a93;
-    width: 100%;
-    min-width: 5rem;
-}
-
-.opponent {
-    margin-bottom: 2rem;
-}
-  
-.white-player {
-    color: rgb(20, 20, 20);
-    background-color: #ffffff;
-}
-.black-player {
-    color: rgb(27, 27, 27);
-    background-color: #ffffff;
-}
 
 .start-game {
     width: 100%;
@@ -57,4 +54,12 @@ $font2: 'Karla', serif;
     transition: 0.3s ease-in-out all;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 
     0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* min screen */
+
+@media (max-width: 1300px) {
+    .timers {
+        padding-right: 1rem;
+    }
 }

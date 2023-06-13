@@ -1,0 +1,102 @@
+
+$btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+/* option icon min screen */
+
+.options-container {
+    display: none;
+    width: 100%;
+  
+    .options-btn {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      top: 0;
+      left: 4.42%;
+      width: 18%;
+      height: 97vh;
+      padding: 10px;
+      background-color: #272522;
+      gap: 20px;
+  
+      .options-signup {
+        background-color: #312e2b;
+      }
+  
+      .options-login {
+        background-color: #769656;
+      }
+  
+      .options-signup,
+      .options-login {
+        width: 100%;
+        height: 2.4rem;
+        cursor: pointer;
+        appearance: none;
+        border-style: none;
+        border-radius: 3px;
+        color: white;
+        transition: 0.3s ease-in-out all;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      }
+  
+      .options-signup:hover {
+        color: white;
+        background-color: #423e39;
+        box-shadow: $btn-shadow;
+      }
+  
+      .options-login:hover {
+        color: white;
+        background-color: #85b357;
+        box-shadow: $btn-shadow;
+      }
+  
+      .options-input-box {
+        width: 100%;
+        height: 2.6rem;
+        border-style: none;
+        border-radius: 3px;
+        outline: none;
+        color: rgb(255, 255, 255);
+        background-color: #423e39;
+  
+            &:hover {
+                box-shadow: 0 0 0 .5px white;
+            }
+        }
+    }
+}
+  
+.options-icon {
+    display: none;
+    text-align: center;
+    max-width: 100%;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #3a3939;
+
+    &:hover {
+        color: rgb(161, 161, 161);
+    }
+
+    @media (max-width: 1122px) {
+        display: block;
+        margin: 0 auto;
+    }
+}
+  
+.options-icon:hover ~ .options-container,
+.options-container:hover {
+    display: block;
+}
+  
+@media (max-width: 1122px) {
+    .options-btn {
+      display: none;
+    }
+}
+  

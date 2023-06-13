@@ -7,32 +7,29 @@ $height: 65px;
     align-items: center;
     width: 51%;
     margin: 0 auto;
-    @media (max-width: 1300px) {
-        justify-content: center;
-        align-items: center;
+    
+    .chessBoard {
+      display: grid;
+      grid-template-columns: repeat(8, $height);
+      grid-template-rows: repeat(8, $width);
+      width: fit-content;
+    }
+    
+    .white-square,
+    .darkblue-square {
+      width: $width;
+      height: $height;
+    }
+    
+    .white-square {
+      background-color: #eeeed2;
+    }
+    
+    .darkblue-square {
+      background-color: #769656;
     }
 }
 
-.chessBoard {
-  display: grid;
-  grid-template-columns: repeat(8, $height);
-  grid-template-rows: repeat(8, $width);
-  width: fit-content;
-}
-
-.white-square,
-.darkblue-square {
-  width: $width;
-  height: $height;
-}
-
-.white-square {
-  background-color: #eeeed2;
-}
-
-.darkblue-square {
-  background-color: #769656;
-}
 
 
 .highlight-square::before {
@@ -74,43 +71,49 @@ $height: 65px;
 }
 
 #Pawn-promotion {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  top: 0;
-  right: 0;
-}
-
-#PiecesPromotion {
-    width: 60px; 
-    height: 50px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 60px;
-    padding: 20px;
-    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    
+    .body-promotion {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-18.8%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 190px;
+      width: 521px; /* Adjust the maximum width for small screens */
+      background-color: rgba(0, 0, 0, 0.8);
+      gap: 10px;
+      box-sizing: border-box;
+      
+          #PiecesPromotion {
+            width: 60px; 
+            height: 50px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 60px;
+            padding: 20px;
+            border-radius: 50%;
+        }
+    }
+    #PiecesPromotion:hover {
+      background-color: rgb(230, 230, 230);
+      cursor: pointer;
+    }
 }
 
 .hide-title {
   display: none;
 }
 
-.body-promotion {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-59.02%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 190px;
-  width: 520px; /* Adjust the maximum width for small screens */
-  background-color: rgba(0, 0, 0, 0.8);
-  gap: 10px;
-  box-sizing: border-box;
-}
-
-#PiecesPromotion:hover {
-  background-color: rgb(230, 230, 230);
-  cursor: pointer;
+@media (max-width: 1300px) {
+    .container {
+        justify-content: center;
+        align-items: center;
+    }
 }

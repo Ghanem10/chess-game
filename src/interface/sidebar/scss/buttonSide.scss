@@ -1,0 +1,71 @@
+
+$btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+/* side bar bottons */
+
+.btn-side {
+    display: flex;
+    flex-direction: column;
+    padding-left: 5px;
+    padding-right: 5px;
+    gap: 20px;
+
+    .sign-up {
+        background-color:  #312e2b;
+    }
+    
+    .login {
+        background-color: #769656;
+    } 
+    
+    .sign-up,
+    .login {
+        max-width: 8.7rem;
+        height: 2.4rem;
+        cursor: pointer;
+        appearance: none;
+        border-style: none;
+        border-radius: 3px;
+        color: white;
+        transition: 0.3s ease-in-out all;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 
+        0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+    
+    .sign-up:hover {
+        color: white;
+        background-color: #423e39;
+        box-shadow: $btn-shadow;
+    }
+    
+    .login:hover {
+        color: white;
+        background-color: #85b357;
+        box-shadow: $btn-shadow;
+    }
+}
+
+/* input tag */
+
+.input-box {
+    max-width: 8.1rem;
+    height: 2.2rem;
+    padding: 4px;
+    border-style: none;
+    border-radius: 3px;
+    outline: none;
+    color: rgb(255, 255, 255);
+    background-color: #423e39;
+
+    .input-box:hover {
+        box-shadow: 0 0 0 .5px white;
+    }   
+}
+
+
+@media (max-width: 1122px) {
+    .btn-side {
+        display: none;
+    }
+}

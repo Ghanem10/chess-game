@@ -36,5 +36,5 @@ export default function ListOptions({ setStartGame }) {
               <button className='rematch'>Rematch</button>
           </div>
       </div>
-    )
+    );
 }
