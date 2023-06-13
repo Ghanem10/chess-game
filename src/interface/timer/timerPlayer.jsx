@@ -43,10 +43,10 @@ export default function TimerPlayer({ piecesTurns, startGame }) {
 
     function highlightPlayer() {
         if (intervalId > 6) {
-            if (intervalId % 2 === 0) {
+            if (intervalId % 2 === 1) {
                 black.current.classList.remove('black-player');
                 white.current.classList.add('white-player');
-            } else if (intervalId % 2 === 1) {
+            } else if (intervalId % 2 === 0) {
                 white.current.classList.remove('white-player');
                 black.current.classList.add('black-player');
             }

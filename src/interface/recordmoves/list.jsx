@@ -1,18 +1,30 @@
-import React, { useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { faBoltLightning } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './moves.scss';
+import { LightContext } from '../wraper/props';
+import './list.scss';
+
+let updateUI = "";
 
 export default function ListOptions({ setStartGame }) {
+    const { lightUI } = useContext(LightContext);
     const temp = useRef(null);
-
+    
     function toggleStartGame() {
         setStartGame(true);
         temp.current.classList.add('switch');
     }
 
+    useEffect(() => {
+        const updateClassUI = () => {
+            updateUI = lightUI ? "light" : "";
+        };
+
+        updateClassUI();
+    }, [lightUI]);
+
     return (
-      <div className='recored-moves' ref={temp}>
+      <div className={`start ${updateUI}`} ref={temp}>
           <div className='game-type'>
             <h1>Blitz Game</h1>
             <div className='game-timer'>

@@ -3,6 +3,7 @@ import { Team } from '../movement/constants/functions';
 import { addChessPieces } from '../layout/pieceImages';
 import ChessBoard from '../Component/chessBoard/chessBoard';
 import Board from '../model/piecesReference';
+import ListOptions from '../interface/recordmoves/list';
 
 const initialstate = [];
 export let piecesTurns = 1;
@@ -11,6 +12,7 @@ export default function ReferenceBoard() {
     const [piece, setPiece] = useState(initialstate);
     const [highlightSquare, setHighlighSquare] = useState([]);
     const [pawnPromotion, setPawnPromotion] = useState();
+    const [startGame, setStartGame] = useState(false);
 
     const board = new Board(piece, setHighlighSquare, highlightSquare, piecesTurns);
 
@@ -61,15 +63,22 @@ export default function ReferenceBoard() {
 
     return (
         <>
-            <ChessBoard 
-                piecesTurns={piecesTurns}
-                successMove={successMove}
-                piece={piece}
-                highlightSquare={highlightSquare}
-                pawnPromotion={pawnPromotion}
-                setPawnPromotion={setPawnPromotion}
-                updatePossibleMoves={updatePossibleMoves}
-            />
+            {(!startGame) ? (
+                <ListOptions 
+                    setStartGame={setStartGame}
+                />
+            ) : (
+                <ChessBoard 
+                    piecesTurns={piecesTurns}
+                    successMove={successMove}
+                    piece={piece}
+                    startGame={startGame}
+                    highlightSquare={highlightSquare}
+                    pawnPromotion={pawnPromotion}
+                    setPawnPromotion={setPawnPromotion}
+                    updatePossibleMoves={updatePossibleMoves}
+                />
+            )}
         </>
     );
 }

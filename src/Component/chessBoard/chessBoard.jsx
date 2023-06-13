@@ -3,19 +3,17 @@ import Squares from "../../layout/squares";
 import PawnPromotion from "../../layout/pawnPromotion";
 import stateManagement, { SQUARES } from "../state/stateManagement";
 import TimerPlayer from "../../interface/timer/timerPlayer";
-import ListOptions from "../../interface/recordmoves/moves";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-export default function ChessBoard({ successMove, piece, updatePossibleMoves, highlightSquare, pawnPromotion, setPawnPromotion, piecesTurns }) {
+export default function ChessBoard({ successMove, piece, updatePossibleMoves, highlightSquare, pawnPromotion, setPawnPromotion, piecesTurns, startGame }) {
     const [state, dispatch] = useReducer(stateManagement, { 
         squares: [], 
         coordinates: { GridX: -1, GridY: -1 },
         nextPosition: { x: -1, y: -1 },
         activePiece: null,
     });
-    const [startGame, setStartGame] = useState(false);
     const Board = useRef(null);
     const titleRef = useRef();
 
@@ -199,9 +197,6 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
                     ))}
                 </div>
             </div>
-            <ListOptions 
-                setStartGame={setStartGame}
-            />
         </>
     );
 }

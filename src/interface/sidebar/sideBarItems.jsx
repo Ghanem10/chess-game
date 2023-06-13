@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import './sideBar.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -11,8 +11,16 @@ import {
   faUser,
   faEllipsis
 } from '@fortawesome/free-solid-svg-icons';
+import { LightContext } from '../wraper/props';
 
 export default function SideBar() {
+
+    const { setLightUI } = useContext(LightContext);
+    
+    const switchUI = () => {
+        setLightUI((preUI) => !preUI);
+    };
+
     return (
         <>
             <div className='title'>
@@ -57,11 +65,11 @@ export default function SideBar() {
                 </div>
                 <div className='icons-support'>
                     <ul className='support'>
-                        <li>
+                        <li onClick={switchUI}>
                           <FontAwesomeIcon icon={faSun} /> <span>Light UI</span>
                         </li>
                         <li>
-                          <FontAwesomeIcon icon={faGear} /> <span>Settings</span>
+                          <FontAwesomeIcon icon={faGear} /> <span>Setting</span>
                         </li>
                         <li>
                           <FontAwesomeIcon icon={faCircleQuestion} /> <span>Help</span>

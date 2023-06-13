@@ -4,17 +4,53 @@ $font: 'Karla', sans-serif;
 $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-.recored-moves {
+.start {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 30%;
+    width: 50%;
     height: 70vh;
-    margin-right: 12px;
+    margin: 0 auto;
     border-radius: 8px;
     gap: 5.5rem;
     background-color: #272522;
+}
+
+.light {
+    background-color: rgb(224, 224, 224);
+    
+    .game-timer {
+        background-color: hsl(36, 88%, 93%);
+    }
+    
+    h1 {
+        color: rgb(0, 0, 0);
+    }
+    
+    span {
+        color: rgb(0, 0, 0);
+    }
+    
+    .rematch {
+        background-color:  #8d8379;
+    }
+
+    .new-game {
+        background-color: #769656;
+    } 
+
+    .rematch:hover {
+        color: white;
+        background-color: #8f8982;
+        box-shadow: $btn-shadow;
+    }
+
+    .new-game:hover {
+        color: white;
+        background-color: #85b357;
+        box-shadow: $btn-shadow;
+    }
 }
 
 .switch {
