@@ -171,31 +171,6 @@ export default class Board {
         });
     }
     
-    // checkingCurrentTeam() {
-    //     for (const piece of this.piece.filter(t => t.team === this.currentTeam())) {
-    //         for (const move of piece.possibleMoves) {
-    //             let safe = true;
-    //             const king = this.piece.find(o => o.Piece === Type.KING && o.team === this.currentTeam());
-    //             for (const enemy of this.piece.filter(t => t.team !== this.currentTeam())) {
-    //                 enemy.possibleMoves = this.getValidMove(enemy, this.piece);
-    //                 if (enemy.Piece === Type.PAWN) {
-    //                     if (enemy.possibleMoves.some(t => t.x !== enemy.x && this.samePosition(t, king.x, king.y))) {
-    //                         safe = false;
-    //                         break;
-    //                     }
-    //                 } 
-    //                 else if (enemy.possibleMoves.some(t => this.samePosition(t, king.x, king.y))) {
-    //                     safe = false;
-    //                     break;
-    //                 }
-
-    //                 if (!safe) {
-    //                     console.log(enemy.possibleMoves)
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
     isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
         const PawnDiraction = team === Team.WHITE ? -1 : 1;
         

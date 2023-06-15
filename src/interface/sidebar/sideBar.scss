@@ -1,5 +1,7 @@
 @use './scss/optionsList.scss';
 @use './scss/buttonSide.scss';
+@use './scss/themes.scss';
+@use './scss/social.scss';
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital@1&display=swap');
@@ -38,22 +40,25 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             background-position: left;
             background-size: 2.7rem;
             color: rgb(255, 255, 255);
-            
+            &:hover{
+                cursor: pointer;
+                background-color: #24211f;
+            }
         }
         li {
             line-height: 3rem;
             padding-left: 13px;
-        }
-        .items li span {
-            margin-left: 5px;
-        }
-        h1:hover,
-        li:hover {
-            cursor: pointer;
-            background-color: #24211f;
+            span {
+                margin-left: 5px;
+            }
+            &:hover {
+                cursor: pointer;
+                background-color: #24211f;
+            }
         }
     }
 }
+
 
 /* media screen */
 
@@ -61,15 +66,19 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     .title {
         max-width: 3rem;
         min-width: 3rem;
+        
+        h1 span {
+            display: none;
+        }
+
+        li {
+            padding-left: 11px;
+            span {
+                display: none;
+            }
+        }
     }
     
-    span {
-        display: none;
-    }
-
-    li {
-        padding-left: 11px;
-    }
 }
 
 /* icons */
@@ -98,20 +107,21 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     li {
         line-height: 2.1rem;
         padding-left: 13px;
-    }
-    li:hover {
-        cursor: pointer;
-        color: rgb(255, 255, 255);
-        background-color: #24211f;
-    }
-
-    .support li span {
-        margin-left: 5px;
+        span {
+            margin-left: 5px;
+        }
+        &:hover {
+            cursor: pointer;
+            color: rgb(255, 255, 255);
+            background-color: #24211f;
+        }
     }
 }
 
 @media (max-width: 1122px) {
-    span {
-        display: none;
+    .support {
+        li span {
+            display: none;
+        }
     }
 }

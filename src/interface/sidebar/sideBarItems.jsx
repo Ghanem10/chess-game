@@ -3,6 +3,7 @@ import { LightContext } from '../wraper/props';
 import UnorderList from './jsx/ul';
 import Buttons from './jsx/buttons';
 import Support from './jsx/support';
+import { BrowserRouter } from 'react-router-dom';
 import './sideBar.scss';
 
 export default function SideBar() {
@@ -14,11 +15,13 @@ export default function SideBar() {
 
     return (
         <div className='title'>
-            <UnorderList />
-            <Buttons />
-            <Support 
-              switchUI={switchUI}
-            />
+            <BrowserRouter>
+                <UnorderList />
+                <Buttons />
+                <Support 
+                switchUI={switchUI}
+                />
+            </BrowserRouter>
         </div>
     );
 }

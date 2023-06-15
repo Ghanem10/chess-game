@@ -3,7 +3,7 @@ import { Team } from '../movement/constants/functions';
 import { addChessPieces } from '../layout/pieceImages';
 import ChessBoard from '../Component/chessBoard/chessBoard';
 import Board from '../model/piecesReference';
-import ListOptions from '../interface/recordmoves/list';
+import ListOptions from '../interface/listfront/list';
 
 const initialstate = [];
 export let piecesTurns = 1;
@@ -56,7 +56,7 @@ export default function ReferenceBoard() {
             setPiece, 
             validMove
         );
-        playMove && piecesTurns++;
+        return playMove && piecesTurns++;
     }
     
     const updatePossibleMoves = (gridx, gridy) => board.calculateAllMoves(gridx, gridy);

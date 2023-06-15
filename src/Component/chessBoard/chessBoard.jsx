@@ -1,19 +1,31 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useContext, useEffect, useReducer, useRef } from "react";
 import Squares from "../../layout/squares";
 import PawnPromotion from "../../layout/pawnPromotion";
 import stateManagement, { SQUARES } from "../state/stateManagement";
 import TimerPlayer from "../../interface/timer/timerPlayer";
+import { LightContext } from "../../interface/wraper/props";
+import Recorder from "../../interface/recordmoves/recorder";
+import updateRecordMoves from "./updateRecordMoves";
+import { samePosition } from "../../movement/constants/functions";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-export default function ChessBoard({ successMove, piece, updatePossibleMoves, highlightSquare, pawnPromotion, setPawnPromotion, piecesTurns, startGame }) {
+export default function ChessBoard({ 
+    successMove, 
+    piece, 
+    updatePossibleMoves, 
+    highlightSquare, 
+    pawnPromotion, 
+    setPawnPromotion, piecesTurns, startGame 
+}) {
     const [state, dispatch] = useReducer(stateManagement, { 
         squares: [], 
         coordinates: { GridX: -1, GridY: -1 },
         nextPosition: { x: -1, y: -1 },
         activePiece: null,
     });
+    const { setRecordMoves } = useContext(LightContext);
     const Board = useRef(null);
     const titleRef = useRef();
 
@@ -128,10 +140,13 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
 
             const currentPiece = piece
                 .find(t => t.x === state.coordinates.GridX && t.y === state.coordinates.GridY);
+            const opponentPiece = piece
+                .find(t => samePosition(t, x, y) && t.team !== currentPiece.team);
 
             if (currentPiece) {
                 const playMove = successMove(state, x, y, currentPiece, titleRef);
 
+                updateRecordMoves(state, setRecordMoves, x, y, currentPiece, playMove, opponentPiece);
                 if (!playMove) {
                     state.activePiece.style.position = 'relative';
                     state.activePiece.style.removeProperty('left');
@@ -196,6 +211,7 @@ export default function ChessBoard({ successMove, piece, updatePossibleMoves, hi
                         </div>
                     ))}
                 </div>
+                <Recorder />
             </div>
         </>
     );
