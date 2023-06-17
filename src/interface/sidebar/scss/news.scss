@@ -2,12 +2,14 @@
 
 $font1: 'Playfair Display', serif;
 
-.themes {
+.news {
     display: none;
+    flex-direction: row;
+    justify-content: flex-start;
     position: absolute;
     top: 0;
     left: 11.01%;
-    width: 20%;
+    width: 18%;
     height: 97vh;
     padding: 10px;
     list-style: none;
@@ -25,7 +27,7 @@ $font1: 'Playfair Display', serif;
             height: 50px;
             margin-right: 10px;
         }
-        h5 {
+        h4 {
             color:#dddbd7;
             font-family: $font1;
         }
@@ -34,14 +36,15 @@ $font1: 'Playfair Display', serif;
     @media (max-width: 1122px) {
         & {
             left: 4.09%;
-            h5 {
+            h4 {
+                font-size: 17px;
                 font-family: $font1;
             }
         }
     }
 }
 
-.themes-list:hover ~ .themes,
-.themes:hover {
-    display: block;
+.news-list:hover ~ .news,
+.news:hover {
+    display: flex;
 }

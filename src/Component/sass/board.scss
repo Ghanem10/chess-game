@@ -16,7 +16,12 @@ $height: 65px;
     }
     
     .white-square,
-    .darkblue-square {
+    .darkblue-square,
+    .green-square,
+    .lightblue-square,
+    .brown-square,
+    .purple-square,
+    .black-square {
       width: $width;
       height: $height;
     }
@@ -27,6 +32,26 @@ $height: 65px;
     
     .darkblue-square {
       background-color: #769656;
+    }
+    
+    .green-square {
+      background-color: green;
+    }
+
+    .lightblue-square {
+      background-color: lightblue;
+    }
+
+    .brown-square {
+      background-color: rgb(165, 87, 42);
+    }
+
+    .purple-square {
+      background-color: rgb(175, 80, 175);
+    }
+
+    .black-square {
+      background-color: rgb(43, 39, 39);
     }
 }
 

@@ -25,7 +25,7 @@ export default function ChessBoard({
         nextPosition: { x: -1, y: -1 },
         activePiece: null,
     });
-    const { setRecordMoves } = useContext(LightContext);
+    const { boardColor, setRecordMoves } = useContext(LightContext);
     const Board = useRef(null);
     const titleRef = useRef();
 
@@ -202,6 +202,7 @@ export default function ChessBoard({
                                     highlightSquare={highlightSquare}
                                     position={position}
                                     state={state}
+                                    updateBoardColor={boardColor}
                                     grabbingPiece={grabbingPiece}
                                     MovingPiece={MovingPiece}
                                     droppingPiece={droppingPiece}

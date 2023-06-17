@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Type } from "../movement/constants/functions";
 
 export default function Squares(props) {
@@ -12,7 +12,8 @@ export default function Squares(props) {
         y,
         position,
         highlightSquare,
-        state
+        state,
+        updateBoardColor
     } = props;
 
     const currentPiece = piece.find((pre) => pre.x === x && pre.y === y);
@@ -27,7 +28,20 @@ export default function Squares(props) {
     
     const isWhiteSquare = charIndex % 2 === 0;
     const squareColor = isColor ? isWhiteSquare : !isWhiteSquare;
-    updatedClassName = squareColor ? "white-square" : "darkblue-square";
+    // refactor the code.
+    if (updateBoardColor === 1) {
+        updatedClassName = squareColor ? "white-square" : "green-square";
+    } else if (updateBoardColor === 2) {
+        updatedClassName = squareColor ? "white-square" : "lightblue-square";
+    } else if (updateBoardColor === 3) {
+        updatedClassName = squareColor ? "white-square" : "darkblue-square";
+    } else if (updateBoardColor === 4) {
+        updatedClassName = squareColor ? "white-square" : "brown-square";
+    } else if (updateBoardColor === 5) {
+        updatedClassName = squareColor ? "white-square" : "purple-square";
+    } else if (updateBoardColor === 6) {
+        updatedClassName = squareColor ? "white-square" : "black-square";
+    }
     const availableSquares = highlightSquare.some(square => square.x === x && square.y === y);
     if (state.activePiece !== null && availableSquares) {
         // attacked piece.
@@ -42,7 +56,7 @@ export default function Squares(props) {
             updatedClassName += " highlight-square";
         }
     }
-    
+
     return (
         <div
             key={index}

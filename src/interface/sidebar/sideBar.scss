@@ -2,6 +2,7 @@
 @use './scss/buttonSide.scss';
 @use './scss/themes.scss';
 @use './scss/social.scss';
+@use './scss/news.scss';
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital@1&display=swap');
@@ -43,6 +44,9 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             &:hover{
                 cursor: pointer;
                 background-color: #24211f;
+            }
+            span {
+                margin-left: 5px;
             }
         }
         li {

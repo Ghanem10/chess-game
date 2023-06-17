@@ -111,7 +111,7 @@ export default class Board {
             this.setHighlight(p.possibleMoves);
             return p;
         });
-      
+        this.possiblePiecesMoves();
         this.checkingTheKing(gridx, gridy);
     }
     
@@ -126,7 +126,7 @@ export default class Board {
             for (const kingMove of king.possibleMoves) {
                 let isValidMove = true;
                 const hasProtection = this.piece
-                    .find(p => this.samePosition(p, kingMove.x, kingMove.y) && p.team !== king.Piece);
+                    .find(p => this.samePosition(p, kingMove.x, kingMove.y) && p.team !== king.team);
                 if (hasProtection) {
                     this.piece = this.piece
                         .filter(p => !this.samePosition(p, kingMove.x, kingMove.y));
@@ -169,6 +169,26 @@ export default class Board {
             }
             return p;
         });
+    }
+    
+    possiblePiecesMoves() {
+        for (const p of this.piece.filter(t => t.team === this.currentTeam())) {
+            const king = this.piece
+                .find(o => o.Piece === Type.KING && o.team === this.currentTeam());
+            for (const enemy of this.piece.filter(t => t.team !== this.currentTeam())) {
+                enemy.possibleMoves = this.getValidMove(enemy, this.piece);
+                const check = enemy.possibleMoves.some(t => this.samePosition(t, king.x, king.y));
+                if (check) {
+                    const ours = p.possibleMoves.filter(t => this.opponentMatchPosition(t, enemy.possibleMoves));
+                    if (ours) {
+                        if (p.Piece !== Type.KING) {
+                            p.possibleMoves = ours;
+                            this.setHighlight(p.possibleMoves)
+                        }
+                    }                    
+                }
+            }
+        }
     }
     
     isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {

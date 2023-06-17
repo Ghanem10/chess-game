@@ -12,11 +12,15 @@ import {
 import { 
     FontAwesomeIcon 
 } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { LightContext } from '../../wraper/props';
 
 export default function UnorderList() {
-    
+    const { setBoardColor } = useContext(LightContext);
+    function getValue(num) {
+        setBoardColor(num);
+    }
     return(
         <>
             <ul className='items'>
@@ -66,16 +70,27 @@ export default function UnorderList() {
                 <span>Theme</span>
                 </li>
                 <ul className='themes'>
-                    <li><img src='./theme1.png' /> <h5>Green & white</h5></li>
-                    <li><img src='./theme2.png' /> <h5>Blue & white</h5></li>
+                    <li onClick={() => getValue(1)}><img src='./theme1.png' /> <h5>Green & white</h5></li>
+                    <li onClick={() => getValue(2)}><img src='./theme2.png' /> <h5>Blue & white</h5></li>
+                    <li onClick={() => getValue(4)}><img src='./theme3.png' /> <h5>Brown & white</h5></li>
+                    <li onClick={() => getValue(5)}><img src='./theme4.png' /> <h5>Purple & white</h5></li>
+                    <li onClick={() => getValue(6)}><img src='./theme5.png' /> <h5>Black & white</h5></li>
+                    <li onClick={() => getValue(3)}><img src='./theme1.png' /> <h5>Original</h5></li>
                 </ul>
-                <li>
+                <li className='news-list'>
                 <FontAwesomeIcon 
                     icon={faNewspaper}
                     id='icon-four'
                 /> 
                 <span>News</span>
                 </li>
+                <ul className='news'>
+                    <Link to={'https://www.chess.com/news'}>
+                        <li>
+                            <img src='./news.png'/> <h4>Chess.com news</h4>
+                        </li>
+                    </Link>
+                </ul>
             </ul>
             
         </>
