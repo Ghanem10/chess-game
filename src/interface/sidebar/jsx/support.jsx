@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { 
     faGear, 
     faSun,
     faCircleQuestion
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { LightContext } from '../../wraper/props';
 
-export default function Support({ switchUI }) {
+export default function Support() {
+    const { setLightUI } = useContext(LightContext);
+
+    function switchUI() {
+        setLightUI(preUI => !preUI);
+    }
+
     return(
         <div className='icons-support'>
             <ul className='support'>

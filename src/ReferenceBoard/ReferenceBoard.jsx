@@ -73,6 +73,7 @@ export default function ReferenceBoard() {
                     successMove={successMove}
                     piece={piece}
                     startGame={startGame}
+                    setStartGame={setStartGame}
                     highlightSquare={highlightSquare}
                     pawnPromotion={pawnPromotion}
                     setPawnPromotion={setPawnPromotion}

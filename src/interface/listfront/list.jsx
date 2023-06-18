@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { faBoltLightning } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LightContext } from '../wraper/props';
 import './list.scss';
 
-let updateUI = "";
-
 export default function ListOptions({ setStartGame }) {
     const { lightUI } = useContext(LightContext);
+    const [updateUI, setUpdateUI] = useState("");
     const temp = useRef(null);
     
     function toggleStartGame() {
@@ -16,11 +15,11 @@ export default function ListOptions({ setStartGame }) {
     }
 
     useEffect(() => {
-        const updateClassUI = () => {
-            updateUI = lightUI ? "light" : "";
-        };
-
-        updateClassUI();
+        if (lightUI) {
+            setUpdateUI("light");
+        } else {
+            setUpdateUI("");
+        }
     }, [lightUI]);
 
     return (
@@ -33,7 +32,7 @@ export default function ListOptions({ setStartGame }) {
           </div>
           <div className='game-start-btn'>
               <button className='new-game' onClick={toggleStartGame}>New Game</button>
-              <button className='rematch'>Rematch</button>
+              <button className='rematch'>Tournament</button>
           </div>
       </div>
     );

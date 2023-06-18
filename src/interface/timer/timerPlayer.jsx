@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './timerPlayer.scss';
+import GameEnd from './end/gameEnd';
 
-export default function TimerPlayer({ piecesTurns, startGame }) {
+export default function TimerPlayer({ piecesTurns, startGame, setStartGame }) {
     const [ours, setOurs] = useState(180);
     const [opponent, setOpponent] = useState(180);
     const white = useRef(null);
@@ -10,7 +11,6 @@ export default function TimerPlayer({ piecesTurns, startGame }) {
     
     useEffect(() => {
         if (startGame) {
-            handle();
             if (piecesTurns % 2 === 1) {
                 intervalId = setInterval(() => {
                     setOurs((prevTime) => {
@@ -22,6 +22,8 @@ export default function TimerPlayer({ piecesTurns, startGame }) {
                         return newValue;
                     });
                 }, 1000);
+                black.current.classList.remove('black-player');
+                white.current.classList.add('white-player');
             } else if (piecesTurns % 2 === 0) {
                 intervalId = setInterval(() => {
                     setOpponent((prevTime) => {
@@ -33,30 +35,14 @@ export default function TimerPlayer({ piecesTurns, startGame }) {
                         return newValue;
                     });
                 }, 1000);
-            }
-        }
-        highlightPlayer();
-        return () => {
-            clearInterval(intervalId);
-        };
-    }, [piecesTurns, startGame]);
-
-    function highlightPlayer() {
-        if (intervalId > 6) {
-            if (intervalId % 2 === 1) {
-                black.current.classList.remove('black-player');
-                white.current.classList.add('white-player');
-            } else if (intervalId % 2 === 0) {
                 white.current.classList.remove('white-player');
                 black.current.classList.add('black-player');
             }
         }
-        
-    }
-
-    function handle() {
-        white.current.classList.add('white-player');
-    }
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [piecesTurns, startGame]);
 
     function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
@@ -69,9 +55,19 @@ export default function TimerPlayer({ piecesTurns, startGame }) {
     };
 
     return (
-        <div className="timers">
-            <div ref={black} className='opponent'>{formatTime(opponent)}</div>
-            <div ref={white} className='ours'>{formatTime(ours)}</div>
-        </div>
+        <>
+            <div className="timers">
+                <div ref={black} className='opponent'>{formatTime(opponent)}</div>
+                <div ref={white} className='ours'>{formatTime(ours)}</div>
+            </div>
+            <GameEnd 
+                ours={ours}
+                opp={opponent}
+                piecesTurns={piecesTurns}
+                setOurs={setOurs}
+                setOpp={setOpponent}
+                setGame={setStartGame}
+            />
+        </>
     );
 }

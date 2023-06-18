@@ -8,24 +8,19 @@ import {
     faChessKing, 
     faChessKnight
 } from '@fortawesome/free-solid-svg-icons';
-let count = 0;
 
 export default function Recorder() {
     const { recordMoves, setRecordMoves } = useContext(LightContext);
-    const [last, setLast] = useState([]);
+    const [count, setCount] = useState(0);
     
-    // update the moves in the DOM, and fix moveForward btn.
     const moveBack = () => {
         if (recordMoves.length === 0) return;
         setRecordMoves(prePos => prePos.slice(0, -1));
         setLast([recordMoves.slice(-count)[0]]);
-        count += 1;
     };
 
     const moveForward = () => {
-        setRecordMoves(pre => [...pre, last.slice(0)]);
-        console.log(last.slice(count))
-        count -= 1;
+        
     };
 
     return (

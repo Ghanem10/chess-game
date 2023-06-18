@@ -17,7 +17,8 @@ export default function ChessBoard({
     updatePossibleMoves, 
     highlightSquare, 
     pawnPromotion, 
-    setPawnPromotion, piecesTurns, startGame 
+    setPawnPromotion, piecesTurns, 
+    startGame, setStartGame 
 }) {
     const [state, dispatch] = useReducer(stateManagement, { 
         squares: [], 
@@ -183,6 +184,7 @@ export default function ChessBoard({
                 <TimerPlayer 
                     piecesTurns={piecesTurns}
                     startGame={startGame}
+                    setStartGame={setStartGame}
                 />
                 <div 
                     className="chessBoard" 
