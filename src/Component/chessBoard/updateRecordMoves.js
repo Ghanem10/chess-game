@@ -1,16 +1,18 @@
+export const capturedP = [];
+let count = 1;
 
-export default function updateRecordMoves(state, setMoves, x, y, cur, play, opponentCap) {
+export default function updateRecordMoves(state, setRecord, x, y, cur, oppCap) {
+    
     state.squares.map(row => {
         row.forEach(p => {
             if (p.x === x && p.y === y) {
-                let capturePos = "";
-                if (opponentCap) {
-                    capturePos = "x";
+                let capturePos = oppCap ? "x" : "";
+                if (oppCap) {
+                    capturedP.push(oppCap.image);
                 }
-                const moves = ` ${checkPieceType(cur)}${capturePos}${p.position}`;
-                if (play) {
-                    setMoves((prePos) => [...prePos, moves]);
-                }
+                const moves = ` ${count}. ${checkPieceType(cur)}${capturePos}${p.position}, `;
+                setRecord((prePos) => [...prePos, moves]);
+                count++;
             }
         });
     });

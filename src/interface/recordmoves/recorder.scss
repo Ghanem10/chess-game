@@ -72,6 +72,7 @@ $font: 'Karla', sans-serif;
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        max-width: 100%;
         height: 70px;
         gap: 10px;
         #foot-icon {
@@ -85,5 +86,11 @@ $font: 'Karla', sans-serif;
             color: white;
             font-family: $font;
         }
+    }
+}
+
+@media (max-width: 1300px) {
+    .record-container {
+        margin-left: 20px;
     }
 }

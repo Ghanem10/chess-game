@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { faChessQueen, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { LightContext } from '../../wraper/props';
 import './gameEnd.scss';
 
 let team, currTeam = "";
 
 export default function GameEnd({ ours, opp, setOurs, setOpp, setGame, piecesTurns }) {
+    const { setRecordMoves } = useContext(LightContext);
     const [endGame, setEndGame] = useState("");
     const [hideTitle, setHideTitle] = useState("");
 
@@ -31,6 +33,7 @@ export default function GameEnd({ ours, opp, setOurs, setOpp, setGame, piecesTur
     function rematch() {
         setEndGame("");
         setHideTitle("");
+        setRecordMoves("");
         setOpp(180);
         setOurs(180);
     }

@@ -26,7 +26,12 @@ export default function ChessBoard({
         nextPosition: { x: -1, y: -1 },
         activePiece: null,
     });
-    const { boardColor, setRecordMoves } = useContext(LightContext);
+    const { 
+        boardColor, 
+        setRecordMoves, 
+        setNextPosition,
+        setHistory,
+    } = useContext(LightContext);
     const Board = useRef(null);
     const titleRef = useRef();
 
@@ -147,8 +152,23 @@ export default function ChessBoard({
             if (currentPiece) {
                 const playMove = successMove(state, x, y, currentPiece, titleRef);
 
-                updateRecordMoves(state, setRecordMoves, x, y, currentPiece, playMove, opponentPiece);
-                if (!playMove) {
+                if (playMove) {
+                    updateRecordMoves(
+                        state, 
+                        setRecordMoves, x, y, 
+                        currentPiece, 
+                        opponentPiece
+                    );
+                    setHistory(pre => [
+                        ...pre, {
+                        gx: state.coordinates.GridX, 
+                        gy: state.coordinates.GridY 
+                    }]);
+                    setNextPosition(pre => [
+                        ...pre,
+                        { x: x, y: y }
+                    ]);
+                } else {
                     state.activePiece.style.position = 'relative';
                     state.activePiece.style.removeProperty('left');
                     state.activePiece.style.removeProperty('top');
@@ -214,7 +234,12 @@ export default function ChessBoard({
                         </div>
                     ))}
                 </div>
-                <Recorder />
+                <Recorder 
+                    pieces={piece}
+                    board={state.squares}
+                    x={state.nextPosition.x}
+                    y={state.nextPosition.y}
+                />
             </div>
         </>
     );

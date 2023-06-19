@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { LightContext } from '../wraper/props';
-import './recorder.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
     faArrowLeft, 
@@ -8,20 +7,62 @@ import {
     faChessKing, 
     faChessKnight
 } from '@fortawesome/free-solid-svg-icons';
+import { 
+    capturedP 
+} from '../../Component/chessBoard/updateRecordMoves';
+import './recorder.scss';
 
-export default function Recorder() {
-    const { recordMoves, setRecordMoves } = useContext(LightContext);
-    const [count, setCount] = useState(0);
-    
-    const moveBack = () => {
+let count = 1;
+
+export default function Recorder({ pieces, board, x, y }) {
+    const { 
+        recordMoves, 
+        setRecordMoves,
+        nextPosition,
+        history,
+    } = useContext(LightContext);
+    const [last, setLast] = useState([]);
+
+    function moveBack() {
         if (recordMoves.length === 0) return;
-        setRecordMoves(prePos => prePos.slice(0, -1));
-        setLast([recordMoves.slice(-count)[0]]);
-    };
 
-    const moveForward = () => {
+        const lastMove = recordMoves[recordMoves.length - 1];
+        setRecordMoves(prevMoves => prevMoves.slice(0, -1));
+        setLast(prevLast => [...prevLast, lastMove]);
         
-    };
+        const prepos = history[history.length - count];
+        const nextpos = nextPosition[nextPosition.length - count];
+
+        pieces.map((p) => {
+            if (p.x === nextpos.x && p.y === nextpos.y) {
+                p.x = prepos.gx;
+                p.y = prepos.gy;
+            }
+            return p;
+        });
+
+        count += 1;
+    }
+
+    function moveForward() {
+        if (last.length === 0) return;
+        
+        count -= 1;
+        const nextMove = last[last.length - 1];
+        setLast(prevLast => prevLast.slice(0, -1));
+        setRecordMoves(prevMoves => [...prevMoves, nextMove]);
+
+        const prepos = history[history.length - count];
+        const nextpos = nextPosition[nextPosition.length - count];
+
+        pieces.map((p) => {
+            if (p.x === prepos.gx && p.y === prepos.gy) {
+                p.x = nextpos.x;
+                p.y = nextpos.y;
+            }
+            return p;
+        });
+    }
 
     return (
         <div className='record-container'>
