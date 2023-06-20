@@ -205,6 +205,7 @@ export default function ChessBoard({
                     piecesTurns={piecesTurns}
                     startGame={startGame}
                     setStartGame={setStartGame}
+                    piece={piece}
                 />
                 <div 
                     className="chessBoard" 

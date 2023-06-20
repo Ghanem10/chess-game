@@ -116,52 +116,48 @@ export default class Board {
     }
     
     checkingTheKing(gridx, gridy) {
-        const king = {
-            [Team.WHITE]: this.piece.find(t => t.Piece === Type.KING && t.team === Team.WHITE),
-            [Team.BLACK]: this.piece.find(t => t.Piece === Type.KING && t.team === Team.BLACK)
-        }
-
-        const validKingMoves = (king) => {
-            const validMoves = [];
-            for (const kingMove of king.possibleMoves) {
-                let isValidMove = true;
-                const hasProtection = this.piece
-                    .find(p => this.samePosition(p, kingMove.x, kingMove.y) && p.team !== king.team);
-                if (hasProtection) {
-                    this.piece = this.piece
-                        .filter(p => !this.samePosition(p, kingMove.x, kingMove.y));
-                }
-                for (const piece of this.piece) {
-                    if (piece.team === king.team) continue;
-                    const possibleMovesPiece = this.getValidMove(piece, this.piece);
-                    if (piece.Piece === Type.PAWN) {
-                        const possiblePawn = pawnAttacks(piece, this.piece);
-                        if (this.opponentMatchPosition(kingMove, possiblePawn)) {
-                            isValidMove = false;
-                        }
-                    } 
-                    else if (this.opponentMatchPosition(kingMove, possibleMovesPiece)) {
+        const king = this.piece
+            .find(t => t.Piece === Type.KING && t.team === this.currentTeam());
+        const attackedPos = [];
+        const validMoves = [];
+        for (const kingMove of king.possibleMoves) {
+            let isValidMove = true;
+            const hasProtection = this.piece
+                .find(p => this.samePosition(p, kingMove.x, kingMove.y) && p.team !== king.team);
+            if (hasProtection) {
+                this.piece = this.piece
+                    .filter(p => !this.samePosition(p, kingMove.x, kingMove.y));
+            }
+            for (const piece of this.piece) {
+                if (piece.team === king.team) continue;
+                const possibleMovesPiece = this.getValidMove(piece, this.piece);
+                if (piece.Piece === Type.PAWN) {
+                    const possiblePawn = pawnAttacks(piece, this.piece);
+                    if (this.opponentMatchPosition(kingMove, possiblePawn)) {
                         isValidMove = false;
                     }
-                }
-
-                if (isValidMove) {
-                    validMoves.push(kingMove);
+                } 
+                else if (this.opponentMatchPosition(kingMove, possibleMovesPiece)) {
+                    isValidMove = false;
+                    possibleMovesPiece.map((t) => {
+                        if (t.x === kingMove.x && t.y === kingMove.y) {
+                            attackedPos.push({ x: t.x, y: t.y });
+                        }
+                    });
+                    console.log(attackedPos)
                 }
             }
-            return validMoves;
-        }; 
 
-        const whiteKing = validKingMoves(king[Team.WHITE]);
-        const blackKing = validKingMoves(king[Team.BLACK]);
+            if (isValidMove) {
+                validMoves.push(kingMove);
+            }
+        }
 
         this.piece.map((p) => {
             if (this.samePosition(p, gridx, gridy)) {
-                if (p.Piece === Type.KING && p.team === Team.WHITE) {
-                    p.possibleMoves = whiteKing;
-                } else if (p.Piece === Type.KING && p.team === Team.BLACK) {
-                    p.possibleMoves = blackKing;
-                } 
+                if (p.Piece === Type.KING) {
+                    p.possibleMoves = validMoves;
+                }
                 if (p.team !== this.currentTeam()) {
                     p.possibleMoves = [];
                 }
@@ -170,27 +166,6 @@ export default class Board {
             return p;
         });
     }
-    
-    possiblePiecesMoves() {
-        for (const p of this.piece.filter(t => t.team === this.currentTeam())) {
-            const king = this.piece
-                .find(o => o.Piece === Type.KING && o.team === this.currentTeam());
-            for (const enemy of this.piece.filter(t => t.team !== this.currentTeam())) {
-                enemy.possibleMoves = this.getValidMove(enemy, this.piece);
-                const check = enemy.possibleMoves.some(t => this.samePosition(t, king.x, king.y));
-                if (check) {
-                    const ours = p.possibleMoves.filter(t => this.opponentMatchPosition(t, enemy.possibleMoves));
-                    if (ours) {
-                        if (p.Piece !== Type.KING) {
-                            p.possibleMoves = ours;
-                            this.setHighlight(p.possibleMoves)
-                        }
-                    }                    
-                }
-            }
-        }
-    }
-    
     isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
         const PawnDiraction = team === Team.WHITE ? -1 : 1;
         
