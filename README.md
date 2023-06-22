@@ -27,7 +27,7 @@ This is a chess game application that provides a user-friendly interface and fol
     
   ![main](https://github.com/gani1000/ChessGame/assets/107857762/79860080-c2c5-4be5-a755-d4816456773d)
 
-  Additionally, the sidebar is on hover.
+  Additionally, the sidebar is on hover, with instant updates to the UI.
     ![Screenshot 2023-06-22 122354](https://github.com/gani1000/ChessGame/assets/107857762/c3c0cb29-5885-4bac-8bc8-f07b0869e4f3)
 
 
