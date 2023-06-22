@@ -29,8 +29,8 @@ This is a chess game application that provides a user-friendly interface and fol
 
 
   Game End: After the players' time runs off, the end game component displays the winner.
-
-    ![end](https://github.com/gani1000/ChessGame/assets/107857762/e8ceba81-8f44-42ff-b8a3-926b8bdbdb42)
+  
+  ![end](https://github.com/gani1000/ChessGame/assets/107857762/0d3636cf-dbb8-4ce2-abcf-2cf3bda4922e)
 
 # Getting Started
 
