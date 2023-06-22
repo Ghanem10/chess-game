@@ -6,7 +6,7 @@ This is a chess game application that provides a user-friendly interface and fol
     
     * The following technologies were used to develop this chess game:
     
-     - React.JS: using component-based architecture.
+     - React.JS: using component-based architecture. Dynamic flow using react components.
      - JS: implementing the logic for the chess game and rules.
      - HTML, CSS(SCSS): for creating friendly user-interface.
      - Jest (Unit Testing).
