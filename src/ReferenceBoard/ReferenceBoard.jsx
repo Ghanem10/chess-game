@@ -14,7 +14,12 @@ export default function ReferenceBoard() {
     const [pawnPromotion, setPawnPromotion] = useState();
     const [startGame, setStartGame] = useState(false);
 
-    const board = new Board(piece, setHighlighSquare, highlightSquare, piecesTurns);
+    const board = new Board(
+        piece, 
+        setHighlighSquare, 
+        highlightSquare, 
+        piecesTurns
+    );
 
     useEffect(() => {
         addChessPieces(initialstate);

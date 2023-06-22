@@ -24,3 +24,10 @@ export function getPossibleKingMoves(king, chessBoard) {
 
     return possiblePositions;
 }  
+
+export function getCastlingKingMoves(king, pieces) {
+    const possibleMoves = [];
+
+
+    return possibleMoves;
+}

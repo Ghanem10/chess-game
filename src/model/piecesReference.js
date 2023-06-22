@@ -49,6 +49,7 @@ export default class Board {
                 if (this.samePosition(p, state.coordinates.GridX, state.coordinates.GridY)) {
                     p.EnpassantMove = false;
                     this.updateCoordinates(p, x, y);
+                    this.hasMove = true;
                     result.push(p);
                 } else if (!this.samePosition(p, x, y - PawnDir)) {
                     p.EnpassantMove = false;
@@ -62,6 +63,7 @@ export default class Board {
                 if (this.samePosition(p, state.coordinates.GridX, state.coordinates.GridY)) {
                     this.updateEnpassantMove(p, state, y);
                     this.updateCoordinates(p, x, y);
+                    this.hasMove = true;
                     this.promotePawn(p, y, setPawn, titleRef);
                     result.push(p);
                 } else if (!this.samePosition(p, x, y)) {
@@ -111,14 +113,14 @@ export default class Board {
             this.setHighlight(p.possibleMoves);
             return p;
         });
-        this.possiblePiecesMoves();
+        this.castlingKing();
+        this.kingInDanger();
         this.checkingTheKing(gridx, gridy);
     }
     
     checkingTheKing(gridx, gridy) {
         const king = this.piece
             .find(t => t.Piece === Type.KING && t.team === this.currentTeam());
-        const attackedPos = [];
         const validMoves = [];
         for (const kingMove of king.possibleMoves) {
             let isValidMove = true;
@@ -135,16 +137,13 @@ export default class Board {
                     const possiblePawn = pawnAttacks(piece, this.piece);
                     if (this.opponentMatchPosition(kingMove, possiblePawn)) {
                         isValidMove = false;
+                        break;
                     }
-                } 
-                else if (this.opponentMatchPosition(kingMove, possibleMovesPiece)) {
-                    isValidMove = false;
-                    possibleMovesPiece.map((t) => {
-                        if (t.x === kingMove.x && t.y === kingMove.y) {
-                            attackedPos.push({ x: t.x, y: t.y });
-                        }
-                    });
-                    console.log(attackedPos)
+                } else {
+                    if (this.opponentMatchPosition(kingMove, possibleMovesPiece)) {
+                        isValidMove = false;
+                        break;
+                    }
                 }
             }
 
@@ -166,6 +165,36 @@ export default class Board {
             return p;
         });
     }
+    
+    kingInDanger() {
+        for (const p of this.piece.filter(t => t.team === this.currentTeam())) {
+            
+            for (const move of p.possibleMoves) {
+                const king = this.piece.find(o => o.Piece === Type.KING && o.team === this.currentTeam());
+                
+                for (const enemy of this.piece.filter(t => t.team !== this.currentTeam())) {
+                    enemy.possibleMoves = this.getValidMove(enemy, this.piece);
+                    if (p.Piece === Type.PAWN) {
+                        if (enemy.possibleMoves.some(m => m.x !== enemy.x && this.samePosition(m, king.x, king.y))) {
+                            // code.
+                        }
+                    } else {
+                        if (enemy.possibleMoves.some(m => this.samePosition(m, king.x, king.y))) {
+                            // code.
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    castlingKing() {
+        for (const piece of this.piece.filter(p => p.team === this.currentTeam())) {
+            const king = this.piece.find(o => o.Piece === Type.KING && o.team === this.currentTeam());
+            // king castling logic.
+        }
+    }
+
     isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
         const PawnDiraction = team === Team.WHITE ? -1 : 1;
         
