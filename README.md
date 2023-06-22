@@ -4,7 +4,7 @@ This is a chess game application that provides a user-friendly interface and fol
 
 # Technologies Used
     
-    The following technologies were used to develop this chess game:
+    * The following technologies were used to develop this chess game:
     
      - React.JS: using component-based architecture.
      - JS: implementing the logic for the chess game and rules.
