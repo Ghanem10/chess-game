@@ -20,7 +20,7 @@ This is a chess game application that provides a user-friendly interface and fol
    * This page contains a front page for starting a new game. In addition, a sidebar to custom the game as needed.
      - features including changing the UI of the front page, and changing the board colors. 
 
-              ![front page chess](https://github.com/gani1000/ChessGame/assets/107857762/63011f0d-0a1d-4d08-8c35-b43aef5b4d26)
+       ![front page chess](https://github.com/gani1000/ChessGame/assets/107857762/63011f0d-0a1d-4d08-8c35-b43aef5b4d26)
 
 
   Main page: 
@@ -29,14 +29,14 @@ This is a chess game application that provides a user-friendly interface and fol
     Also, the game incorporates a timer feature and implements logic to record moves. The rendering of the pieces is              
     dynamic, with a simple button click. Additionally, the sidebar is on hover, with instant updates to the UI.
     
-          ![main](https://github.com/gani1000/ChessGame/assets/107857762/79860080-c2c5-4be5-a755-d4816456773d)
+    ![main](https://github.com/gani1000/ChessGame/assets/107857762/79860080-c2c5-4be5-a755-d4816456773d)
 
-        ![Screenshot 2023-06-22 122354](https://github.com/gani1000/ChessGame/assets/107857762/c3c0cb29-5885-4bac-8bc8-f07b0869e4f3)
+    ![Screenshot 2023-06-22 122354](https://github.com/gani1000/ChessGame/assets/107857762/c3c0cb29-5885-4bac-8bc8-f07b0869e4f3)
 
 
   Game End: After the players' time runs off, the end game component displays the winner.
   
-      ![end](https://github.com/gani1000/ChessGame/assets/107857762/0d3636cf-dbb8-4ce2-abcf-2cf3bda4922e)
+![end](https://github.com/gani1000/ChessGame/assets/107857762/0d3636cf-dbb8-4ce2-abcf-2cf3bda4922e)
 
 # Get Started
 
