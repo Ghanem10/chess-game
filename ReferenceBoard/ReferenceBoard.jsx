@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Team } from '../movement/constants/functions';
 import { addChessPieces } from '../layout/pieceImages';
 import ChessBoard from '../Component/chessBoard/chessBoard';
-import Board from '../model/piecesReference';
 import ListOptions from '../interface/listfront/list';
+import Board from '../model/piecesReference';
 
 const initialstate = [];
 export let piecesTurns = 1;
