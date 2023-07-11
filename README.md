@@ -31,6 +31,11 @@
     ![main](https://github.com/gani1000/ChessGame/assets/107857762/79860080-c2c5-4be5-a755-d4816456773d)
 
 
+# More to add
+
+- The game is left with some functionality unimplemented. The castling move and pinned piece aren't implemented yet.
+    So, those will be on the todo list. 
+
 # Get Started
 
 To run the chess game locally, follow these steps:
