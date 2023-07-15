@@ -34,7 +34,9 @@
 # More to add
 
 - The game is left with some functionality unimplemented. The castling move and pinned piece aren't implemented yet.
-    So, those will be on the todo list. 
+    So, those will be on the todo list.
+
+- Engine
 
 # Get Started
 
