@@ -31,33 +31,34 @@
     ![main](https://github.com/gani1000/ChessGame/assets/107857762/79860080-c2c5-4be5-a755-d4816456773d)
 
 
-# Application rodamap
-  - _test_
-      * testing_pieces_movements
-  - component
-      - chessboard
-          * ChessBoard.jsx
-          * UpdateRecordeMoves.js
-      - SCSS
-      - state
-          * stateManagement.ts
-  - interface
-      - listfront
-          * list.jsx
-          * list.scss
-      - recordmoves
-          * record.jsx
-          * record.scss
-      - sidebar
-          - JSX/static
-          - SCSS
-          * sideBarItems.jsx
-      - timer
-          - EndGame/JSX
-            * timerplayer.jsx
-            * timerplayer.scss
-      - warper
-         * Hook context provider
+# Application Roadmap
+- _test_
+  - testing_pieces_movements
+- component
+  - chessboard
+    - ChessBoard.jsx
+    - UpdateRecordeMoves.js
+  - SCSS
+  - state
+    - stateManagement.ts
+- interface
+  - listfront
+    - list.jsx
+    - list.scss
+  - recordmoves
+    - record.jsx
+    - record.scss
+  - sidebar
+    - JSX/static
+    - SCSS
+    - sideBarItems.jsx
+  - timer
+    - EndGame/JSX
+      - timerplayer.jsx
+      - timerplayer.scss
+  - warper
+    - Hook context provider
+
 
 # More to add
 
