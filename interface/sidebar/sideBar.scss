@@ -61,27 +61,24 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             }
         }
     }
-}
 
-
-/* media screen */
-
-@media (max-width: 1122px) {
-    .title {
-        max-width: 3rem;
-        min-width: 3rem;
-        
-       .items {
-            h1 span {
-                display: none;
-            }
-            .one {
-                padding-left: 11px;
-                span {
+    @media (max-width: 1122px) {
+        & {
+            max-width: 3rem;
+            min-width: 3rem;
+            
+           .items {
+                h1 span {
                     display: none;
                 }
-            }
-       }
+                .one {
+                    padding-left: 11px;
+                    span {
+                        display: none;
+                    }
+                }
+           }
+        }
     }
 }
 
@@ -120,12 +117,12 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             background-color: #24211f;
         }
     }
-}
 
-@media (max-width: 1122px) {
-    .support {
-        li span {
-            display: none;
+    @media (max-width: 1122px) {
+        & {
+            li span {
+                display: none;
+            }
         }
     }
 }

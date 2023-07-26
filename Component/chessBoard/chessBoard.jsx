@@ -20,6 +20,7 @@ export default function ChessBoard({
     setPawnPromotion, piecesTurns, 
     startGame, setStartGame 
 }) {
+    
     const [state, dispatch] = useReducer(stateManagement, { 
         squares: [], 
         coordinates: { GridX: -1, GridY: -1 },
@@ -56,6 +57,19 @@ export default function ChessBoard({
             },
         });
     }
+
+    /**
+     * 
+     * @todo { responsive chessBoard }
+     * 
+     * In the grabbingPiece and the dropingPiece change
+     * The hard coded value of the divided width for getting
+     * responsive width for square.
+     * 
+     * For each square, adjust its width and height
+     * check the DOM for that ['Element.style.width']
+     * 
+     */
     
     function grabbingPiece(e) {
         
@@ -96,6 +110,7 @@ export default function ChessBoard({
     
     function MovingPiece(e) {
         const Edges = Board.current;
+
         if (state.activePiece && Edges) {
 
             const MinX = Edges.offsetLeft - 15;
@@ -124,8 +139,7 @@ export default function ChessBoard({
                 state.activePiece.style.top = `${y}px`;
             }
         }
-        
-    }    
+    }
 
     function droppingPiece(e) {
         const Edges = Board.current;
@@ -181,7 +195,17 @@ export default function ChessBoard({
                     activePiece: null
                 },
             });
-            // fix bug
+            
+            /**
+             * @todo { fix model/pieceRef.updatePossibleMoves }
+             * 
+             * This function is tracking two values for updating
+             * all the moves once droppingPiece fn triggers.
+             * 
+             * creating an isolated fn for all moves is a good way
+             * but, debbuge the update fn and optimize the code.
+             */
+            
             updatePossibleMoves(x, y);
         }
     }

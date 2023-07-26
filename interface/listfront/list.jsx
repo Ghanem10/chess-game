@@ -5,6 +5,7 @@ import { LightContext } from '../wraper/props';
 import './list.scss';
 
 export default function ListOptions({ setStartGame }) {
+
     const { lightUI } = useContext(LightContext);
     const [updateUI, setUpdateUI] = useState("");
     const temp = useRef(null);
@@ -14,12 +15,15 @@ export default function ListOptions({ setStartGame }) {
         temp.current.classList.add('switch');
     }
 
-    useEffect(() => {
+    function toggleLight() {
         if (lightUI) {
             setUpdateUI("light");
         } else {
             setUpdateUI("");
         }
+    }
+    useEffect(() => {
+        toggleLight();
     }, [lightUI]);
 
     return (

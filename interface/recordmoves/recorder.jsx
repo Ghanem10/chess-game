@@ -11,7 +11,7 @@ import './recorder.scss';
 
 let count = 1;
 
-export default function Recorder({ pieces, board, x, y }) {
+export default function Recorder({ pieces }) {
     const { 
         recordMoves, 
         setRecordMoves,

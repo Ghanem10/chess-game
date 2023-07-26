@@ -3,16 +3,12 @@ $height: 65px;
 
 .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    width: 80%;
-    margin: 0 auto;
+    width: 100%;
     
     .chessBoard {
-      display: grid;
-      grid-template-columns: repeat(8, $height);
-      grid-template-rows: repeat(8, $width);
-      width: fit-content;
+      display: flex;
     }
     
     .white-square,
@@ -53,6 +49,7 @@ $height: 65px;
     .black-square {
       background-color: rgb(43, 39, 39);
     }
+  
 }
 
 
@@ -105,8 +102,8 @@ $height: 65px;
     .body-promotion {
       position: absolute;
       top: 50%;
-      left: 50%;
-      transform: translate(-18.8%, -50%);
+      left: 47%;
+      transform: translate(-50%, -50%);
       display: flex;
       align-items: center;
       justify-content: center;
