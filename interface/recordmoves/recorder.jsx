@@ -7,9 +7,6 @@ import {
     faChessKing, 
     faChessKnight
 } from '@fortawesome/free-solid-svg-icons';
-import { 
-    capturedP 
-} from '../../Component/chessBoard/updateRecordMoves';
 import './recorder.scss';
 
 let count = 1;

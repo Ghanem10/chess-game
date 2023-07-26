@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { faChessQueen, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LightContext } from '../../wraper/props';
@@ -16,6 +16,7 @@ export default function GameEnd(props) {
         piecesTurns, 
         setRematch,
     } = props;
+    
     const { setRecordMoves } = useContext(LightContext);
     const endGame = useRef(null);
     const title = useRef(null)
@@ -58,13 +59,13 @@ export default function GameEnd(props) {
     }, [piecesTurns, currTeam]);
 
     return (
-        <div className={`end-game-final`} ref={title}>
+        <div className='end-game-final' ref={title}>
             <FontAwesomeIcon 
                 id='end-game-icon'
                 onClick={removeTitle}
                 icon={faCircleXmark} 
             />
-            <div className={`game-end`} ref={endGame}>
+            <div className='game-end' ref={endGame}>
                 <div className='title-end-game'>
                     <h2>{team}</h2>
                     <FontAwesomeIcon icon={faChessQueen} id='icon-end'/>

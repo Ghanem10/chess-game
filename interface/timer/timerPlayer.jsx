@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './timerPlayer.scss';
 import GameEnd from './end/gameEnd';
 
-export default function TimerPlayer({ piecesTurns, startGame, setStartGame, piece }) {
+export default function TimerPlayer({ piecesTurns, startGame, setStartGame }) {
     const [ours, setOurs] = useState(180);
     const [opponent, setOpponent] = useState(180);
     const [rematch, setRematch] = useState(false);

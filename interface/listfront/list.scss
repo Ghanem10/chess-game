@@ -15,6 +15,13 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     border-radius: 8px;
     gap: 5.5rem;
     background-color: #272522;
+
+    .game-start-btn {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        gap: 20px;
+    }
 }
 
 .light {
@@ -86,14 +93,6 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     
 }
 
-
-.game-start-btn {
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-    gap: 20px;
-}
-
 .rematch {
     background-color:  #312e2b;
 }
@@ -114,16 +113,16 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     transition: 0.3s ease-in-out all;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 
     0 1px 2px 0 rgba(0, 0, 0, 0.06);
-}
-
-.rematch:hover {
-    color: white;
-    background-color: #423e39;
-    box-shadow: $btn-shadow;
-}
-
-.new-game:hover {
-    color: white;
-    background-color: #85b357;
-    box-shadow: $btn-shadow;
+    
+    .rematch:hover {
+        color: white;
+        background-color: #423e39;
+        box-shadow: $btn-shadow;
+    }
+    
+    .new-game:hover {
+        color: white;
+        background-color: #85b357;
+        box-shadow: $btn-shadow;
+    }
 }
