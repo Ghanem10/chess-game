@@ -1,4 +1,3 @@
-export const capturedP = [];
 let count = 1;
 
 export default function updateRecordMoves(state, setRecord, x, y, cur, oppCap) {
@@ -6,11 +5,12 @@ export default function updateRecordMoves(state, setRecord, x, y, cur, oppCap) {
     state.squares.map(row => {
         row.forEach(p => {
             if (p.x === x && p.y === y) {
+                
                 let capturePos = oppCap ? "x" : "";
-                if (oppCap) {
-                    capturedP.push(oppCap.image);
-                }
-                const moves = ` ${count}. ${checkPieceType(cur)}${capturePos}${p.position}, `;
+                const moves = ` 
+                    ${count}. ${checkPieceType(cur)}${capturePos}${p.position}, 
+                `;
+                
                 setRecord((prePos) => [...prePos, moves]);
                 count++;
             }

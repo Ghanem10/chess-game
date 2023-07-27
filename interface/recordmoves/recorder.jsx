@@ -11,12 +11,10 @@ import './recorder.scss';
 
 let count = 1;
 
-export default function Recorder({ pieces }) {
+export default function Recorder({ pieces, history, nextPosition, imgPiece }) {
     const { 
         recordMoves, 
-        setRecordMoves,
-        nextPosition,
-        history,
+        setRecordMoves
     } = useContext(LightContext);
     const [last, setLast] = useState([]);
 

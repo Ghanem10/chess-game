@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useRef } from "react";
+import React, { useContext, useEffect, useReducer, useRef, useState } from "react";
 import Squares from "../../layout/squares";
 import PawnPromotion from "../../layout/pawnPromotion";
 import stateManagement, { SQUARES } from "../state/stateManagement";
@@ -29,10 +29,13 @@ export default function ChessBoard({
     });
     const { 
         boardColor, 
-        setRecordMoves, 
-        setNextPosition,
-        setHistory,
+        setRecordMoves
     } = useContext(LightContext);
+
+    const [history, setHistory] = useState([]);
+    const [nextPosition, setNextPosition] = useState([]);
+    const [imgPiece, setImgPiece] = useState([]);
+
     const Board = useRef(null);
     const titleRef = useRef();
 
@@ -167,6 +170,12 @@ export default function ChessBoard({
                 const playMove = successMove(state, x, y, currentPiece, titleRef);
 
                 if (playMove) {
+                    if (opponentPiece) {
+                        setImgPiece(pre => [
+                            ...pre,
+                            opponentPiece.image
+                        ]);
+                    }
                     updateRecordMoves(
                         state, 
                         setRecordMoves, x, y, 
@@ -261,9 +270,9 @@ export default function ChessBoard({
                 </div>
                 <Recorder 
                     pieces={piece}
-                    board={state.squares}
-                    x={state.nextPosition.x}
-                    y={state.nextPosition.y}
+                    history={history}
+                    nextPosition={nextPosition}
+                    imgPiece={imgPiece}
                 />
             </div>
         </>

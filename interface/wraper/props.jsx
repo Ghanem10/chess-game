@@ -6,8 +6,6 @@ export default function Props({ children }) {
     const [lightUI, setLightUI] = useState(false);
     const [recordMoves, setRecordMoves] = useState([]);
     const [boardColor, setBoardColor] = useState(3);
-    const [nextPosition, setNextPosition] = useState([]);
-    const [history, setHistory] = useState([]);
 
     return (
         <LightContext.Provider 
@@ -17,11 +15,7 @@ export default function Props({ children }) {
                 recordMoves, 
                 setRecordMoves,
                 boardColor,
-                setBoardColor,
-                nextPosition,
-                setNextPosition,
-                history,
-                setHistory
+                setBoardColor
             }}>
             {children}
         </LightContext.Provider>
