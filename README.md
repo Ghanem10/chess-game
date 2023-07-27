@@ -62,8 +62,9 @@
 # More to add
 
 - The game is left with some functionality unimplemented. The castling move and pinned piece aren't implemented yet.
+  Some debugging for specific functionality related to the king.
     So, those will be on the todo list.
-
+- responsive layout on small screens. 
 - Engine
 
 # Get Started
