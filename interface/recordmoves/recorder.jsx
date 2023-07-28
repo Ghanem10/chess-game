@@ -28,10 +28,16 @@ export default function Recorder({ pieces, history, nextPosition, imgPiece }) {
         const prepos = history[history.length - count];
         const nextpos = nextPosition[nextPosition.length - count];
 
+        const img = imgPiece[imgPiece.length - count];
+
+        console.log(img)
         pieces.map((p) => {
             if (p.x === nextpos.x && p.y === nextpos.y) {
                 p.x = prepos.gx;
                 p.y = prepos.gy;
+            } 
+            if (p.x === prepos.x && p.y === prepos.y) {
+                p.image = img;
             }
             return p;
         });

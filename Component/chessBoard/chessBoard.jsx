@@ -170,12 +170,14 @@ export default function ChessBoard({
                 const playMove = successMove(state, x, y, currentPiece, titleRef);
 
                 if (playMove) {
-                    if (opponentPiece) {
-                        setImgPiece(pre => [
+                    setImgPiece(pre => {
+                        return [
                             ...pre,
-                            opponentPiece.image
-                        ]);
-                    }
+                            opponentPiece ? 
+                            opponentPiece.image : 
+                            currentPiece.image
+                        ];
+                    });
                     updateRecordMoves(
                         state, 
                         setRecordMoves, x, y, 
