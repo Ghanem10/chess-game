@@ -35,6 +35,7 @@ export default function ChessBoard({
     const [history, setHistory] = useState([]);
     const [nextPosition, setNextPosition] = useState([]);
     const [imgPiece, setImgPiece] = useState([]);
+    const [opp, setOpp] = useState([]);
 
     const Board = useRef(null);
     const titleRef = useRef();
@@ -62,16 +63,7 @@ export default function ChessBoard({
     }
 
     /**
-     * 
      * @todo { responsive chessBoard }
-     * 
-     * In the grabbingPiece and the dropingPiece change
-     * The hard coded value of the divided width for getting
-     * responsive width for square.
-     * 
-     * For each square, adjust its width and height
-     * check the DOM for that ['Element.style.width']
-     * 
      */
     
     function grabbingPiece(e) {
@@ -170,6 +162,10 @@ export default function ChessBoard({
                 const playMove = successMove(state, x, y, currentPiece, titleRef);
 
                 if (playMove) {
+
+                    if (opponentPiece) {
+                        setOpp(opponentPiece);
+                    }
                     setImgPiece(pre => {
                         return [
                             ...pre,
@@ -209,12 +205,6 @@ export default function ChessBoard({
             
             /**
              * @todo { fix model/pieceRef.updatePossibleMoves }
-             * 
-             * This function is tracking two values for updating
-             * all the moves once droppingPiece fn triggers.
-             * 
-             * creating an isolated fn for all moves is a good way
-             * but, debbuge the update fn and optimize the code.
              */
             
             updatePossibleMoves(x, y);
@@ -251,22 +241,20 @@ export default function ChessBoard({
                             className="row"
                             key={index}
                         >
-                        {row.map(({ position, x, y }, index) => {
-                            return (
-                                <Squares 
-                                    key={index}
-                                    piece={piece}
-                                    x={x} y={y}
-                                    highlightSquare={highlightSquare}
-                                    position={position}
-                                    state={state}
-                                    updateBoardColor={boardColor}
-                                    grabbingPiece={grabbingPiece}
-                                    MovingPiece={MovingPiece}
-                                    droppingPiece={droppingPiece}
-                                />
-                            )
-                        })}
+                        {row.map(({ position, x, y }, index) => (
+                            <Squares 
+                                key={index}
+                                piece={piece}
+                                x={x} y={y}
+                                highlightSquare={highlightSquare}
+                                position={position}
+                                state={state}
+                                updateBoardColor={boardColor}
+                                grabbingPiece={grabbingPiece}
+                                MovingPiece={MovingPiece}
+                                droppingPiece={droppingPiece}
+                            />
+                        ))}
                         </div>
                     ))}
                 </div>
@@ -275,6 +263,7 @@ export default function ChessBoard({
                     history={history}
                     nextPosition={nextPosition}
                     imgPiece={imgPiece}
+                    opp={opp}
                 />
             </div>
         </>

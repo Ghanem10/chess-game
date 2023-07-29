@@ -174,9 +174,10 @@ export default class Board {
                 
                 for (const enemy of this.piece.filter(t => t.team !== this.currentTeam())) {
                     enemy.possibleMoves = this.getValidMove(enemy, this.piece);
+                    
                     if (p.Piece === Type.PAWN) {
                         if (enemy.possibleMoves.some(m => m.x !== enemy.x && this.samePosition(m, king.x, king.y))) {
-                            // code.
+                            
                         }
                     } else {
                         if (enemy.possibleMoves.some(m => this.samePosition(m, king.x, king.y))) {

@@ -11,7 +11,7 @@ import './recorder.scss';
 
 let count = 1;
 
-export default function Recorder({ pieces, history, nextPosition, imgPiece }) {
+export default function Recorder({ pieces, history, nextPosition, imgPiece, opp }) {
     const { 
         recordMoves, 
         setRecordMoves
@@ -28,17 +28,16 @@ export default function Recorder({ pieces, history, nextPosition, imgPiece }) {
         const prepos = history[history.length - count];
         const nextpos = nextPosition[nextPosition.length - count];
 
-        const img = imgPiece[imgPiece.length - count];
+        /**
+         * @todo { create new div for object of the opponent }
+         */
 
-        console.log(img)
+        const img = imgPiece[imgPiece.length - count];
         pieces.map((p) => {
             if (p.x === nextpos.x && p.y === nextpos.y) {
                 p.x = prepos.gx;
                 p.y = prepos.gy;
             } 
-            if (p.x === prepos.x && p.y === prepos.y) {
-                p.image = img;
-            }
             return p;
         });
 
