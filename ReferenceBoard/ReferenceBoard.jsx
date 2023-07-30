@@ -26,23 +26,15 @@ export default function ReferenceBoard() {
     }, []);
     
     // update the piece position based on its possible moves.
-    const t = (s, b, c) => {
+    const updatePieceValidMove = (s, b, c) => {
         const m = s.some(a => a.x === b && a.y === c);
         return m ? true : false;
     }
 
     function successMove(state, x, y, currentPiece, titleRef) {
         const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
-        const validMove = t(currentPiece.possibleMoves, x, y);
-        const enpassantMove = board.isEnpassantMove(
-            state.coordinates.GridX,
-            state.coordinates.GridY,
-            x, y,
-            currentPiece.Piece,
-            currentPiece.team,
-            piece
-        );
-        // en-passant move has a bug.
+        const validMove = updatePieceValidMove(currentPiece.possibleMoves, x, y);
+
         if (currentPiece.team === Team.WHITE 
             && piecesTurns % 2 !== 1) {
             return false;
@@ -56,11 +48,11 @@ export default function ReferenceBoard() {
             titleRef, 
             state, 
             setPawnPromotion, 
-            enpassantMove, 
             PawnDiraction, 
             setPiece, 
             validMove
         );
+
         return playMove && piecesTurns++;
     }
     

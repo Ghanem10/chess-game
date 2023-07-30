@@ -89,6 +89,7 @@ export default function ChessBoard({
             });
 
             Element.style.position = 'absolute';
+            Element.style.cursor = "grabbing";
             Element.style.left = `${x}px`;
             Element.style.top = `${y}px`;
 
@@ -117,6 +118,7 @@ export default function ChessBoard({
             const y = e.clientY - 40;
             
             state.activePiece.style.position = 'absolute';
+            state.activePiece.style.cursor = "grabbing";
 
             if (x < MinX) {
                 state.activePiece.style.left = `${MinX}px`;
