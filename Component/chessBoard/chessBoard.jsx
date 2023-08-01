@@ -62,10 +62,6 @@ export default function ChessBoard({
         });
     }
 
-    /**
-     * @todo { responsive chessBoard }
-     */
-    
     function grabbingPiece(e) {
         
         const Element = e.target;
@@ -89,7 +85,6 @@ export default function ChessBoard({
             });
 
             Element.style.position = 'absolute';
-            Element.style.cursor = "grabbing";
             Element.style.left = `${x}px`;
             Element.style.top = `${y}px`;
 
