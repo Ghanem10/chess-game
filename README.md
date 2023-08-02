@@ -31,34 +31,60 @@
     ![main](https://github.com/gani1000/ChessGame/assets/107857762/79860080-c2c5-4be5-a755-d4816456773d)
 
 # Application Roadmap
-- _test_
-  - testing_pieces_movements
-- component
-  - chessboard
-    - ChessBoard.jsx
-    - UpdateRecordeMoves.js
-  - SCSS
-  - state
-    - stateManagement.ts
-- interface
-  - listfront
-    - list.jsx
-    - list.scss
-  - recordmoves
-    - record.jsx
-    - record.scss
-  - sidebar
-    - JSX/static
-    - SCSS
-    - sideBarItems.jsx
-  - timer
-    - EndGame/JSX
-      - timerplayer.jsx
-      - timerplayer.scss
-  - warper
-    - Hook context provider
-
-
+```
+|
+.____ _test_
+|    |
+|    .____ testing_pieces_movements
+|
+.____ component
+|    |
+|    .____ chessboard
+|    |    |
+|    |    .____ ChessBoard.jsx
+|    |    |
+|    |    .____ UpdateRecordeMoves.js
+|    |
+|    .____ SCSS
+|    |
+|    .____ state
+|         |
+|         .____ stateManagement.ts
+|
+.____ interface
+     |
+     .____ listfront
+     |    |
+     |    .____ list.jsx
+     |    |
+     |    .____ list.scss
+     |
+     .____ recordmoves
+     |    |
+     |    .____ record.jsx
+     |    |
+     |    .____ record.scss
+     |
+     .____ sidebar
+     |    |
+     |    .____ JSX/static
+     |    |
+     |    .____ SCSS
+     |    |
+     |    .____ sideBarItems.jsx
+     |
+     .____ timer
+     |    |
+     |    .____ EndGame/JSX
+     |         |
+     |         .____ timerplayer.jsx
+     |         |
+     |         .____ timerplayer.scss
+     |
+     .____ warper
+          |
+          .____ Hook context provider
+```
 # More to add
 
 - The game is left with some functionality unimplemented. The castling move and pinned piece aren't implemented yet.
