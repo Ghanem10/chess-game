@@ -28,7 +28,9 @@ export default function UnorderList() {
         <>
             {/* refactor */}
             <ul className='items'>
-                <h1><span>Chess.io</span></h1>
+                <h1 style={{
+                    backgroundImage: "url('./side.PNG')"
+                }}><span>Chess.io</span></h1>
                 <li className='play-list one'>
                     <FontAwesomeIcon 
                         icon={faChessBoard}
