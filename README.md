@@ -29,7 +29,13 @@
     to provide the best UX.
     
     ![main](https://github.com/gani1000/ChessGame/assets/107857762/79860080-c2c5-4be5-a755-d4816456773d)
-  
+
+  <table>
+    <tr>
+        <td>Foo</td>
+    </tr>
+</table>
+
 # Application Roadmap
 - _test_
   - testing_pieces_movements
