@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Team } from '../movement/constants/functions';
+import { Team, Type } from '../movement/constants/functions';
 import { addChessPieces } from '../layout/pieceImages';
 import ChessBoard from '../Component/chessBoard/chessBoard';
 import ListOptions from '../interface/listfront/list';
@@ -13,12 +13,15 @@ export default function ReferenceBoard() {
     const [highlightSquare, setHighlighSquare] = useState([]);
     const [pawnPromotion, setPawnPromotion] = useState();
     const [startGame, setStartGame] = useState(false);
+    const [hasMove, setHasMove] = useState(false);
 
     const board = new Board(
         piece, 
         setHighlighSquare, 
         highlightSquare, 
-        piecesTurns
+        piecesTurns,
+        hasMove,
+        setHasMove
     );
 
     useEffect(() => {
@@ -32,6 +35,15 @@ export default function ReferenceBoard() {
     }
 
     function successMove(state, x, y, currentPiece, titleRef) {
+
+        function promotePawn(piece) {
+            const promotionPawn = piece.team === Team.WHITE ? 0 : 7;
+            if (y === promotionPawn && piece.Piece === Type.PAWN) {
+                titleRef.current.classList.remove("hide-title");
+                setPawnPromotion(piece);
+            }
+        }
+
         const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
         const validMove = updatePieceValidMove(currentPiece.possibleMoves, x, y);
 
@@ -45,12 +57,12 @@ export default function ReferenceBoard() {
 
         const playMove = board.playMove(
             x, y, 
-            titleRef, 
-            state, 
-            setPawnPromotion, 
+            state,
+            promotePawn,
             PawnDiraction, 
             setPiece, 
-            validMove
+            validMove,
+            hasMove
         );
 
         return playMove && piecesTurns++;

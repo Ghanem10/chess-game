@@ -10,11 +10,24 @@ import {
 } from '../movement/rules/piecesIndex';
 
 export default class Board {
-    constructor(piece, setHighlight, highlight, piecesTurns) {
+    
+    /**
+     * Constructor function for initializing a game piece.
+     * 
+     * @param {Array} piece - An array containing the piece information, including img and position on the board.
+     * @param {Function} setHighlight - A function to set the highlight state that updates possible moves for the pieces.
+     * @param {boolean} highlight - The highlight state for the piece.
+     * @param {number} piecesTurns - The number of turns the piece has been active in the game.
+     * 
+     */
+
+    constructor(piece, setHighlight, highlight, piecesTurns, hasMove, setHasMove) {
         this.piece = piece;
         this.setHighlight = setHighlight;
         this.highlight = highlight;
         this.piecesTurns = piecesTurns;
+        this.hasMove = hasMove;
+        this.setHasMove = setHasMove;
     }
 
     currentTeam() {
@@ -26,14 +39,6 @@ export default class Board {
         return piece.x === x && piece.y === y;
     }
 
-    promotePawn(piece, y, setPawn, titleRef) {
-        const promotionPawn = piece.team === Team.WHITE ? 0 : 7;
-        if (y === promotionPawn && piece.Piece === Type.PAWN) {
-            titleRef.current.classList.remove("hide-title");
-            setPawn(piece);
-        }
-    }
-
     updateCoordinates(piece, x, y) {
         piece.x = x;
         piece.y = y;
@@ -43,7 +48,14 @@ export default class Board {
         piece.EnpassantMove = Math.abs(state.coordinates.GridY - y) === 2;
     }
 
-    playMove(x, y, titleRef, state, setPawn, PawnDir, setPiece, validMove) {
+    playMove(x, y, state, promotePawn, PawnDir, setPiece, validMove) {
+        
+        /**
+         * @todo { isEnpassantMove }
+         * 
+         * There is a bug with this function.
+         */
+
         if (this.isEnpassantMove()) {
             const EnpassantPawn = this.piece.reduce((result, p) => {
                 if (this.samePosition(p, state.coordinates.GridX, state.coordinates.GridY)) {
@@ -61,10 +73,14 @@ export default class Board {
         } else if (validMove) {
             const pawns = this.piece.reduce((result, p) => {
                 if (this.samePosition(p, state.coordinates.GridX, state.coordinates.GridY)) {
+
+                    if (p.Piece === Type.KING && p.Piece === Type.ROCK) {
+                        this.setHasMove(true);
+                    }
                     this.updateEnpassantMove(p, state, y);
                     this.updateCoordinates(p, x, y);
                     this.hasMove = true;
-                    this.promotePawn(p, y, setPawn, titleRef);
+                    promotePawn(p);
                     result.push(p);
                 } else if (!this.samePosition(p, x, y)) {
                     p.EnpassantMove = false;
@@ -109,26 +125,13 @@ export default class Board {
         });
 
         this.castlingKing();
+        this.castlingKing();
         this.checkingTheKing(gridx, gridy);
     }
 
     matchedOpponentMoves(s, kingMoves) {
         return kingMoves.some((m) => m.x === s.x && m.y === s.y);
     }
-
-
-    /**
-     * 
-     * @param {*} gridx 
-     * @param {*} gridy 
-     * 
-     * Only update pieces possible moves 
-     * if the enemy matches the king position 
-     * and possible moves.
-     * 
-     * @todo { Castling logic }
-     * 
-     */
 
     checkingTheKing(gridx, gridy) {
         "use strict";
@@ -155,6 +158,13 @@ export default class Board {
             for (const enemy of this.piece.filter((t) => t.team !== this.currentTeam())) {
                 const possibleMovesPiece = this.getValidMove(enemy, this.piece);
                 
+                /**
+                 * @todo { check }
+                 * 
+                 * If the piece x & y is equal to the king possible moves
+                 * Then, remove the possible moves from the other pieces in the array.
+                 */
+                
                 if (enemy.Piece === Type.PAWN) {
                     const attackPawnMoves = getPossibleAttackPawnMoves(enemy, this.piece);
                     
@@ -162,18 +172,6 @@ export default class Board {
                         (t) => this.samePosition(t, kingMove.x, kingMove.y)
                         )) {
                         valid = false;
-
-                        this.piece
-                        .filter((p) => p.team === this.currentTeam())
-                        .forEach((p) => {
-                            p.possibleMoves = p.possibleMoves.filter((move) =>
-                                possibleMovesPiece.some(
-                                    (t) => this.matchedOpponentMoves(t, [move])
-                                )
-                            );
-                            
-                            this.setHighlight(p.possibleMoves);
-                        });
                     }
                 } else {
                     if (possibleMovesPiece.some(
