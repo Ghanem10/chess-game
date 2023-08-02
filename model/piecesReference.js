@@ -158,12 +158,7 @@ export default class Board {
             for (const enemy of this.piece.filter((t) => t.team !== this.currentTeam())) {
                 const possibleMovesPiece = this.getValidMove(enemy, this.piece);
                 
-                /**
-                 * @todo { check }
-                 * 
-                 * If the piece x & y is equal to the king possible moves
-                 * Then, remove the possible moves from the other pieces in the array.
-                 */
+                this.helperAttackPath(king, kingMove, possibleMovesPiece);
                 
                 if (enemy.Piece === Type.PAWN) {
                     const attackPawnMoves = getPossibleAttackPawnMoves(enemy, this.piece);
@@ -175,7 +170,7 @@ export default class Board {
                     }
                 } else {
                     if (possibleMovesPiece.some(
-                        (t) => this.samePosition(t, kingMove.x, kingMove.y)
+                        (t) => this.samePosition(t, king.x, king.y)
                         )) {
                         valid = false;
 
@@ -188,6 +183,10 @@ export default class Board {
                             
                             this.setHighlight(p.possibleMoves);
                         });
+                    } else if (possibleMovesPiece.some(
+                        (t) => this.samePosition(t, kingMove.x, kingMove.y)
+                        )) {
+                        valid = false;
                     }
                 }
             }
@@ -209,6 +208,22 @@ export default class Board {
             }
             return p;
         });
+    }
+
+    helperAttackPath(moves, king, enemy) {
+        if (king.team !== this.currentTeam()) {
+            for (const enemyMoves of enemy) {
+                /**
+                 * @todo { path }
+                 * 
+                 * find the path from where the enemy piece
+                 * is attacking the king -- to update the
+                 * possible moves for the current team correctly.
+                 * 
+                 */
+                // console.log(enemyMoves)
+            }
+        }
     }
 
     castlingKing() {
