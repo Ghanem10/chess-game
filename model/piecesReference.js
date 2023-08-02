@@ -6,7 +6,7 @@ import {
     getPossibleKingMoves,
     getPossibleQueenMoves,
     getPossibleRookMoves,
-    pawnAttacks
+    getPossibleAttackPawnMoves,
 } from '../movement/rules/piecesIndex';
 
 export default class Board {
@@ -79,12 +79,6 @@ export default class Board {
         return true;
     }
     
-    opponentMatchPosition(king, opponent) {
-        const match = opponent.filter(op => king.x === op.x && king.y === op.y);
-        if (match.length <= 0) return;
-        return match ? true : false;
-    }
-
     getValidMove(piece, chessBoard) {
         switch(piece.Piece) {
             case Type.PAWN:
@@ -113,45 +107,98 @@ export default class Board {
             this.setHighlight(p.possibleMoves);
             return p;
         });
+
         this.castlingKing();
-        this.kingInDanger();
         this.checkingTheKing(gridx, gridy);
     }
-    
+
+    matchedOpponentMoves(s, kingMoves) {
+        return kingMoves.some((m) => m.x === s.x && m.y === s.y);
+    }
+
+
+    /**
+     * 
+     * @param {*} gridx 
+     * @param {*} gridy 
+     * 
+     * Only update pieces possible moves 
+     * if the enemy matches the king position 
+     * and possible moves.
+     * 
+     * @todo { Castling logic }
+     * 
+     */
+
     checkingTheKing(gridx, gridy) {
-        const king = this.piece
-            .find(t => t.Piece === Type.KING && t.team === this.currentTeam());
+        "use strict";
+
+        const king = this.piece.find(
+            (t) => t.Piece === Type.KING && t.team === this.currentTeam()
+        );
+        
         const validMoves = [];
+        
         for (const kingMove of king.possibleMoves) {
-            let isValidMove = true;
-            const hasProtection = this.piece
-                .find(p => this.samePosition(p, kingMove.x, kingMove.y) && p.team !== king.team);
+            let valid = true;
+            
+            const hasProtection = this.piece.find(
+                (enemy) => this.samePosition(enemy, kingMove.x, kingMove.y) && enemy.team !== king.team
+            );
+
             if (hasProtection) {
-                this.piece = this.piece
-                    .filter(p => !this.samePosition(p, kingMove.x, kingMove.y));
+                this.piece = this.piece.filter(
+                    (enemy) => !this.samePosition(enemy, kingMove.x, kingMove.y)
+                );
             }
-            for (const piece of this.piece) {
-                if (piece.team === king.team) continue;
-                const possibleMovesPiece = this.getValidMove(piece, this.piece);
-                if (piece.Piece === Type.PAWN) {
-                    const possiblePawn = pawnAttacks(piece, this.piece);
-                    if (this.opponentMatchPosition(kingMove, possiblePawn)) {
-                        isValidMove = false;
-                        break;
+
+            for (const enemy of this.piece.filter((t) => t.team !== this.currentTeam())) {
+                const possibleMovesPiece = this.getValidMove(enemy, this.piece);
+                
+                if (enemy.Piece === Type.PAWN) {
+                    const attackPawnMoves = getPossibleAttackPawnMoves(enemy, this.piece);
+                    
+                    if (attackPawnMoves.some(
+                        (t) => this.samePosition(t, kingMove.x, kingMove.y)
+                        )) {
+                        valid = false;
+
+                        this.piece
+                        .filter((p) => p.team === this.currentTeam())
+                        .forEach((p) => {
+                            p.possibleMoves = p.possibleMoves.filter((move) =>
+                                possibleMovesPiece.some(
+                                    (t) => this.matchedOpponentMoves(t, [move])
+                                )
+                            );
+                            
+                            this.setHighlight(p.possibleMoves);
+                        });
                     }
                 } else {
-                    if (this.opponentMatchPosition(kingMove, possibleMovesPiece)) {
-                        isValidMove = false;
-                        break;
+                    if (possibleMovesPiece.some(
+                        (t) => this.samePosition(t, kingMove.x, kingMove.y)
+                        )) {
+                        valid = false;
+
+                        this.piece
+                        .filter((p) => p.team === this.currentTeam())
+                        .forEach((p) => {
+                            p.possibleMoves = p.possibleMoves.filter((move) =>
+                                possibleMovesPiece.some((t) => this.matchedOpponentMoves(t, [move]))
+                            );
+                            
+                            this.setHighlight(p.possibleMoves);
+                        });
                     }
                 }
             }
 
-            if (isValidMove) {
+            if (valid) {
                 validMoves.push(kingMove);
             }
         }
-
+        
         this.piece.map((p) => {
             if (this.samePosition(p, gridx, gridy)) {
                 if (p.Piece === Type.KING) {
@@ -164,24 +211,6 @@ export default class Board {
             }
             return p;
         });
-    }
-    
-    kingInDanger() {
-        for (const p of this.piece.filter(t => t.team === this.currentTeam())) {
-            const king = this.piece.find(o => o.Piece === Type.KING && o.team === this.currentTeam());
-            
-            for (const movek of king.possibleMoves) {
-                for (const enemy of this.piece.filter(e => e.team !== this.currentTeam())) {
-                    enemy.possibleMoves = this.getValidMove(enemy, this.piece);
-                    const matchCurrentKing = enemy.possibleMoves.some(k => this.samePosition(k, movek.x, movek.y));
-                    if (matchCurrentKing) {
-                        if (p.Piece === Type.KING) continue;
-                        const m = p.possibleMoves.filter(t => this.samePosition(t, enemy.x, enemy.y));
-                        // console.log(m)
-                    }
-                }         
-            }
-        }
     }
 
     castlingKing() {
@@ -203,28 +232,3 @@ export default class Board {
         return false;
     }
 }
-
-
-/**
- * for (const move of p.possibleMoves) {
-        const king = this.piece.find(o => o.Piece === Type.KING && o.team === this.currentTeam());
-        
-        for (const enemy of this.piece.filter(t => t.team !== this.currentTeam())) {
-            enemy.possibleMoves = this.getValidMove(enemy, this.piece);
-            
-            if (p.Piece === Type.PAWN) {
-                if (enemy.possibleMoves.some(m => m.x !== move.x && this.samePosition(m, king.x, king.y))) {
-                    const current = p.possibleMoves.some(m => this.samePosition(m, enemy.x, enemy.y));
-                    console.log(current)
-                }
-            } else {
-                if (enemy.possibleMoves.some(m => this.samePosition(m, king.x, king.y))) {
-                    this.piece.map((p) => {
-                        this.setHighlight(enemy.possibleMoves);
-                        return p;
-                    });
-                }
-            }
-        }
-    }
- */

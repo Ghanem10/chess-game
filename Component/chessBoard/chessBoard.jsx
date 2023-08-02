@@ -199,12 +199,6 @@ export default function ChessBoard({
                     activePiece: null
                 },
             });
-            
-            /**
-             * @todo { fix model/pieceRef.updatePossibleMoves }
-             */
-            
-            updatePossibleMoves(x, y);
         }
     }
 

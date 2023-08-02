@@ -1,5 +1,5 @@
 import { Team } from "../constants/functions";
-import { squareOccupied, squareOccupiedByOpponent } from "../rules/reference";
+import { SquareEmptyOrOccupiedByOpponent, squareOccupied, squareOccupiedByOpponent } from "../rules/reference";
 
 export function getPossiblePawnMoves(pawn, chessBoard) {
     const possiblePositions = [];
@@ -18,8 +18,7 @@ export function getPossiblePawnMoves(pawn, chessBoard) {
             }
         }
     }
-  
-    // Attack moves
+
     const attackLeftPosition = { x: pawn.x - 1, y: pawn.y + pawnDirection };
     const attackRightPosition = { x: pawn.x + 1, y: pawn.y + pawnDirection };
     if (squareOccupiedByOpponent(attackLeftPosition.x, attackLeftPosition.y, chessBoard, pawn.team)) {
@@ -30,13 +29,12 @@ export function getPossiblePawnMoves(pawn, chessBoard) {
     }
 
     return possiblePositions;
-    // En-passant moves
 }
 
-// fix the bug in the previous function.
-export function pawnAttacks(pawn, chessBoard) {
+export function getPossibleAttackPawnMoves(pawn, chessBoard) {
     const possiblePositions = [];
     const pawnDirection = pawn.team === Team.WHITE ? -1 : 1;
+
     const attackLeftPosition = { x: pawn.x - 1, y: pawn.y + pawnDirection };
     const attackRightPosition = { x: pawn.x + 1, y: pawn.y + pawnDirection };
     if (!squareOccupied(attackLeftPosition.x, attackLeftPosition.y, chessBoard, pawn.team)) {
