@@ -1,4 +1,4 @@
-
+ 
 /**
  * @param {number[][]} intervals
  * @param {number[]} newInterval
