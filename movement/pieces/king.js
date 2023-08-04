@@ -1,3 +1,5 @@
+'use strict';
+
 import { Type, samePosition } from "../constants/functions";
 import { squareOccupied, squareOccupiedByOpponent } from "../rules/reference";
 
@@ -27,15 +29,6 @@ export function getPossibleKingMoves(king, chessBoard) {
 }  
 
 export function getCastlingKingMoves(king, pieces) {
-    "use strict";
-
-    /**
-     * @todo { enemy possible moves }
-     * 
-     * if enemy possible moves matches rock possible moves
-     * the loop must break, however, it doesn't.
-     * 
-     */
 
     const possiblePositions = [];
     
@@ -89,7 +82,6 @@ export function getCastlingKingMoves(king, pieces) {
         if (!path) {
             continue;
         }
-
         possiblePositions.push({ x: rock.x, y: rock.y });
     }
 

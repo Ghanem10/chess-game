@@ -47,40 +47,49 @@ export default class Board {
         piece.EnpassantMove = Math.abs(state.coordinates.GridY - y) === 2;
     }
 
+    isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
+        const PawnDiraction = team === Team.WHITE ? -1 : 1;
+        
+        if (type === Type.PAWN) {
+            if ((x - previousX === -1 || x - previousX === 1) && y - previousY === PawnDiraction) {
+                const piece = chessBoard.find((p) => this.samePosition(p, x, y - PawnDiraction) && p.EnpassantMove);
+                if (piece) return true;
+            }
+        }
+        return false;
+    }
+
     playMove(x, y, state, currentPiece, promotePawn, PawnDir, setPiece, validMove) {
         
         const targetRook = this.piece.find(
             (r) => this.samePosition(r, x, y)
         );
         
-        if (currentPiece.Piece === Type.KING && targetRook.Piece === Type.ROCK 
-            && currentPiece.team === targetRook.team) {
+        if (currentPiece.Piece === Type.KING && targetRook?.Piece === Type.ROCK && this.currentTeam()) {
 
             const direction = (targetRook.x - currentPiece.x > 0) ? 1 : -1;
             const newKingPosition = currentPiece.x + direction * 2;
+
+            const K = currentPiece.Piece === Type.KING && currentPiece.possibleMoves.some(
+                (t) => this.samePosition(t, targetRook.x, targetRook.y)
+            );
             
             this.piece.map((p) => {
 
-                if (p.Piece === currentPiece.Piece && p.team === this.currentTeam()) {
-                    p.x = newKingPosition;
+                if (p.team === this.currentTeam()) {
                     
-                    // rock is gone here, if target.x this leads to duplicate? 
-                } else if (p.Piece === targetRook.Piece && p.team === this.currentTeam()) {
-                    p.x = newKingPosition - direction;
+                    if (p.Piece === currentPiece.Piece && K) {
+                        p.x = newKingPosition;
+                        
+                    } else if (this.samePosition(p, targetRook.x, targetRook.y) && K) {
+                        p.x = newKingPosition - direction;
+                    }
                 }
                 
                 return p;
             });
-
-            return true;
-        }
-
-        /**
-         * @todo { isEnpassantMove }
-         * 
-         * There is a bug with this function.
-         */
-
+        } 
+        
         if (this.isEnpassantMove()) {
 
             const EnpassantPawn = this.piece.reduce((result, p) => {
@@ -156,8 +165,7 @@ export default class Board {
         return kingMoves.some((m) => m.x === s.x && m.y === s.y);
     }
 
-    checkingTheKing(gridx, gridy) {
-        "use strict";
+    kingMovementsAndProtection(gridx, gridy) {
 
         const king = this.piece.find(
             (t) => t.Piece === Type.KING && t.team === this.currentTeam()
@@ -253,11 +261,7 @@ export default class Board {
 
         this.piece.map((p) => {
             p.possibleMoves = this.getValidMove(p, this.piece);
-
-            if (p.team !== this.currentTeam()) {
-                p.possibleMoves = [];
-            }
-
+            
             this.setHighlight(p.possibleMoves);
             return p;
         });
@@ -275,18 +279,6 @@ export default class Board {
             ];
         }
 
-        this.checkingTheKing(gridx, gridy);
-    }
-
-    isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
-        const PawnDiraction = team === Team.WHITE ? -1 : 1;
-        
-        if (type === Type.PAWN) {
-            if ((x - previousX === -1 || x - previousX === 1) && y - previousY === PawnDiraction) {
-                const piece = chessBoard.find((p) => this.samePosition(p, x, y - PawnDiraction) && p.EnpassantMove);
-                if (piece) return true;
-            }
-        }
-        return false;
+        this.kingMovementsAndProtection(gridx, gridy);
     }
 }
