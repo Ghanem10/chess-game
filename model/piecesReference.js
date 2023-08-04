@@ -47,15 +47,23 @@ export default class Board {
         piece.EnpassantMove = Math.abs(state.coordinates.GridY - y) === 2;
     }
 
-    isEnpassantMove(previousX, previousY, x, y, type, team, chessBoard) {
-        const PawnDiraction = team === Team.WHITE ? -1 : 1;
+    isEnpassantMove(state, x, y, currentPiece, chessBoard) {
+        const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
         
-        if (type === Type.PAWN) {
-            if ((x - previousX === -1 || x - previousX === 1) && y - previousY === PawnDiraction) {
-                const piece = chessBoard.find((p) => this.samePosition(p, x, y - PawnDiraction) && p.EnpassantMove);
-                if (piece) return true;
+        if (currentPiece.Piece === Type.PAWN) {
+            
+            if ((x - state.coordinates.GridX === -1 || x - state.coordinates.GridX === 1)
+                && y - state.coordinates.GridY === PawnDiraction) {
+
+                const piece = chessBoard.find(
+                    (p) => this.samePosition(p, x, y - PawnDiraction) 
+                        && p.EnpassantMove && p.Piece === Type.PAWN
+                );
+                
+                return piece ? true : false;
             }
         }
+
         return false;
     }
 
@@ -64,7 +72,9 @@ export default class Board {
         const targetRook = this.piece.find(
             (r) => this.samePosition(r, x, y)
         );
-        
+
+        const enpassant = this.isEnpassantMove(state, x, y, currentPiece, this.piece);
+
         if (currentPiece.Piece === Type.KING && targetRook?.Piece === Type.ROCK && this.currentTeam()) {
 
             const direction = (targetRook.x - currentPiece.x > 0) ? 1 : -1;
@@ -90,7 +100,7 @@ export default class Board {
             });
         } 
         
-        if (this.isEnpassantMove()) {
+        if (enpassant) {
 
             const EnpassantPawn = this.piece.reduce((result, p) => {
 

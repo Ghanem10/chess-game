@@ -1,5 +1,5 @@
 import { Team } from "../constants/functions";
-import { SquareEmptyOrOccupiedByOpponent, squareOccupied, squareOccupiedByOpponent } from "../rules/reference";
+import { squareOccupied, squareOccupiedByOpponent } from "../rules/reference";
 
 export function getPossiblePawnMoves(pawn, chessBoard) {
     const possiblePositions = [];
