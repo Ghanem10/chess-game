@@ -1,3 +1,4 @@
+import { Type, samePosition } from "../constants/functions";
 import { squareOccupied, squareOccupiedByOpponent } from "../rules/reference";
 
 export function getPossibleKingMoves(king, chessBoard) {
@@ -26,8 +27,71 @@ export function getPossibleKingMoves(king, chessBoard) {
 }  
 
 export function getCastlingKingMoves(king, pieces) {
-    const possibleMoves = [];
+    "use strict";
 
+    /**
+     * @todo { enemy possible moves }
+     * 
+     * if enemy possible moves matches rock possible moves
+     * the loop must break, however, it doesn't.
+     * 
+     */
 
-    return possibleMoves;
+    const possiblePositions = [];
+    
+    if (king.hasmoved) return possiblePositions;
+
+    const rocks = pieces.filter(
+        (p) => p.Piece === Type.ROCK && p.team === king.team && !p.hasmoved
+    );
+
+    for (const rock of rocks) {
+
+        const directionKing = (rock.x - king.x > 0) ? 1 : -1;
+
+        const copyKingPosition = Object.assign({}, king);
+        copyKingPosition.x += directionKing;
+
+        if (!rock.possibleMoves.some(
+            (t) => samePosition(t, copyKingPosition.x, copyKingPosition.y)
+            )) {
+            continue;
+        }
+
+        const targetRankMoves = rock.possibleMoves.filter(
+            (r) => r.y === king.y
+        );
+
+        const enemyPieces = pieces.filter(
+            (p) => p.team !== king.team
+        );
+
+        let path = true;
+
+        for (const enemy of enemyPieces) {
+
+            for (const moves of enemy.possibleMoves) {
+                
+                if (targetRankMoves.some((s) => samePosition(s, moves.x, moves.y))) {
+                    path = false;
+                }
+
+                if (!path) {
+                    break;
+                }
+            }
+
+            if (!path) {
+                break;
+            }
+        }
+
+        if (!path) {
+            continue;
+        }
+
+        possiblePositions.push({ x: rock.x, y: rock.y });
+    }
+
+    return possiblePositions;
 }

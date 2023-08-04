@@ -30,6 +30,7 @@ export function addChessPieces(initialstate) {
             y: 0, 
             possibleMoves: [],
             Piece: `${pieces[k]}`, 
+            hasmoved: false,
             team: 'black',
         });
         initialstate.push({
@@ -37,6 +38,7 @@ export function addChessPieces(initialstate) {
             x: k, y: 7, 
             possibleMoves: [],
             Piece: `${pieces[k]}`, 
+            hasmoved: false,
             team: 'white',
         });
     }

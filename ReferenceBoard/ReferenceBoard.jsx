@@ -9,19 +9,18 @@ const initialstate = [];
 export let piecesTurns = 1;
 
 export default function ReferenceBoard() {
+    "use strict";
+    
     const [piece, setPiece] = useState(initialstate);
     const [highlightSquare, setHighlighSquare] = useState([]);
     const [pawnPromotion, setPawnPromotion] = useState();
     const [startGame, setStartGame] = useState(false);
-    const [hasMove, setHasMove] = useState(false);
 
     const board = new Board(
         piece, 
         setHighlighSquare, 
         highlightSquare, 
         piecesTurns,
-        hasMove,
-        setHasMove
     );
 
     useEffect(() => {
@@ -58,11 +57,11 @@ export default function ReferenceBoard() {
         const playMove = board.playMove(
             x, y, 
             state,
+            currentPiece,
             promotePawn,
             PawnDiraction, 
             setPiece, 
             validMove,
-            hasMove
         );
 
         return playMove && piecesTurns++;
