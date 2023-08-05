@@ -175,6 +175,34 @@ export default class Board {
         return kingMoves.some((m) => m.x === s.x && m.y === s.y);
     }
 
+    findAttackingPath(king, enemy) {
+        // todo, remove the path that doesn't 
+        // have a king from an array.
+
+        const pathToKingPosition = [];
+
+        let pathExist = true;
+        let stackAttackPath = [];
+
+        for (const moves of enemy.possibleMoves) {
+                
+            if (this.samePosition(moves, king.x, king.y)) {
+                
+                pathToKingPosition.push(...stackAttackPath);
+                
+                pathExist = false;
+            } 
+
+            stackAttackPath.push(moves);
+
+            if (!pathExist) {
+                break;
+            }
+        }
+
+        return pathToKingPosition;
+    }
+    
     kingMovementsAndProtection(gridx, gridy) {
 
         const king = this.piece.find(
@@ -198,37 +226,33 @@ export default class Board {
 
             for (const enemy of this.piece.filter((t) => t.team !== this.currentTeam())) {
                 const possibleMovesPiece = this.getValidMove(enemy, this.piece);
+
+                const pathToKingPosition = this.findAttackingPath(king, enemy);
                 
-                this.helperAttackPath(king, kingMove, possibleMovesPiece);
-                
+                console.log(pathToKingPosition)
                 if (enemy.Piece === Type.PAWN) {
                     const attackPawnMoves = getPossibleAttackPawnMoves(enemy, this.piece);
                     
-                    if (attackPawnMoves.some(
-                        (t) => this.samePosition(t, kingMove.x, kingMove.y)
+                    if (attackPawnMoves?.some(
+                        (t) => t.x !== enemy.x && this.samePosition(t, kingMove.x, kingMove.y)
                         )) {
                         valid = false;
                     }
-                } else {
-                    if (possibleMovesPiece.some(
-                        (t) => this.samePosition(t, king.x, king.y)
-                        )) {
-                        valid = false;
-
-                        this.piece
-                        .filter((p) => p.team === this.currentTeam())
-                        .forEach((p) => {
-                            p.possibleMoves = p.possibleMoves.filter((move) =>
-                                possibleMovesPiece.some((t) => this.matchedOpponentMoves(t, [move]))
-                            );
-                            
-                            this.setHighlight(p.possibleMoves);
-                        });
-                    } else if (possibleMovesPiece.some(
-                        (t) => this.samePosition(t, kingMove.x, kingMove.y)
-                        )) {
-                        valid = false;
-                    }
+                } else if (possibleMovesPiece?.some(
+                    (t) => this.samePosition(t, kingMove.x, kingMove.y)
+                    )){
+                        
+                    valid = false;
+                    
+                    this.piece
+                    .filter((p) => p.team === this.currentTeam())
+                    .forEach((p) => {
+                        p.possibleMoves = pathToKingPosition.filter((move) =>
+                            p.possibleMoves.some(t => this.matchedOpponentMoves(t, [move]))
+                        );
+                        
+                        this.setHighlight(p.possibleMoves);
+                    });
                 }
             }
 
@@ -249,22 +273,6 @@ export default class Board {
             }
             return p;
         });
-    }
-
-    helperAttackPath(moves, king, enemy) {
-        if (king.team !== this.currentTeam()) {
-            for (const enemyMoves of enemy) {
-                /**
-                 * @todo { path }
-                 * 
-                 * find the path from where the enemy piece
-                 * is attacking the king -- to update the
-                 * possible moves for the current team correctly.
-                 * 
-                 */
-                // console.log(enemyMoves)
-            }
-        }
     }
 
     calculateAllMoves(gridx, gridy) {
