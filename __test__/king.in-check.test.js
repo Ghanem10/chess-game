@@ -1,0 +1,1 @@
+// Test all the checks to the king, mainly the ones that are close to the king's position.
