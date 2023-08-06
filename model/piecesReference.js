@@ -210,7 +210,7 @@ export default class Board {
             const x = Math.abs(moves.x - king.x);
             const y = Math.abs(moves.y - king.y);
 
-            // For diagonal if the results of [x, y] are the same, then, the move leads to the king
+            // Push the results of x === y
             if (x === y) {
                 pathToKingPosition.push(moves);
             }
@@ -267,7 +267,6 @@ export default class Board {
                     
                     if (attackPawnMoves?.some((t) => this.samePosition(t, king.x, king.y))) {
                         
-                        console.log(king)
                         // Push the path to update the pieces possible moves.
                         this.piece.forEach((p) => {
                             p.possibleMoves = p.possibleMoves.filter(
