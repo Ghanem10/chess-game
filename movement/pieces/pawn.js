@@ -21,9 +21,12 @@ export function getPossiblePawnMoves(pawn, chessBoard) {
 
     const attackLeftPosition = { x: pawn.x - 1, y: pawn.y + pawnDirection };
     const attackRightPosition = { x: pawn.x + 1, y: pawn.y + pawnDirection };
+    
     if (squareOccupiedByOpponent(attackLeftPosition.x, attackLeftPosition.y, chessBoard, pawn.team)) {
         possiblePositions.push(attackLeftPosition);
-    } else if (squareOccupiedByOpponent(attackRightPosition.x, attackRightPosition.y, chessBoard, pawn.team)) {
+    }
+    
+    if (squareOccupiedByOpponent(attackRightPosition.x, attackRightPosition.y, chessBoard, pawn.team)) {
         possiblePositions.push(attackRightPosition);
     }
 
@@ -36,9 +39,12 @@ export function getPossibleAttackPawnMoves(pawn, chessBoard) {
 
     const attackLeftPosition = { x: pawn.x - 1, y: pawn.y + pawnDirection };
     const attackRightPosition = { x: pawn.x + 1, y: pawn.y + pawnDirection };
+    
     if (!squareOccupied(attackLeftPosition.x, attackLeftPosition.y, chessBoard, pawn.team)) {
         possiblePositions.push(attackLeftPosition);
-    } else if (!squareOccupied(attackRightPosition.x, attackRightPosition.y, chessBoard, pawn.team)) {
+    }
+    
+    if (!squareOccupied(attackRightPosition.x, attackRightPosition.y, chessBoard, pawn.team)) {
         possiblePositions.push(attackRightPosition);
     }
 

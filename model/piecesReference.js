@@ -190,35 +190,29 @@ export default class Board {
         }
     }
 
-    matchedOpponentMoves(s, kingMoves) {
-        return kingMoves.some((m) => m.x === s.x && m.y === s.y);
-    }
-
     findAttackingPath(king, enemy) {
-        // todo, remove the path that doesn't 
-        // have a king from an array.
+        
+        /**
+         * @summary { Loop and check if the resulted integers are the same }
+         * 
+         * The results of the path that leads to the king's position should
+         * have the same indices as x === y.
+         * 
+        */
 
+        // Store the moves that leads to the king's position.
         const pathToKingPosition = [];
-
-        let pathExist = true;
-        let stackAttackPath = [];
-
-        // Iterate through the enemy moves to check if it matches the king moves matches.
+        
+        // Iterate over the enemy's possible moves to check the path.
         for (const moves of enemy.possibleMoves) {
-                
-            // Once the king position is reached, push the stack of the path to the king.
-            if (this.samePosition(moves, king.x, king.y)) {
-                
-                pathToKingPosition.push(...stackAttackPath);
-                
-                pathExist = false;
-            } 
 
-            stackAttackPath.push(moves);
+            // check which possible moves of the enemy's leads to the king.
+            const x = Math.abs(moves.x - king.x);
+            const y = Math.abs(moves.y - king.y);
 
-            // break if the path to the king' position has reached.
-            if (!pathExist) {
-                break;
+            // For diagonal if the results of [x, y] are the same, then, the move leads to the king
+            if (x === y) {
+                pathToKingPosition.push(moves);
             }
         }
 
@@ -256,44 +250,60 @@ export default class Board {
             // Loop though the enemy pieces to track when the enemy piece delivers check to the king.
             for (const enemy of this.piece.filter((t) => t.team !== this.currentTeam())) {
                 
+                
                 // Get their possible moves to make the necessary comparison.
                 const possibleMovesPiece = this.getValidMove(enemy, this.piece);
-
-
-                // Tracking the path from the enemy piece to the king when it delivers check.
-                const pathToKingPosition = this.findAttackingPath(king, enemy);
                 
-
                 // Checking the enemy piece type to remove the invalid moves for the king.
                 if (enemy.Piece === Type.PAWN) {
                     
                     const attackPawnMoves = getPossibleAttackPawnMoves(enemy, this.piece);
 
                     // Loop through the pawn attacking moves and update the king valid moves accordingly.
-                    if (attackPawnMoves?.some(
-                        (t) => t.x !== king.x && this.samePosition(t, kingMove.x, kingMove.y)
-                        )) {
+                    if (attackPawnMoves?.some((t) => this.samePosition(t, kingMove.x, kingMove.y))) {
 
                         valid = false;
                     }
-                } else {
                     
-                    // Loop through the other pieces, excluding the king, and remove any king moves matches.
-                    if (possibleMovesPiece?.some((t) => this.samePosition(t, kingMove.x, kingMove.y))) {
+                    if (attackPawnMoves?.some((t) => this.samePosition(t, king.x, king.y))) {
                         
-                        valid = false;
-                
-                        this.piece
-                        .filter((p) => p.team === this.currentTeam())
-                        .forEach((p) => {
-                            p.possibleMoves = p.possibleMoves.filter((move) =>
-                                possibleMovesPiece.some(t => this.matchedOpponentMoves(t, [move]))
+                        console.log(king)
+                        // Push the path to update the pieces possible moves.
+                        this.piece.forEach((p) => {
+                            p.possibleMoves = p.possibleMoves.filter(
+                                (pos) => this.samePosition(pos, enemy.x, enemy.y)
                             );
-                            
+
+                            // Update the possible moves of all pieces.
                             this.setHighlight(p.possibleMoves);
                         });
                     }
-                }
+                   
+                    // If the enemy's possible moves matches the king's possible moves, then, that square isn't valid. 
+                } else if (possibleMovesPiece?.some((t) => this.samePosition(t, kingMove.x, kingMove.y))) {
+                   
+                    valid = false;
+
+                    // If the enemy's possible moves matches the king's moves position, then block by other pieces.
+                    if (possibleMovesPiece?.some((t) => this.samePosition(t, king.x, king.y))) {
+                            
+                        // Tracking the path from the enemy piece to the king when it delivers check.
+                        const pathToKingPosition = this.findAttackingPath(king, enemy);
+                        
+                        // Push the path to update the pieces possible moves.
+                        this.piece.forEach((p) => {
+                            p.possibleMoves = p.possibleMoves.filter(
+                                (pos) => pathToKingPosition.some(
+                                    (m) => this.samePosition(pos, m.x, m.y) ||
+                                        this.samePosition(pos, enemy.x, enemy.y)
+                                )
+                            );
+    
+                            // Update the possible moves of all pieces.
+                            this.setHighlight(p.possibleMoves);
+                        });
+                    }
+                } 
             }
 
             // Update the valid moves for the king.
@@ -325,6 +335,33 @@ export default class Board {
         });
     }
 
+
+    /**
+    
+        * @todo { king's checkmating attacks }
+    
+    */
+
+    // When the piece unlocks the path for a check from another piece to the enemy king.
+    discoverCheck() {}
+
+
+    // When the two enemy pieces deliver a check at the same time.
+    doubleCheck() {}
+
+    // When the knight delivers a check to the enemy king and the king has no moves to make.
+    smotheredMate() {}
+
+
+    // When the king is not in-check and has no moves or its pieces moves to make.
+    steelMate() {}
+
+
+    // When the king is in-check and has no moves or no pieces to cover or remove the attacking piece.
+    checkMate() {}
+
+
+    // #todo. This fn should be called when drop piece is triggered.
     calculateAllMoves(gridx, gridy) {
 
         // This fn is triggere's the on-grab fn [chassBoard/component] to calcualte all moves.
@@ -353,7 +390,6 @@ export default class Board {
             ];
         }
 
-        // Todo, All the moves must be calculate when you drop the piece, not on grabbing the piece.
         this.kingMovementsAndProtection(gridx, gridy);
     }
 }
