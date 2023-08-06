@@ -32,6 +32,7 @@ export default function ChessBoard({
         setRecordMoves
     } = useContext(LightContext);
 
+    // These states can be incorporated with the useReducer state for consistency.
     const [history, setHistory] = useState([]);
     const [nextPosition, setNextPosition] = useState([]);
     const [imgPiece, setImgPiece] = useState([]);
@@ -40,6 +41,7 @@ export default function ChessBoard({
     const Board = useRef(null);
     const titleRef = useRef();
 
+    // Create the chess board with variables declared at the top level of the component.
     function createBoard() {
         const Board = [];
 
@@ -95,6 +97,7 @@ export default function ChessBoard({
                 }
             });
             
+            // The possible moves should really be in the dropping piece fn.
             updatePossibleMoves(gridx, gridy);
         }
     }
@@ -133,6 +136,7 @@ export default function ChessBoard({
         }
     }
 
+    // This function handles all the logic of the pieces.
     function droppingPiece(e) {
         const Edges = Board.current;
 
@@ -150,10 +154,15 @@ export default function ChessBoard({
                 }
             });
 
-            const currentPiece = piece
-                .find(t => t.x === state.coordinates.GridX && t.y === state.coordinates.GridY);
-            const opponentPiece = piece
-                .find(t => samePosition(t, x, y) && t.team !== currentPiece.team);
+            // Get the piece previous position.
+            const currentPiece = piece.find(
+                (t) => t.x === state.coordinates.GridX && t.y === state.coordinates.GridY
+            );
+            
+            // Get the enemy piece that has the same position of the current piece.
+            const opponentPiece = piece.find(
+                (t) => samePosition(t, x, y) && t.team !== currentPiece.team
+            );
 
             if (currentPiece) {
                 const playMove = successMove(state, x, y, currentPiece, titleRef);
