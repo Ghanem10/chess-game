@@ -212,11 +212,11 @@ export default class Board {
 
             // Push the results of x === y
             if (x === y) {
-                pathToKingPosition.push(moves);
-            }
 
+                pathToKingPosition.push(moves);
+            
             // push the col or row that matches the king's x and y.
-            if (moves.x === king.x || moves.y === king.y) {
+            } else if (moves.x === king.x || moves.y === king.y) {
                 pathToKingPosition.push(moves);
             }
         }
@@ -261,8 +261,8 @@ export default class Board {
                     if (move.possibleMoves?.some((o) => this.samePosition(o, kingMove.x, kingMove.y))) {
                         
                         // remove it from the king's possible moves, as the
-                        // piece is has protection from its own pieces.
-                        valid = false;
+                        // piece is protected by its own pieces.
+                        this.piece = this.piece.filter((t) => !this.samePosition(t, kingMove.x, kingMove.y));
                     }
                 }
 
@@ -321,12 +321,21 @@ export default class Board {
                         this.piece.filter((p) => p.team === this.currentTeam())
                         .forEach((p) => {
 
-                            // Update the moves of the pieces that matches the path where the enemy gave a check from and its position.
-                            p.possibleMoves = p.possibleMoves.filter(
-                                (pos) => pathToKingPosition.some(
-                                    (m) => this.samePosition(pos, m.x, m.y) || this.samePosition(pos, enemy.x, enemy.y)
-                                )
-                            );
+                            // Capture the enemy when it's under attack - [When king's position isEqual to enemy [x, y]].
+                            if ([enemy].find((s) => this.samePosition(s, kingMove.x, kingMove.y))) {
+
+                                // Only filter the moves of the current team that matches the attacking piece x & y.
+                                p.possibleMoves = p.possibleMoves.filter((pos) => this.samePosition(pos, enemy.x, enemy.y));
+                                
+                            } else {
+
+                                // Update the moves of the pieces that matches the path where the enemy gave a check from and its position.
+                                p.possibleMoves = p.possibleMoves.filter(
+                                    (pos) => pathToKingPosition.some(
+                                        (m) => this.samePosition(pos, m.x, m.y) || this.samePosition(pos, enemy.x, enemy.y)
+                                    )
+                                );
+                            }
     
                             // Update the possible moves of all pieces.
                             this.setHighlight(p.possibleMoves);
