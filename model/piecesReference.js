@@ -193,32 +193,37 @@ export default class Board {
     findAttackingPath(king, enemy) {
         
         /**
-         * @summary { Loop and check if the resulted integers are the same }
+         * @summary { Loop and check the direction of the king.x - enemy.x }
          * 
-         * The results of the path that leads to the king's position should
-         * have the same indices as x === y.
+         * A different solution is to use the sign method in JS
+         * as it returns the sign of x whether it's positive or not.
+         * 
+         * Then, we simply increment the enemy's x and y until we reach the
+         * king's position.
          * 
         */
 
         // Store the moves that leads to the king's position.
         const pathToKingPosition = [];
         
-        // Iterate over the enemy's possible moves to check the path.
-        for (const moves of enemy.possibleMoves) {
+        // Check which direction is the king is at.
+        const x = Math.sign(king.x - enemy.x);
+        const y = Math.sign(king.y - enemy.y);
 
-            // check which possible moves of the enemy's leads to the king.
-            const x = Math.abs(moves.x - king.x);
-            const y = Math.abs(moves.y - king.y);
+        // Store the enemy position in a new variable so we can custom the iteration.
+        let newEnemyPositionX = enemy.x;
+        let newEnemyPositionY = enemy.y;
 
-            // Push the results of x === y
-            if (x === y) {
+        // When the new Enemy position isn't in the king's reach keep looking until you find it.
+        while (newEnemyPositionX !== king.x || newEnemyPositionY !== king.y) {
 
-                pathToKingPosition.push(moves);
-            
-            // push the col or row that matches the king's x and y.
-            } else if (moves.x === king.x || moves.y === king.y) {
-                pathToKingPosition.push(moves);
-            }
+            // Push the positions of the new calcualted enemy piece as we reach the king's position.
+            pathToKingPosition.push({ x: newEnemyPositionX, y: newEnemyPositionY });
+    
+            // Increment the new position of the enemy piece with
+            // the direction.
+            newEnemyPositionX += x;
+            newEnemyPositionY += y;
         }
 
         return pathToKingPosition;
@@ -322,11 +327,11 @@ export default class Board {
                         .forEach((p) => {
 
                             // Capture the enemy when it's under attack - [When king's position isEqual to enemy [x, y]].
-                            if ([enemy].find((s) => this.samePosition(s, kingMove.x, kingMove.y))) {
+                            if (this.samePosition(enemy, kingMove.x, kingMove.y)) {
 
                                 // Only filter the moves of the current team that matches the attacking piece x & y.
                                 p.possibleMoves = p.possibleMoves.filter((pos) => this.samePosition(pos, enemy.x, enemy.y));
-                                
+
                             } else {
 
                                 // Update the moves of the pieces that matches the path where the enemy gave a check from and its position.
@@ -396,7 +401,43 @@ export default class Board {
 
 
     // When the king is in-check and has no moves or no pieces to cover or remove the attacking piece.
-    checkMate() {}
+    checkMate() {
+        
+        // Find the king piece position of the current team.
+        const king = this.piece.find(
+            (t) => t.Piece === Type.KING && t.team === this.currentTeam()
+        );
+
+        // Loop over our current pieces, and check if the king is in-check
+        for (const currentPieces of this.piece.filter((t) => t.team === this.currentTeam())) {
+
+            // Loop through the enemy pieces to check if the king is in-check.
+            for (const enemy of this.piece.filter((e) => e.team !== this.currentTeam())) {
+
+                // When the enemys' possible moves matches the king's position, then, we know that the king is in-check.
+                if (enemy.possibleMoves.some((m) => this.samePosition(m, king.x, king.y))) {
+
+                    // Get the path when the enemy delivers check.
+                    const pathToKingPosition = this.findAttackingPath(king, enemy);
+                    
+                    // We check whether the current pieces of the king's team have a move to eliminate the check given. 
+                    const isThereAnyProtectionMoves = currentPieces.possibleMoves.filter(
+                        (c) => pathToKingPosition.some((q) => this.samePosition(q, c.x, c.y))
+                    );
+                    
+                    
+                    // Check the length of king's possible moves array.
+                    if (king.possibleMoves.length !== 0) {
+
+                        // return true as the king can't go anywhere.
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 
 
     // #todo. This fn should be called when drop piece is triggered.
@@ -428,6 +469,14 @@ export default class Board {
             ];
         }
 
+        // #The implementation for checkmates are ./interface folder - [later].
+        // this.checkMate();
+        // this.steelMate();
+        // this.smotheredMate();
+
+        // #Implementation above.
+        // this.doubleCheck();
+        // this.discoverCheck();
         this.kingMovementsAndProtection(gridx, gridy);
     }
 }

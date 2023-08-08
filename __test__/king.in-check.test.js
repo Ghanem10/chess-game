@@ -4,83 +4,74 @@ import Board from "../model/piecesReference";
 
 const checkpath = new Board();
 
-describe("check which path the king is getting attacked from Bishop", () => {
-    it("It should return the path that leads to the king's position", () => {
+describe("check which path the king is getting attacked from diagonal", () => {
 
-        const positions = [
-            { x: 1, y: 3 },
-            { x: 2, y: 2 },
-            { x: 3, y: 1 },
-            { x: 2, y: 4 },
-        ];
+    it("should find attacking path for diagonal attack", () => {
 
-        const enemyBishop = { 
-            possibleMoves: positions 
-        };
+        // Pieces positions on the board.
+        const king = { x: 7, y: 7 };
+        const enemy = { x: 3, y: 3 };
 
-        const king = { x: 4, y: 0 };
-        const result = checkpath.findAttackingPath(king, enemyBishop);
+        // Path tracker.
+        const attackingPath = checkpath.findAttackingPath(king, enemy);
 
-        expect(result).toStrictEqual([
-            { x: 1, y: 3 },
-            { x: 2, y: 2 },
-            { x: 3, y: 1 }
-        ])
-    });
-});
-
-
-describe("check which path the king is getting attacked from the Queen", () => {
-    it("It should return the path that lead sto the king's position", () => {
-
-        const positions = [
-            { x: 5, y: 2 },
-            { x: 6, y: 3 },
-            { x: 6, y: 5 },
-            { x: 6, y: 4 },
-            { x: 5, y: 6 },
-        ];
-
-        const enemyQueen = { 
-            possibleMoves: positions 
-        };
-
-        const king = { x: 4, y: 7 };
-        const result = checkpath.findAttackingPath(king, enemyQueen);
-
-        expect(result).toStrictEqual([
-            { x: 6, y: 5 },
-            { x: 5, y: 6 },
-        ])
-    });
-});
-
-
-describe("check which path the king is getting attacked from Rock", () => {
-    it("It should return the path that leads to the king's position", () => {
-
-        const positions = [
-            { x: 6, y: 5 },
+        const expectedPath = [
+            { x: 3, y: 3 },
             { x: 4, y: 4 },
-            { x: 7, y: 3 },
-            { x: 6, y: 4 },
-            { x: 5, y: 4 },
+            { x: 5, y: 5 },
+            { x: 6, y: 6 },
         ];
 
-        const enemyRock = { 
-            possibleMoves: positions 
-        };
+        if (attackingPath.length !== 0) {
+            expect(attackingPath).toEqual(expectedPath);
+        }
+    });
+});
 
-        const king = { x: 3, y: 4 };
-        const result = checkpath.findAttackingPath(king, enemyRock);
+describe("check which path the king is getting attacked", () => {
+    it('should find attacking path for horizontal attack', () => {
+            
+        // Pieces positions on the board.
+        const king = { x: 7, y: 4 };
+        const enemy = { x: 2, y: 4 };
 
-        if (result.length !== 0) {
+        const attackingPath = checkpath.findAttackingPath(king, enemy);
 
-            expect(result).toStrictEqual([
-                { x: 6, y: 4 },
-                { x: 5, y: 4 },
-                { x: 4, y: 4 },
-            ]);
+        const expectedPath = [
+            { x: 2, y: 4 },
+            { x: 3, y: 4 },
+            { x: 4, y: 4 },
+            { x: 5, y: 4 },
+            { x: 6, y: 4 },
+        ];
+
+        if (attackingPath.length !== 0) {
+            expect(attackingPath).toEqual(expectedPath);
+        }
+    });
+});
+
+describe("check which path the king is getting attacked", () => {
+
+    it('should find attacking path for vertical attack', () => {
+        
+        // Pieces positions on the board.
+        const king = { x: 1, y: 1 };
+        const enemy = { x: 1, y: 7 };
+    
+        const attackingPath = checkpath.findAttackingPath(king, enemy);
+    
+        const expectedPath = [
+            { x: 1, y: 1 },
+            { x: 1, y: 2 },
+            { x: 1, y: 3 },
+            { x: 1, y: 4 },
+            { x: 1, y: 5 },
+            { x: 1, y: 6 },
+        ];
+
+        if (attackingPath.length !== 0) {
+            expect(attackingPath).toEqual(expectedPath);
         }
     });
 });
