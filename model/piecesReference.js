@@ -14,9 +14,9 @@ export default class Board {
     
     /**
      * 
-     * @param {Array} piece - An array containing the piece Object.
+     * @param {Array} pieces - An array containing the piece Object.
      * 
-     * @param {Function} setHighlight - A function to update pieces moves.
+     * @param {Function} setReviewMoves - A function to update pieces moves.
      * 
      * @param {number} piecesTurns - The number of turns to determine the current team.
      * 
@@ -25,14 +25,13 @@ export default class Board {
      *         can move to.
      */
 
-    constructor(piece, setHighlight, highlight, piecesTurns) {
-        this.piece = piece;
-        this.setHighlight = setHighlight;
-        this.highlight = highlight;
+    constructor(pieces, setReviewMoves, piecesTurns) {
+        this.pieces = pieces;
+        this.setReviewMoves = setReviewMoves;
         this.piecesTurns = piecesTurns;
     }
 
-    currentTeam() {
+    get currentTeam() {
         return this.piecesTurns % 2 === 0 ? Team.BLACK : Team.WHITE;
     }
 
@@ -74,15 +73,15 @@ export default class Board {
     // If this function returns true, then, a move has been successfully made - otherwise false.
     playMove(x, y, state, currentPiece, promotePawn, PawnDir, setPiece, validMove) {
         
-        const targetRook = this.piece.find(
+        const targetRook = this.pieces.find(
             (r) => this.samePosition(r, x, y)
         );
 
-        const enpassant = this.isEnpassantMove(state, x, y, currentPiece, this.piece);
+        const enpassant = this.isEnpassantMove(state, x, y, currentPiece, this.pieces);
 
 
         // Castle if the path to the targeted rock is true and not blocked by our or the enemy pieces.
-        if (currentPiece.Piece === Type.KING && targetRook?.Piece === Type.ROCK && this.currentTeam()) {
+        if (currentPiece.Piece === Type.KING && targetRook?.Piece === Type.ROCK && this.currentTeam) {
 
             
             // Determine which rock position is available, and find specify the potential position of the king.
@@ -96,9 +95,9 @@ export default class Board {
             );
             
             // Loop through the pieces and if the king's and the rock's possible moves matches, perform castling.
-            this.piece.map((p) => {
+            this.pieces.map((p) => {
 
-                if (p.team === this.currentTeam()) {
+                if (p.team === this.currentTeam) {
                     
                     // We check if the position to drop the piece matches the rock possible moves
                     if (p.Piece === currentPiece.Piece && K) {
@@ -117,7 +116,7 @@ export default class Board {
         if (enpassant) {
 
             // If the property of the pawn [is-Enpassant] is true, then we eliminate the enemy piece.
-            const EnpassantPawn = this.piece.reduce((result, p) => {
+            const EnpassantPawn = this.pieces.reduce((result, p) => {
 
 
                 // When the pawn on it's first rank and moved two square up, then, its enpassant is true.
@@ -140,7 +139,7 @@ export default class Board {
         } else if (validMove) {
 
             // This returns true only if the piece position is matches the dropping position. See ./ReferenceBoard.
-            const pawns = this.piece.reduce((result, p) => {
+            const pawns = this.pieces.reduce((result, p) => {
             
                 if (this.samePosition(p, state.coordinates.GridX, state.coordinates.GridY)) {
 
@@ -233,8 +232,8 @@ export default class Board {
     kingMovementsAndProtection(gridx, gridy) {
 
         // Find the king piece position of the current team.
-        const king = this.piece.find(
-            (t) => t.Piece === Type.KING && t.team === this.currentTeam()
+        const king = this.pieces.find(
+            (t) => t.Piece === Type.KING && t.team === this.currentTeam
         );
         
         const validMoves = [];
@@ -244,48 +243,26 @@ export default class Board {
             
             let valid = true;
 
-            // Copy the all the pieces positions so we can know if the piece is procted by its own pieces.
-            const clonPiecesPositions = Object.assign([], this.piece);
+            // // Copy the all the pieces positions so we can know if the piece is procted by its own pieces.
+            // const clonPiecesPositions = Object.assign([], this.pieces);
         
-            // If any of the enemy pieces support the piece that's being attacked by the king.
-            const enemyPositionMatchedKing = this.piece.find(
-                (enemy) => this.samePosition(enemy, kingMove.x, kingMove.y) && enemy.team !== king.team
-            );
+            // // If any of the enemy pieces support the piece that's being attacked by the king.
+            // const enemyPositionMatchedKing = this.pieces.find(
+            //     (enemy) => this.samePosition(enemy, kingMove.x, kingMove.y) && enemy.team !== king.team
+            // );
             
-            // Then, the piece is not up for grab if it's proctected by its own pieces - ['king can't attack it'].
-            if (enemyPositionMatchedKing) {
-                
-                // remove the enemy that has x, y from the board. This way we know that the piece's position
-                // is protected by its own pieces.
-                const copyNewArrayOfPiece = this.piece.filter((m) => !this.samePosition(m, kingMove.x, kingMove.y));
-                
-                // Iterate over the new copyed array, excluding the piece that matches the king's x & y position
-                for (const move of copyNewArrayOfPiece) {
-
-                    // Check if the position of the removed piece has any possible moves of the other pieces.
-                    if (move.possibleMoves?.some((o) => this.samePosition(o, kingMove.x, kingMove.y))) {
-                        
-                        // remove it from the king's possible moves, as the
-                        // piece is protected by its own pieces.
-                        this.piece = this.piece.filter((t) => !this.samePosition(t, kingMove.x, kingMove.y));
-                    }
-                }
-
-                // After that update the array with the cloned pieces to re-insert the removed piece.
-                this.piece = clonPiecesPositions;
-            }
 
             // Loop though the enemy pieces to track when the enemy piece delivers check to the king.
-            for (const enemy of this.piece.filter((t) => t.team !== this.currentTeam())) {
+            for (const enemy of this.pieces.filter((t) => t.team !== this.currentTeam)) {
                 
-                
+
                 // Get their possible moves to make the necessary comparison.
-                const possibleMovesPiece = this.getValidMove(enemy, this.piece);
+                const possibleMovesPiece = this.getValidMove(enemy, this.pieces);
                 
                 // Checking the enemy piece type to remove the invalid moves for the king.
                 if (enemy.Piece === Type.PAWN) {
                     
-                    const attackPawnMoves = getPossibleAttackPawnMoves(enemy, this.piece);
+                    const attackPawnMoves = getPossibleAttackPawnMoves(enemy, this.pieces);
 
                     // Loop through the pawn attacking moves and update the king valid moves accordingly.
                     if (attackPawnMoves?.some((t) => this.samePosition(t, kingMove.x, kingMove.y))) {
@@ -296,7 +273,7 @@ export default class Board {
                     if (possibleMovesPiece?.some((t) => this.samePosition(t, king.x, king.y))) {
 
                         // Iterate over the current team moves and check at what position the pawn is located - to remove it.
-                        this.piece.filter((p) => p.team === this.currentTeam())
+                        this.pieces.filter((p) => p.team === this.currentTeam)
                         .forEach((p) => {
 
                             // Filter the moves of the king's team that matches the attacking pawn position.
@@ -305,7 +282,7 @@ export default class Board {
                             );
 
                             // Update the possible moves of all pieces.
-                            this.setHighlight(p.possibleMoves);
+                            this.setReviewMoves(p.possibleMoves);
                         });
                     }
                    
@@ -323,7 +300,7 @@ export default class Board {
                         const pathToKingPosition = this.findAttackingPath(king, enemy);
 
                         //  Iterate over the current team moves and check at positions of the attacking piece - to remove/cover it.
-                        this.piece.filter((p) => p.team === this.currentTeam())
+                        this.pieces.filter((p) => p.team === this.currentTeam)
                         .forEach((p) => {
 
                             // Capture the enemy when it's under attack - [When king's position isEqual to enemy [x, y]].
@@ -343,7 +320,7 @@ export default class Board {
                             }
     
                             // Update the possible moves of all pieces.
-                            this.setHighlight(p.possibleMoves);
+                            this.setReviewMoves(p.possibleMoves);
                         });
                     }
                 } 
@@ -356,7 +333,7 @@ export default class Board {
         }
 
         // Iterate through the current pieces to update the king's valid moves.
-        this.piece.map((p) => {
+        this.pieces.map((p) => {
             
             if (this.samePosition(p, gridx, gridy)) {
                 
@@ -366,16 +343,30 @@ export default class Board {
                 }
 
                 // Remove the team moves if it's not playing.
-                if (p.team !== this.currentTeam()) {
+                if (p.team !== this.currentTeam) {
                     p.possibleMoves = [];
                 }
             
                 // Update the possible moves of all pieces.
-                this.setHighlight(p.possibleMoves);
+                this.setReviewMoves(p.possibleMoves);
             }
 
             return p;
         });
+    }
+
+    KingMovementsInCheck() {
+
+        // for (const currentPiece of this.pieces.filter((t) => t.team === this.currentTeam)) {
+
+        //     for (const move of currentPiece.possibleMoves) {
+
+        //         const clonPiecesPositions = Object.assign([], this.pieces);
+
+        //         const clonPiecePosition = clonPiecesPositions.find((pos) => this.samePosition(pos, move.x, move.y));
+                
+        //     }
+        // }
     }
 
 
@@ -404,15 +395,15 @@ export default class Board {
     checkMate() {
         
         // Find the king piece position of the current team.
-        const king = this.piece.find(
-            (t) => t.Piece === Type.KING && t.team === this.currentTeam()
+        const king = this.pieces.find(
+            (t) => t.Piece === Type.KING && t.team === this.currentTeam
         );
 
         // Loop over our current pieces, and check if the king is in-check
-        for (const currentPieces of this.piece.filter((t) => t.team === this.currentTeam())) {
+        for (const currentPieces of this.pieces.filter((t) => t.team === this.currentTeam)) {
 
             // Loop through the enemy pieces to check if the king is in-check.
-            for (const enemy of this.piece.filter((e) => e.team !== this.currentTeam())) {
+            for (const enemy of this.pieces.filter((e) => e.team !== this.currentTeam)) {
 
                 // When the enemys' possible moves matches the king's position, then, we know that the king is in-check.
                 if (enemy.possibleMoves.some((m) => this.samePosition(m, king.x, king.y))) {
@@ -444,22 +435,22 @@ export default class Board {
     calculateAllMoves(gridx, gridy) {
 
         // This fn is triggere's the on-grab fn [chassBoard/component] to calcualte all moves.
-        this.piece.map((p) => {
+        this.pieces.map((p) => {
             
-            p.possibleMoves = this.getValidMove(p, this.piece);
-            this.setHighlight(p.possibleMoves);
+            p.possibleMoves = this.getValidMove(p, this.pieces);
+            this.setReviewMoves(p.possibleMoves);
 
             return p;
         });
 
         
         // Calculate king's moves for castling move by finding the target rock.
-        for (const king of this.piece.filter(
-            (k) => k.Piece === Type.KING && k.team === this.currentTeam())
+        for (const king of this.pieces.filter(
+            (k) => k.Piece === Type.KING && k.team === this.currentTeam)
             ) {
             
             const previousKingPossibleMoves = king.possibleMoves
-            const newCastlingPossibleMoves = getCastlingKingMoves(king, this.piece);
+            const newCastlingPossibleMoves = getCastlingKingMoves(king, this.pieces);
            
             
             // Update the king possible moves with the matched rock position for castling.

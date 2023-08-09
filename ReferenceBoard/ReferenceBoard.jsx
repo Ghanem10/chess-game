@@ -9,7 +9,6 @@ const initialstate = [];
 export let piecesTurns = 1;
 
 export default function ReferenceBoard() {
-    "use strict";
     
     const [piece, setPiece] = useState(initialstate);
     const [highlightSquare, setHighlighSquare] = useState([]);
@@ -19,7 +18,6 @@ export default function ReferenceBoard() {
     const board = new Board(
         piece, 
         setHighlighSquare, 
-        highlightSquare, 
         piecesTurns,
     );
 
