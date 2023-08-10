@@ -135,7 +135,7 @@ export default class Board {
             }, []);
             
             setPiece(EnpassantPawn);
-            
+
         } else if (validMove) {
 
             // This returns true only if the piece position is matches the dropping position. See ./ReferenceBoard.
@@ -188,185 +188,67 @@ export default class Board {
                 return [];
         }
     }
-
-    findAttackingPath(king, enemy) {
-        
-        /**
-         * @summary { Loop and check the direction of the king.x - enemy.x }
-         * 
-         * A different solution is to use the sign method in JS
-         * as it returns the sign of x whether it's positive or not.
-         * 
-         * Then, we simply increment the enemy's x and y until we reach the
-         * king's position.
-         * 
-        */
-
-        // Store the moves that leads to the king's position.
-        const pathToKingPosition = [];
-        
-        // Check which direction is the king is at.
-        const x = Math.sign(king.x - enemy.x);
-        const y = Math.sign(king.y - enemy.y);
-
-        // Store the enemy position in a new variable so we can custom the iteration.
-        let newEnemyPositionX = enemy.x;
-        let newEnemyPositionY = enemy.y;
-
-        // When the new Enemy position isn't in the king's reach keep looking until you find it.
-        while (newEnemyPositionX !== king.x || newEnemyPositionY !== king.y) {
-
-            // Push the positions of the new calcualted enemy piece as we reach the king's position.
-            pathToKingPosition.push({ x: newEnemyPositionX, y: newEnemyPositionY });
     
-            // Increment the new position of the enemy piece with
-            // the direction.
-            newEnemyPositionX += x;
-            newEnemyPositionY += y;
-        }
-
-        return pathToKingPosition;
-    }
-    
-    // This fn contains the logic for updating piece's moves, and [king-protection, pinned-piece, valid-kingmoves].
-    kingMovementsAndProtection(gridx, gridy) {
-
-        // Find the king piece position of the current team.
-        const king = this.pieces.find(
-            (t) => t.Piece === Type.KING && t.team === this.currentTeam
-        );
+    KingMovementsInCheck(gridx, gridy) {
         
-        const validMoves = [];
-
-        // Loop through the king's moves to track when the king is in-check.
-        for (const kingMove of king.possibleMoves) {
+        // Loop through all the pieces and filter the current team pieces.
+        for (const piece of this.pieces.filter((t) => t.team === this.currentTeam)) {
             
-            let valid = true;
+            // Iterate over the current pieces' possible moves.
+            for (const move of piece.possibleMoves) {
 
-            // // Copy the all the pieces positions so we can know if the piece is procted by its own pieces.
-            // const clonPiecesPositions = Object.assign([], this.pieces);
-        
-            // // If any of the enemy pieces support the piece that's being attacked by the king.
-            // const enemyPositionMatchedKing = this.pieces.find(
-            //     (enemy) => this.samePosition(enemy, kingMove.x, kingMove.y) && enemy.team !== king.team
-            // );
-            
-
-            // Loop though the enemy pieces to track when the enemy piece delivers check to the king.
-            for (const enemy of this.pieces.filter((t) => t.team !== this.currentTeam)) {
+                // Deep cloning the positions of all the pieces by creating new object for each piece.
+                let clonedChessBoard = this.pieces.map((q) => ({ ...q }));
                 
-
-                // Get their possible moves to make the necessary comparison.
-                const possibleMovesPiece = this.getValidMove(enemy, this.pieces);
+                // Filter all the pieces possible moves by removing the piece's current move from the copied board.                
+                clonedChessBoard = clonedChessBoard.filter((q) => !this.samePosition(q, move.x, move.y));
                 
-                // Checking the enemy piece type to remove the invalid moves for the king.
-                if (enemy.Piece === Type.PAWN) {
-                    
-                    const attackPawnMoves = getPossibleAttackPawnMoves(enemy, this.pieces);
+                // Find the cloned piece that corresponds to the current piece's position.
+                let clonedPiecePosition = clonedChessBoard.find((t) => this.samePosition(t, piece.x, piece.y));
 
-                    // Loop through the pawn attacking moves and update the king valid moves accordingly.
-                    if (attackPawnMoves?.some((t) => this.samePosition(t, kingMove.x, kingMove.y))) {
-
-                        valid = false;
-                    }
-                    
-                    if (possibleMovesPiece?.some((t) => this.samePosition(t, king.x, king.y))) {
-
-                        // Iterate over the current team moves and check at what position the pawn is located - to remove it.
-                        this.pieces.filter((p) => p.team === this.currentTeam)
-                        .forEach((p) => {
-
-                            // Filter the moves of the king's team that matches the attacking pawn position.
-                            p.possibleMoves = p.possibleMoves.filter(
-                                (pos) => this.samePosition(pos, enemy.x, enemy.y)
-                            );
-
-                            // Update the possible moves of all pieces.
-                            this.setReviewMoves(p.possibleMoves);
-                        });
-                    }
-                   
-                } else {
-                    // If the enemy's possible moves matches the king's possible moves, then, that square isn't valid. 
-                    if (possibleMovesPiece?.some((t) => this.samePosition(t, kingMove.x, kingMove.y))) {
-                   
-                        valid = false;
-                    }
-                    
-                    // If the enemy's possible moves matches the king's moves position, then block by other pieces.
-                    if (possibleMovesPiece?.some((t) => this.samePosition(t, king.x, king.y))) {
-
-                        // Tracking the path from the enemy piece to the king when it delivers check.
-                        const pathToKingPosition = this.findAttackingPath(king, enemy);
-
-                        //  Iterate over the current team moves and check at positions of the attacking piece - to remove/cover it.
-                        this.pieces.filter((p) => p.team === this.currentTeam)
-                        .forEach((p) => {
-
-                            // Capture the enemy when it's under attack - [When king's position isEqual to enemy [x, y]].
-                            if (this.samePosition(enemy, kingMove.x, kingMove.y)) {
-
-                                // Only filter the moves of the current team that matches the attacking piece x & y.
-                                p.possibleMoves = p.possibleMoves.filter((pos) => this.samePosition(pos, enemy.x, enemy.y));
-
-                            } else {
-
-                                // Update the moves of the pieces that matches the path where the enemy gave a check from and its position.
-                                p.possibleMoves = p.possibleMoves.filter(
-                                    (pos) => pathToKingPosition.some(
-                                        (m) => this.samePosition(pos, m.x, m.y) || this.samePosition(pos, enemy.x, enemy.y)
-                                    )
-                                );
-                            }
+                
+                // Update the cloned piece's position to the move's position.
+                clonedPiecePosition.x = move.x;
+                clonedPiecePosition.y = move.y;
+                
+                // At each iteration, clone the current king's position for later checks if its position is under attack by other pieces.
+                const clonedKing = clonedChessBoard.find((p) => p.Piece === Type.KING && p.team === this.currentTeam);
     
-                            // Update the possible moves of all pieces.
-                            this.setReviewMoves(p.possibleMoves);
-                        });
+                
+                // Loop over the enemy pieces of the cloned chess board.
+                for (const enemy of clonedChessBoard.filter((t) => t.team !== this.currentTeam)) {
+                    
+                    // Update the possible moves of the enemy's possible moves.
+                    enemy.possibleMoves = this.getValidMove(enemy, clonedChessBoard);
+                    
+                    if (enemy.Piece === Type.PAWN) {
+
+                        // Check if the possible moves of the pawn matches the cloned king's position - only the attack moves.
+                        if (enemy.possibleMoves?.some((t) => this.samePosition(t, clonedKing.x, clonedKing.y))) {
+                            
+                            // Update the possible moves of the current pieces that doesn't matches the possible moves.
+                            piece.possibleMoves = piece.possibleMoves?.filter((t) => !this.samePosition(t, move.x, move.y));
+                        }
+                    
+                    } else {
+
+                        // Check if the possible moves of the other enemy pieces match the cloned king's position.
+                        if (enemy.possibleMoves?.some((t) => this.samePosition(t, clonedKing.x, clonedKing.y))) {
+                        
+                            // Update the possible moves of the current pieces of the current team that doesn't match the move.
+                            piece.possibleMoves = piece.possibleMoves?.filter((t) => !this.samePosition(t, move.x, move.y));
+                        }
                     }
-                } 
+                }
             }
 
-            // Update the valid moves for the king.
-            if (valid) {
-                validMoves.push(kingMove);
+            // Update the possible moves of the grabbed piece.
+            if (this.samePosition(piece, gridx, gridy)) {
+
+                // Update the possible moves of the current piece.
+                this.setReviewMoves(piece.possibleMoves);
             }
         }
-
-        // Iterate through the current pieces to update the king's valid moves.
-        this.pieces.map((p) => {
-            
-            if (this.samePosition(p, gridx, gridy)) {
-                
-                // Update the king's moves with the valid moves.
-                if (p.Piece === Type.KING) {
-                    p.possibleMoves = validMoves;
-                }
-
-                // Remove the team moves if it's not playing.
-                if (p.team !== this.currentTeam) {
-                    p.possibleMoves = [];
-                }
-            
-                // Update the possible moves of all pieces.
-                this.setReviewMoves(p.possibleMoves);
-            }
-
-            return p;
-        });
-    }
-
-    KingMovementsInCheck() {
-
-        // for (const currentPiece of this.pieces.filter((t) => t.team === this.currentTeam)) {
-
-        //     for (const move of currentPiece.possibleMoves) {
-
-        //         const clonPiecesPositions = Object.assign([], this.pieces);
-
-        //         const clonPiecePosition = clonPiecesPositions.find((pos) => this.samePosition(pos, move.x, move.y));
-                
-        //     }
-        // }
     }
 
 
@@ -468,6 +350,6 @@ export default class Board {
         // #Implementation above.
         // this.doubleCheck();
         // this.discoverCheck();
-        this.kingMovementsAndProtection(gridx, gridy);
+        this.KingMovementsInCheck(gridx, gridy);
     }
 }
