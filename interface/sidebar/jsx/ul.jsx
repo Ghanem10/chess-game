@@ -34,10 +34,7 @@ export default function UnorderList() {
                 <li className='play-list one'>
                     <img 
                         src='./chess.png' 
-                        style={{ 
-                            width: "35px", 
-                            height: "35px", 
-                        }}
+                        id='ICON'
                     />
                     <span>Play</span>
                 </li>
@@ -45,10 +42,7 @@ export default function UnorderList() {
                 <li className='social-list one'>
                     <img 
                         src='./social-media.png' 
-                        style={{ 
-                            width: "35px", 
-                            height: "35px", 
-                        }}
+                        id='ICON'    
                     />
                     <span>Social</span>
                 </li>
@@ -96,11 +90,8 @@ export default function UnorderList() {
                 <li className='themes-list one'>
                     <img 
                         src='./themes.png' 
-                        style={{ 
-                            width: "30px", 
-                            height: "30px" 
-                            }}
-                        />
+                        id='ICON'    
+                    />
                     <span>Theme</span>
                 </li>
 
@@ -117,7 +108,7 @@ export default function UnorderList() {
                 <li className='news-list one'>
                     <img 
                         src='./news.png' 
-                        style={{ width: "35px" }}
+                        id='ICON'
                     />
                     <span>News</span>
                 </li>
@@ -126,11 +117,8 @@ export default function UnorderList() {
                     <li>
                         <img 
                             src='./news.png' 
-                            style={{ 
-                                width: "35px", 
-                                height:"35px" 
-                                }}
-                            />
+                            id='ICON'
+                        />
                         <Link to={'https://www.chess.com/news'}>
                             <span>Chess.com news</span>
                         </Link>

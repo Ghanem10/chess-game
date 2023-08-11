@@ -50,14 +50,19 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             }
         }
         .one {
-            line-height: 3rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px;
             padding-left: 13px;
             &:hover {
                 cursor: pointer;
                 background-color: #2c2a27;
             }
-            span {
-                margin-left: 5px;
+            #ICON {
+                width: 35px;
+                height: 34px;
             }
         }
     }
@@ -72,7 +77,15 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
                     display: none;
                 }
                 .one {
-                    padding-left: 11px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
+                    align-items: center;
+                    padding: 10px;
+                    #ICON {
+                        width: 35px;
+                        height: 34px;
+                    }
                     span {
                         display: none;
                     }
