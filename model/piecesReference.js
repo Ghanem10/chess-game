@@ -319,9 +319,16 @@ export default class Board {
         // This fn is triggere's the on-grab fn [chassBoard/component] to calcualte all moves.
         this.pieces.map((p) => {
             
-            p.possibleMoves = this.getValidMove(p, this.pieces);
-            this.setReviewMoves(p.possibleMoves);
+            if (this.samePosition(p, gridx, gridy)) {
+                p.possibleMoves = this.getValidMove(p, this.pieces);
+            }
 
+            if (p.team !== this.currentTeam) {
+                p.possibleMoves = [];
+            }
+
+            this.setReviewMoves(p.possibleMoves);
+            
             return p;
         });
 
@@ -343,13 +350,7 @@ export default class Board {
         }
 
         // #The implementation for checkmates are ./interface folder - [later].
-        // this.checkMate();
-        // this.steelMate();
-        // this.smotheredMate();
-
-        // #Implementation above.
-        // this.doubleCheck();
-        // this.discoverCheck();
+        this.checkMate();
         this.KingMovementsInCheck(gridx, gridy);
     }
 }
