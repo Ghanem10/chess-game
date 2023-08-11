@@ -281,33 +281,8 @@ export default class Board {
             (t) => t.Piece === Type.KING && t.team === this.currentTeam
         );
 
-        // Loop over our current pieces, and check if the king is in-check
-        for (const currentPieces of this.pieces.filter((t) => t.team === this.currentTeam)) {
-
-            // Loop through the enemy pieces to check if the king is in-check.
-            for (const enemy of this.pieces.filter((e) => e.team !== this.currentTeam)) {
-
-                // When the enemys' possible moves matches the king's position, then, we know that the king is in-check.
-                if (enemy.possibleMoves.some((m) => this.samePosition(m, king.x, king.y))) {
-
-                    // Get the path when the enemy delivers check.
-                    const pathToKingPosition = this.findAttackingPath(king, enemy);
-                    
-                    // We check whether the current pieces of the king's team have a move to eliminate the check given. 
-                    const isThereAnyProtectionMoves = currentPieces.possibleMoves.filter(
-                        (c) => pathToKingPosition.some((q) => this.samePosition(q, c.x, c.y))
-                    );
-                    
-                    
-                    // Check the length of king's possible moves array.
-                    if (king.possibleMoves.length !== 0) {
-
-                        // return true as the king can't go anywhere.
-                        return true;
-                    }
-                }
-            }
-        }
+        // TODO
+        // checkmate
 
         return false;
     }
