@@ -32,11 +32,8 @@ export default function ChessBoard({
         setRecordMoves
     } = useContext(LightContext);
 
-    // These states can be incorporated with the useReducer state for consistency.
     const [history, setHistory] = useState([]);
     const [nextPosition, setNextPosition] = useState([]);
-    const [imgPiece, setImgPiece] = useState([]);
-    const [opp, setOpp] = useState([]);
 
     const Board = useRef(null);
     const titleRef = useRef();
@@ -169,17 +166,6 @@ export default function ChessBoard({
 
                 if (playMove) {
 
-                    if (opponentPiece) {
-                        setOpp(opponentPiece);
-                    }
-                    setImgPiece(pre => {
-                        return [
-                            ...pre,
-                            opponentPiece ? 
-                            opponentPiece.image : 
-                            currentPiece.image
-                        ];
-                    });
                     updateRecordMoves(
                         state, 
                         setRecordMoves, x, y, 
@@ -262,8 +248,6 @@ export default function ChessBoard({
                     pieces={piece}
                     history={history}
                     nextPosition={nextPosition}
-                    imgPiece={imgPiece}
-                    opp={opp}
                 />
             </div>
         </>

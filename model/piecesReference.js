@@ -6,7 +6,6 @@ import {
     getPossibleKingMoves,
     getPossibleQueenMoves,
     getPossibleRookMoves,
-    getPossibleAttackPawnMoves,
     getCastlingKingMoves,
 } from '../movement/rules/piecesIndex';
 
@@ -294,15 +293,15 @@ export default class Board {
         // This fn is triggere's the on-grab fn [chassBoard/component] to calcualte all moves.
         this.pieces.map((p) => {
             
-            if (this.samePosition(p, gridx, gridy)) {
-                p.possibleMoves = this.getValidMove(p, this.pieces);
-            }
-
+            p.possibleMoves = this.getValidMove(p, this.pieces);
+            
             if (p.team !== this.currentTeam) {
                 p.possibleMoves = [];
             }
-
-            this.setReviewMoves(p.possibleMoves);
+            
+            if (this.samePosition(p, gridx, gridy)) {
+                this.setReviewMoves(p.possibleMoves);
+            }
             
             return p;
         });
@@ -325,7 +324,7 @@ export default class Board {
         }
 
         // #The implementation for checkmates are ./interface folder - [later].
-        this.checkMate();
+        // this.checkMate();
         this.KingMovementsInCheck(gridx, gridy);
     }
 }

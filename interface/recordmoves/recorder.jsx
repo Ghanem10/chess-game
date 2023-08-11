@@ -11,13 +11,14 @@ import './recorder.scss';
 
 let count = 1;
 
-export default function Recorder({ pieces, history, nextPosition, imgPiece, opp }) {
+export default function Recorder({ pieces, history, nextPosition }) {
     const { 
         recordMoves, 
         setRecordMoves
     } = useContext(LightContext);
     const [last, setLast] = useState([]);
 
+    
     function moveBack() {
         if (recordMoves.length === 0) return;
 
@@ -28,18 +29,16 @@ export default function Recorder({ pieces, history, nextPosition, imgPiece, opp 
         const prepos = history[history.length - count];
         const nextpos = nextPosition[nextPosition.length - count];
 
-        /**
-         * @todo { create new div for object of the opponent }
-         */
+        // TODO
+        // Clone the board for captured pieces
+        const cloneBoard = pieces.map((t) => ({ ...t }));
 
-        const img = imgPiece[imgPiece.length - count];
-        pieces.map((p) => {
-            if (p.x === nextpos.x && p.y === nextpos.y) {
-                p.x = prepos.gx;
-                p.y = prepos.gy;
+        for (const piece of pieces) {
+            if (piece.x === nextpos.x && piece.y === nextpos.y) {
+                piece.x = prepos.gx;
+                piece.y = prepos.gy;
             } 
-            return p;
-        });
+        }
 
         count += 1;
     }
@@ -55,13 +54,17 @@ export default function Recorder({ pieces, history, nextPosition, imgPiece, opp 
         const prepos = history[history.length - count];
         const nextpos = nextPosition[nextPosition.length - count];
 
-        pieces.map((p) => {
-            if (p.x === prepos.gx && p.y === prepos.gy) {
-                p.x = nextpos.x;
-                p.y = nextpos.y;
-            }
-            return p;
-        });
+        // TODO
+        // Clone the board for captured pieces
+        const cloneBoard = pieces.map((t) => ({ ...t }));
+
+        for (const piece of pieces) {
+
+            if (piece.x === prepos.gx && piece.y === prepos.gy) {
+                piece.x = nextpos.x;
+                piece.y = nextpos.y;
+            } 
+        }
     }
 
     return (
