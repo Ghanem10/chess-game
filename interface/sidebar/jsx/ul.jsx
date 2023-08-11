@@ -3,9 +3,7 @@ import {
     faLinkedin, 
     faTwitter 
 } from '@fortawesome/free-brands-svg-icons';
-import { 
-    FontAwesomeIcon 
-} from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { LightContext } from '../../wraper/props';
@@ -14,6 +12,7 @@ import { LightContext } from '../../wraper/props';
 export default function UnorderList() {
 
     const { setBoardColor } = useContext(LightContext);
+    
     function getValue(num) {
         setBoardColor(num);
     }
@@ -25,7 +24,7 @@ export default function UnorderList() {
                 
                 <h1 
                     style={{
-                        backgroundImage: "url('./side.PNG')"
+                        backgroundImage: "url('./pawn.png')"
                     }}
                 >
                     <span>Chess.io</span>
@@ -38,7 +37,24 @@ export default function UnorderList() {
                     />
                     <span>Play</span>
                 </li>
-                
+
+                <ul className='play'>
+                    <li>
+                        <img 
+                            src='./vscomputer.png' 
+                            id='ICON'
+                        />
+                        <span>Play vs computer</span>
+                    </li>
+                    <li>
+                        <img 
+                            src='./multiple.png' 
+                            id='ICON'
+                        />
+                        <span>Multiple player</span>
+                    </li>
+                </ul>
+
                 <li className='social-list one'>
                     <img 
                         src='./social-media.png' 

@@ -3,6 +3,7 @@
 @use './scss/themes.scss';
 @use './scss/social.scss';
 @use './scss/news.scss';
+@use './scss/playerList.scss';
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital@1&display=swap');
@@ -39,7 +40,8 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             
             background-repeat: no-repeat;
             background-position: left;
-            background-size: 2.7rem;
+            background-size: 3.5rem;
+            background-position-x: 10px;
             color: rgb(255, 255, 255);
             &:hover{
                 cursor: pointer;
@@ -73,8 +75,12 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             min-width: 3rem;
             
            .items {
-                h1 span {
-                    display: none;
+                h1 {
+                    background-size: 3.2rem;
+                    background-position-x: 0px;
+                    span {
+                        display: none;
+                    }
                 }
                 .one {
                     display: flex;

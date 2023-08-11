@@ -1,0 +1,44 @@
+
+.play {
+    display: none;
+    position: absolute;
+    justify-content: flex-start;
+    top: 0;
+    left: 10.9%;
+    width: 18%;
+    height: 97vh;
+    padding: 10px;
+    background-color: #272522;
+
+    li {
+        display: flex;
+        flex-direction: row;
+        margin-top: 2rem;
+        line-height: 2rem;
+        width: 100%;
+        font-size: 18px;
+        background-color: inherit;
+        color:#ffffff86;
+        gap: 10px;
+        #ICON {
+            width: 35px;
+            height: 34px;
+        }
+        &:hover {
+            cursor: pointer;
+            color: rgb(255, 255, 255);
+        }
+    }
+}
+
+
+.play-list:hover ~ .play,
+.play:hover {
+    display: block;
+}
+  
+@media (max-width: 1122px) {
+    .play {
+        left: 4.3%;
+    }
+}
