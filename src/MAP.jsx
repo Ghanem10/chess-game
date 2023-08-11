@@ -19,13 +19,13 @@ export default function MAP() {
     };
 
     const imageStyle = {
-        width: "100px",
-        height: "100px",  
+        width: "40%",
+        height: "50vh",  
     };
 
     return (
         <div style={divStyle}>
-            <img src="./one.png" style={imageStyle} />
+            <img src="./engineer.png" style={imageStyle} />
             <p 
                 style={paragraphStyle}
             >

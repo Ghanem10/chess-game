@@ -25,7 +25,7 @@ export default function UnorderList() {
                 
                 <h1 
                     style={{
-                    backgroundImage: "url('./side.PNG')"
+                        backgroundImage: "url('./side.PNG')"
                     }}
                 >
                     <span>Chess.io</span>
@@ -37,7 +37,8 @@ export default function UnorderList() {
                         style={{ 
                             width: "35px", 
                             height: "35px", 
-                    }}/>
+                        }}
+                    />
                     <span>Play</span>
                 </li>
                 
@@ -47,7 +48,8 @@ export default function UnorderList() {
                         style={{ 
                             width: "35px", 
                             height: "35px", 
-                    }}/>
+                        }}
+                    />
                     <span>Social</span>
                 </li>
                 

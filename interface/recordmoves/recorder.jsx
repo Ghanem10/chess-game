@@ -1,25 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { LightContext } from '../wraper/props';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-    faArrowLeft, 
-    faArrowRight, 
-    faChessKing, 
-    faChessKnight
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import './recorder.scss';
 
 let count = 1;
 
 export default function Recorder({ pieces, history, nextPosition }) {
-    const { 
-        recordMoves, 
-        setRecordMoves
-    } = useContext(LightContext);
+
+    const { recordMoves, setRecordMoves } = useContext(LightContext);
     const [last, setLast] = useState([]);
 
-    
     function moveBack() {
+
         if (recordMoves.length === 0) return;
 
         const lastMove = recordMoves[recordMoves.length - 1];
@@ -44,10 +37,12 @@ export default function Recorder({ pieces, history, nextPosition }) {
     }
 
     function moveForward() {
+
         if (last.length === 0) return;
         
         count -= 1;
         const nextMove = last[last.length - 1];
+
         setLast(prevLast => prevLast.slice(0, -1));
         setRecordMoves(prevMoves => [...prevMoves, nextMove]);
 
@@ -67,25 +62,39 @@ export default function Recorder({ pieces, history, nextPosition }) {
         }
     }
 
+    const imgStyle = {
+        width: "50px",
+        height: "50px",
+    };
+
+    const h1Style = {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: "10px"
+    };
+
     return (
         <div className='record-container'>
-            <h2>
-                <FontAwesomeIcon 
-                    icon={faChessKnight} 
-                    id='icon-knight' 
-                /> Record moves
+            <h2 style={h1Style}>
+                <img src='./knight.png' style={imgStyle} />
+                <span>Record moves</span>
             </h2>
             <div className='record-moves'>
                 {recordMoves}
             </div>
             <div className='btns-record-moves'>
-                <button className='record-left' onClick={moveBack}>
+                <button className='record-left' 
+                    onClick={moveBack}
+                >
                     <FontAwesomeIcon 
                         icon={faArrowLeft} 
                         id='arrow-left'
                     />
                 </button>
-                <button className='record-right' onClick={moveForward}>
+                <button className='record-right' 
+                    onClick={moveForward}
+                >
                     <FontAwesomeIcon 
                         icon={faArrowRight} 
                         id='arrow-right'
@@ -93,10 +102,8 @@ export default function Recorder({ pieces, history, nextPosition }) {
                 </button>
             </div>
             <div className='foot-record-moves'>
-                <FontAwesomeIcon 
-                    icon={faChessKing}
-                    id='foot-icon' 
-                /> <span>One Game, let's play!</span>
+                <img src='./crown.png' style={imgStyle} />
+                <span>One Game, let's play!</span>
             </div>
         </div>
     );
