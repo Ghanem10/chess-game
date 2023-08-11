@@ -19,8 +19,8 @@ export default function MAP() {
     };
 
     const imageStyle = {
-        width: "40%",
-        height: "50vh",  
+        width: "30%",
+        height: "auto",  
     };
 
     return (
