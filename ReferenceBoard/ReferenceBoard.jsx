@@ -90,7 +90,6 @@ export default function ReferenceBoard() {
                 <ChessBoard 
                     successMove={successMove}
                     piece={piece}
-                    setPiece={setPiece}
                     startGame={startGame}
                     setStartGame={setStartGame}
                     highlightSquare={highlightSquare}

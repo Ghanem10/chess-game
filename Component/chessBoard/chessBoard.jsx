@@ -13,7 +13,7 @@ const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
 export default function ChessBoard({ 
     successMove, 
-    piece, setPiece,
+    piece, 
     updatePossibleMoves, 
     highlightSquare, 
     pawnPromotion, 
@@ -35,7 +35,6 @@ export default function ChessBoard({
     const [history, setHistory] = useState([]);
     const [nextPosition, setNextPosition] = useState([]);
     const [opponent, setOpponent] = useState([]);
-    const [isMatch, setIsMatch] = useState([]);
 
     const Board = useRef(null);
     const titleRef = useRef();
@@ -163,17 +162,12 @@ export default function ChessBoard({
                 (t) => samePosition(t, x, y) && t.team !== currentPiece.team
             );
 
-            setIsMatch((pr) => [...pr, opponentPiece ? "1" : "0"]);
-
             if (currentPiece) {
                 const playMove = successMove(state, x, y, currentPiece, titleRef);
 
                 if (playMove) {
 
-                    if (opponentPiece !== undefined) {
-                        setOpponent((preOPP) => [...preOPP, opponentPiece]);
-                    }
-
+                    setOpponent(opponentPiece);
                     updateRecordMoves(
                         state, 
                         setRecordMoves, x, y, 
@@ -253,11 +247,9 @@ export default function ChessBoard({
                 </div>
                 <Recorder 
                     pieces={piece}
-                    setPiece={setPiece}
                     history={history}
                     nextPosition={nextPosition}
                     opponent={opponent}
-                    isMatch={isMatch}
                 />
             </div>
         </>
