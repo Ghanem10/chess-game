@@ -2,12 +2,12 @@ import React, { useContext, useState } from 'react';
 import { LightContext } from '../wraper/props';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { samePosition } from '../../movement/constants/functions';
 import './recorder.scss';
 
 let count = 1;
+let position = 1;
 
-export default function Recorder({ pieces, history, nextPosition, opponent }) {
+export default function Recorder({ pieces, history, nextPosition, opponent, setPiece, isMatch }) {
 
     const { recordMoves, setRecordMoves } = useContext(LightContext);
     const [last, setLast] = useState([]);
@@ -17,25 +17,36 @@ export default function Recorder({ pieces, history, nextPosition, opponent }) {
         if (recordMoves.length === 0) return;
 
         const lastMove = recordMoves[recordMoves.length - 1];
+        
         setRecordMoves(prevMoves => prevMoves.slice(0, -1));
         setLast(prevLast => [...prevLast, lastMove]);
         
         const prepos = history[history.length - count];
         const nextpos = nextPosition[nextPosition.length - count];
+        
+        const lastIndx = isMatch[isMatch.length - count];
 
-        // TODO
-        // Clone the board for captured pieces
-        for (const piece of pieces) {
+        if (lastIndx === "1") {
 
-            // Clone the pieces and set clonedPiece to the current piece.
-            const cloneBoard = pieces.map((t) => ({ ...t }));
-            const clonedPiece = cloneBoard.find((t) => samePosition(t, piece.x, piece.y));
-           
-            if (piece.x === nextpos.x && piece.y === nextpos.y) {
-                piece.x = prepos.gx;
-                piece.y = prepos.gy;
-            } 
+            setPiece((w) => {
+                const len = opponent.length;
+                return [
+                    ...w, 
+                    opponent[len - position]
+                ]
+            });
+            position += 1;
         }
+
+        pieces.map((t) => {
+
+            if (t.x === nextpos.x && t.y === nextpos.y) {
+                t.x = prepos.gx;
+                t.y = prepos.gy;
+            }
+
+            return t;
+        });
 
         count += 1;
     }
@@ -53,17 +64,14 @@ export default function Recorder({ pieces, history, nextPosition, opponent }) {
         const prepos = history[history.length - count];
         const nextpos = nextPosition[nextPosition.length - count];
 
-        // TODO
-        // Clone the board for captured pieces
-        const cloneBoard = pieces.map((t) => ({ ...t }));
+        pieces.map((t) => {
 
-        for (const piece of pieces) {
-
-            if (piece.x === prepos.gx && piece.y === prepos.gy) {
-                piece.x = nextpos.x;
-                piece.y = nextpos.y;
+            if (t.x === prepos.gx && t.y === prepos.gy) {
+                t.x = nextpos.x;
+                t.y = nextpos.y;
             } 
-        }
+            return t;
+        });
     }
 
     const imgStyle = {
