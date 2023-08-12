@@ -97,6 +97,7 @@ export default function ReferenceBoard() {
                     setPawnPromotion={setPawnPromotion}
                     updatePossibleMoves={updatePossibleMoves}
                     updateStateTwo={updateStateTwo}
+                    setPiece={setPiece}
                 />
             )}
         </>
