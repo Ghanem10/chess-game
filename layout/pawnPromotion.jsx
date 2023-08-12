@@ -12,24 +12,29 @@ export default function PawnPromotion(props) {
     } = props;
 
     function promotPawn(PieceType) {
+
+        // Using reduce - to allow other pieces capture the promoted piece.
         const updatePromotedPieces = piece.reduce((result, p) => {
+
             const promotionPawnTeam = p.team === Team.WHITE ? "w" : "b";
+
             if (samePosition(p, x, y)) {
                 p.Piece = PieceType;
                 p.image = `${PieceType}-${promotionPawnTeam}.png`;
             }
+
             result.push(p);
             return result;
         }, []);
+
         setPawnPromotion(updatePromotedPieces);
         titleRef.current.classList.add("hide-title");
     }
 
     function pieceTeamColor () {
+        
         if (pawnPromotion) {
             return pawnPromotion.team === Team.WHITE ? "w" : "b";
-        } else {
-            return "w";
         }
     }
     

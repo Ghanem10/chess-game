@@ -2,15 +2,16 @@ import React, { useContext, useState } from 'react';
 import { LightContext } from '../wraper/props';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import './recorder.scss';
 import { samePosition } from '../../movement/constants/functions';
+import './recorder.scss';
 
 let count = 1;
 let position = 0;
 
 export default function Recorder({ pieces, history, nextPosition, opponent, setPiece, isMatch }) {
 
-    // The castling moves and moving piece aren't implemented yet. So, this works only for capture.
+    // ##The castling moves and moving piece aren't implemented yet. So, this works only for capture.
+    // TODO: unimplemented code for handling king in-check logic is causing bugs. BUG!.
     const { recordMoves, setRecordMoves } = useContext(LightContext);
     const [last, setLast] = useState([]);
 
@@ -179,7 +180,7 @@ export default function Recorder({ pieces, history, nextPosition, opponent, setP
             </div>
             <div className='btns-record-moves'>
                 <button className='record-left' 
-                    onClick={moveBack}
+                    // onClick={moveBack}
                 >
                     <FontAwesomeIcon 
                         icon={faArrowLeft} 
@@ -187,18 +188,20 @@ export default function Recorder({ pieces, history, nextPosition, opponent, setP
                     />
                 </button>
                 <button className='record-right' 
-                    onClick={moveForward}
+                    // onClick={moveForward}
                 >
                     <FontAwesomeIcon 
                         icon={faArrowRight} 
                         id='arrow-right'
                     />
                 </button>
+                
             </div>
             <div className='foot-record-moves'>
                 <img src='./crown.png' style={imgStyle} />
                 <span>One Game, let's play!</span>
             </div>
+            <span className='title'>Still, under development</span>
         </div>
     );
 }

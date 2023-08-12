@@ -14,11 +14,14 @@ export default function TimerPlayer({ startGame, setStartGame, updateStateTwo })
     const white = useRef(null);
     const black = useRef(null);
     let intervalId;
-    
+
     useEffect(() => {
+        // Game start - update the timer for current team.
         if (startGame) {
             if (piecesTurns % 2 === 1) {
+
                 intervalId = setInterval(() => {
+
                     setOurs((prevTime) => {
                         const newValue = prevTime - 1;
                         if (newValue <= 0) {
@@ -27,11 +30,16 @@ export default function TimerPlayer({ startGame, setStartGame, updateStateTwo })
                         }
                         return newValue;
                     });
+
                 }, 1000);
+
                 black.current.classList.remove('black-player');
                 white.current.classList.add('white-player');
+
             } else if (piecesTurns % 2 === 0) {
+
                 intervalId = setInterval(() => {
+
                     setOpponent((prevTime) => {
                         const newValue = prevTime - 1;
                         if (newValue <= 0) {
@@ -40,14 +48,18 @@ export default function TimerPlayer({ startGame, setStartGame, updateStateTwo })
                         }
                         return newValue;
                     });
+
                 }, 1000);
+
                 white.current.classList.remove('white-player');
                 black.current.classList.add('black-player');
             }
         }
+        
         return () => {
             clearInterval(intervalId);
         };
+
     }, [piecesTurns, startGame, rematch]);
 
     function formatTime(seconds) {

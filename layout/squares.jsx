@@ -5,57 +5,61 @@ export default function Squares(props) {
         grabbingPiece,
         MovingPiece,
         droppingPiece,
-        index,
-        piece,
-        x,
-        y,
-        position,
+        index, piece, x, y,
+        position, state,
         highlightSquare,
-        state,
         updateBoardColor
     } = props;
 
-    const currentPiece = piece.find(
-        (pre) => pre.x === x && pre.y === y
-    );
+    const totalNumberOfSquares = 6;
+    let updatedClassName, squaresOccupiedByEnemy = "";
+
+    // CurrentPiece used to highlight the enemy pieces on the board.
+    const currentPiece = piece.find((p) => p.x === x && p.y === y);
     
+    // Get last number of each row to apply the color on squares.
     const lastChar = position.slice(-1)[0];
     const number = parseInt(lastChar, 10);
     const isColor = number % 2 === 0;
-    let updatedClassName, t = "";
     
+    
+    // Create the board positions based on this array.
     const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
     const charIndex = chars.indexOf(position.charAt(0));
     
+    // If the board starts with num [8] then apply white color to square.
     const isWhiteSquare = charIndex % 2 === 0;
     const squareColor = isColor ? isWhiteSquare : !isWhiteSquare;
 
-    // refactor the code.
-    if (updateBoardColor === 1) {
-        updatedClassName = squareColor ? "white-square" : "green-square";
-    } else if (updateBoardColor === 2) {
-        updatedClassName = squareColor ? "white-square" : "lightblue-square";
-    } else if (updateBoardColor === 3) {
-        updatedClassName = squareColor ? "white-square" : "darkblue-square";
-    } else if (updateBoardColor === 4) {
-        updatedClassName = squareColor ? "white-square" : "brown-square";
-    } else if (updateBoardColor === 5) {
-        updatedClassName = squareColor ? "white-square" : "purple-square";
-    } else if (updateBoardColor === 6) {
-        updatedClassName = squareColor ? "white-square" : "black-square";
+
+    // Update the squares with their corresponding color.
+    for (let i = 1; i < totalNumberOfSquares; i++) {
+        
+        // squareColor checking if the square is white.
+        if (squareColor) {
+
+            updatedClassName = `${updateBoardColor}-square`;
+
+        } else {
+            updatedClassName = "white-square";
+        }
     }
 
-    const availableSquares = highlightSquare.some(
-        (square) => square.x === x && square.y === y
-    );
+    // Push all squares positions that matches the possible moves of the pieces on the board.
+    const availableSquares = highlightSquare.some((square) => square.x === x && square.y === y);
 
+    // Simple check for if there's a piece [grabbed].
     if (state.activePiece !== null && availableSquares) {
        
-        // attacked piece.
+        // Highlight enemy positions by the attacking piece.
         if (currentPiece) {
-            t += `${currentPiece.team}`;
+
+            // Highlight that square by adding the name of the team for styling.
+            squaresOccupiedByEnemy += `${currentPiece.team}`;
+        
         } else {
-            // otherwise highlight square.
+
+            // if there's no enemy pieces, highlight the squares only.
             updatedClassName += " highlight-square";
         }
     }
@@ -70,7 +74,7 @@ export default function Squares(props) {
         >
             {currentPiece && (
                 <div
-                    className={`piece ${t}`}
+                    className={`piece ${squaresOccupiedByEnemy}`}
                     style={{
                         backgroundImage: `url(${currentPiece.image})`,
                     }}

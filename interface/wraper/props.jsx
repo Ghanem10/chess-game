@@ -5,7 +5,7 @@ export const LightContext = createContext();
 export default function Props({ children }) {
     const [lightUI, setLightUI] = useState(false);
     const [recordMoves, setRecordMoves] = useState([]);
-    const [boardColor, setBoardColor] = useState(2);
+    const [boardColor, setBoardColor] = useState("lightblue");
 
     return (
         <LightContext.Provider 
