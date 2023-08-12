@@ -10,7 +10,7 @@ export let piecesTurns = 1;
 
 export default function ReferenceBoard() {
     
-    const [piece, setPiece] = useState(initialstate);
+    const [piece, setPiece] = useState([]);
     const [highlightSquare, setHighlighSquare] = useState([]);
     const [pawnPromotion, setPawnPromotion] = useState();
     const [startGame, setStartGame] = useState(false);
@@ -21,8 +21,21 @@ export default function ReferenceBoard() {
         piecesTurns,
     );
 
+    function updateInitialStateArray() {
+        // Deep copy the initialState array and push the copied array.
+        const copy = initialstate.map((t) => ({ ...t }));
+        setPiece(copy);       
+    }
+    
+    function updateStateTwo() {
+        // Deep copy to update the board when the rematch btn is triggered.
+        const copy = initialstate.map((t) => ({ ...t }));
+        setPiece(copy);       
+    }
+
     useEffect(() => {
         addChessPieces(initialstate);
+        updateInitialStateArray();
     }, []);
     
     // update the piece position based on its possible moves.
@@ -75,7 +88,6 @@ export default function ReferenceBoard() {
                 />
             ) : (
                 <ChessBoard 
-                    piecesTurns={piecesTurns}
                     successMove={successMove}
                     piece={piece}
                     startGame={startGame}
@@ -84,6 +96,7 @@ export default function ReferenceBoard() {
                     pawnPromotion={pawnPromotion}
                     setPawnPromotion={setPawnPromotion}
                     updatePossibleMoves={updatePossibleMoves}
+                    updateStateTwo={updateStateTwo}
                 />
             )}
         </>

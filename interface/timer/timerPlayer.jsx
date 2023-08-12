@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './timerPlayer.scss';
+import { piecesTurns } from '../../ReferenceBoard/ReferenceBoard';
 import GameEnd from './end/gameEnd';
+import './timerPlayer.scss';
 
-export default function TimerPlayer({ piecesTurns, startGame, setStartGame }) {
+export default function TimerPlayer({ startGame, setStartGame, updateStateTwo }) {
+    // TODO
+    // Create a list of timers, optional choice.
     const [ours, setOurs] = useState(180);
     const [opponent, setOpponent] = useState(180);
     const [rematch, setRematch] = useState(false);
+    
+    // Reference for the winner title.
     const white = useRef(null);
     const black = useRef(null);
     let intervalId;
     
     useEffect(() => {
-        piecesTurns = rematch ? 1 : piecesTurns;
         if (startGame) {
             if (piecesTurns % 2 === 1) {
                 intervalId = setInterval(() => {
@@ -70,6 +74,7 @@ export default function TimerPlayer({ piecesTurns, startGame, setStartGame }) {
                 setOpp={setOpponent}
                 setGame={setStartGame}
                 setRematch={setRematch}
+                updateStateTwo={updateStateTwo}
             />
         </>
     );

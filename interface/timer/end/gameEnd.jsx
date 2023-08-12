@@ -15,6 +15,7 @@ export default function GameEnd(props) {
         setGame, 
         piecesTurns, 
         setRematch,
+        updateStateTwo
     } = props;
     
     const { setRecordMoves } = useContext(LightContext);
@@ -41,12 +42,18 @@ export default function GameEnd(props) {
     }
 
     function rematch() {
+        // Remove the title of once rematch btn clicked.
         endGame.current.classList.remove("end");
         title.current.classList.remove("showtitle");
+        
+        // Update states.
         setRecordMoves("");
         setOpp(180);
         setOurs(180);
         setRematch(preRem => !preRem);
+
+        // Update the board with new copy.
+        updateStateTwo();
     }
 
     function removeTitle() {

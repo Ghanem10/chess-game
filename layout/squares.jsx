@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { Type } from "../movement/constants/functions";
+import React from "react";
 
 export default function Squares(props) {
     const {
@@ -16,18 +15,21 @@ export default function Squares(props) {
         updateBoardColor
     } = props;
 
-    const currentPiece = piece.find((pre) => pre.x === x && pre.y === y);
+    const currentPiece = piece.find(
+        (pre) => pre.x === x && pre.y === y
+    );
+    
     const lastChar = position.slice(-1)[0];
     const number = parseInt(lastChar, 10);
     const isColor = number % 2 === 0;
     let updatedClassName, t = "";
-    let king = "";
     
     const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
     const charIndex = chars.indexOf(position.charAt(0));
     
     const isWhiteSquare = charIndex % 2 === 0;
     const squareColor = isColor ? isWhiteSquare : !isWhiteSquare;
+
     // refactor the code.
     if (updateBoardColor === 1) {
         updatedClassName = squareColor ? "white-square" : "green-square";
@@ -42,15 +44,16 @@ export default function Squares(props) {
     } else if (updateBoardColor === 6) {
         updatedClassName = squareColor ? "white-square" : "black-square";
     }
-    const availableSquares = highlightSquare.some(square => square.x === x && square.y === y);
+
+    const availableSquares = highlightSquare.some(
+        (square) => square.x === x && square.y === y
+    );
+
     if (state.activePiece !== null && availableSquares) {
+       
         // attacked piece.
         if (currentPiece) {
-            if (currentPiece.Piece === Type.KING) {
-                king += `${currentPiece.Piece}`;
-            } else {
-                t += `${currentPiece.team}`;
-            }
+            t += `${currentPiece.team}`;
         } else {
             // otherwise highlight square.
             updatedClassName += " highlight-square";
@@ -67,10 +70,10 @@ export default function Squares(props) {
         >
             {currentPiece && (
                 <div
-                className={`piece ${t} ${king}`}
-                style={{
-                    backgroundImage: `url(${currentPiece.image})`,
-                }}
+                    className={`piece ${t}`}
+                    style={{
+                        backgroundImage: `url(${currentPiece.image})`,
+                    }}
                 ></div>
             )}
         </div>

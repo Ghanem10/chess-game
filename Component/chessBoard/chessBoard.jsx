@@ -17,8 +17,8 @@ export default function ChessBoard({
     updatePossibleMoves, 
     highlightSquare, 
     pawnPromotion, 
-    setPawnPromotion, piecesTurns, 
-    startGame, setStartGame 
+    setPawnPromotion, updateStateTwo,
+    startGame, setStartGame, 
 }) {
     
     const [state, dispatch] = useReducer(stateManagement, { 
@@ -34,6 +34,7 @@ export default function ChessBoard({
 
     const [history, setHistory] = useState([]);
     const [nextPosition, setNextPosition] = useState([]);
+    const [opponent, setOpponent] = useState([]);
 
     const Board = useRef(null);
     const titleRef = useRef();
@@ -166,6 +167,7 @@ export default function ChessBoard({
 
                 if (playMove) {
 
+                    setOpponent(opponentPiece);
                     updateRecordMoves(
                         state, 
                         setRecordMoves, x, y, 
@@ -213,10 +215,9 @@ export default function ChessBoard({
             />
             <div className="container">
                 <TimerPlayer 
-                    piecesTurns={piecesTurns}
                     startGame={startGame}
                     setStartGame={setStartGame}
-                    piece={piece}
+                    updateStateTwo={updateStateTwo}
                 />
                 <div 
                     className="chessBoard" 
@@ -248,6 +249,7 @@ export default function ChessBoard({
                     pieces={piece}
                     history={history}
                     nextPosition={nextPosition}
+                    opponent={opponent}
                 />
             </div>
         </>
