@@ -67,8 +67,8 @@ export default function Recorder({ pieces, history, nextPosition, opponent }) {
     }
 
     const imgStyle = {
-        width: "50px",
-        height: "50px",
+        width: "30px",
+        height: "30px",
     };
 
     const h1Style = {

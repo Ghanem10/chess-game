@@ -113,11 +113,11 @@ export default function UnorderList() {
 
                 {/* #TODO.. Create a for loop and pass the li values accordingly */}
                 <ul className='themes'>
-                    <li onClick={() => getValue(1)}><img src='./chess6.png' /> <h5>Green & white</h5></li>
-                    <li onClick={() => getValue(2)}><img src='./chess2.png' /> <h5>Blue & white</h5></li>
-                    <li onClick={() => getValue(4)}><img src='./chess1.png' /> <h5>Brown & white</h5></li>
-                    <li onClick={() => getValue(5)}><img src='./chess4.png' /> <h5>Purple & white</h5></li>
-                    <li onClick={() => getValue(6)}><img src='./chess3.png' /> <h5>Black & white</h5></li>
+                    <li onClick={() => getValue(1)}><img src='./chess6.png' /> <h5>Green</h5></li>
+                    <li onClick={() => getValue(2)}><img src='./chess2.png' /> <h5>Blue</h5></li>
+                    <li onClick={() => getValue(4)}><img src='./chess1.png' /> <h5>Brown</h5></li>
+                    <li onClick={() => getValue(5)}><img src='./chess4.png' /> <h5>Purple</h5></li>
+                    <li onClick={() => getValue(6)}><img src='./chess3.png' /> <h5>Black</h5></li>
                     <li onClick={() => getValue(3)}><img src='./chess5.png' /> <h5>Original</h5></li>
                 </ul>
                 

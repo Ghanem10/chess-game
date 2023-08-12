@@ -63,8 +63,8 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
                 background-color: #2c2a27;
             }
             #ICON {
-                width: 35px;
-                height: 34px;
+                width: 30px;
+                height: 30px;
             }
         }
     }
@@ -89,8 +89,8 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
                     align-items: center;
                     padding: 10px;
                     #ICON {
-                        width: 35px;
-                        height: 34px;
+                        width: 30px;
+                        height: 30px;
                     }
                     span {
                         display: none;
@@ -99,20 +99,6 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
            }
         }
     }
-}
-
-/* icons */
-
-#icon-two {
-    color: rgba(135, 153, 255, 0.363);
-}
-
-#icon-three {
-    color: rgba(255, 152, 224, 0.432);
-}
-
-#icon-four {
-    color: rgba(84, 110, 255, 0.486);
 }
 
 /* support */
