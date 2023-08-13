@@ -19,6 +19,8 @@ export default function ChessBoard({
     pawnPromotion, 
     setPawnPromotion, updateStateTwo,
     startGame, setStartGame, 
+    checkMateStatus, isCheckMate,
+    setisCheckMate
 }) {
     
     const [state, dispatch] = useReducer(stateManagement, { 
@@ -201,6 +203,7 @@ export default function ChessBoard({
                     activePiece: null
                 },
             });
+            checkMateStatus();
         }
     }
 
@@ -223,6 +226,8 @@ export default function ChessBoard({
                     startGame={startGame}
                     setStartGame={setStartGame}
                     updateStateTwo={updateStateTwo}
+                    isCheckMate={isCheckMate}
+                    setisCheckMate={setisCheckMate}
                 />
                 <div 
                     className="chessBoard" 

@@ -3,7 +3,7 @@ import { piecesTurns } from '../../ReferenceBoard/ReferenceBoard';
 import GameEnd from './end/gameEnd';
 import './timerPlayer.scss';
 
-export default function TimerPlayer({ startGame, setStartGame, updateStateTwo }) {
+export default function TimerPlayer({ startGame, setStartGame, updateStateTwo, isCheckMate, setisCheckMate }) {
     // TODO
     // Create a list of timers, optional choice.
     const [ours, setOurs] = useState(180);
@@ -87,6 +87,8 @@ export default function TimerPlayer({ startGame, setStartGame, updateStateTwo })
                 setGame={setStartGame}
                 setRematch={setRematch}
                 updateStateTwo={updateStateTwo}
+                isCheckMate={isCheckMate}
+                setisCheckMate={setisCheckMate}
             />
         </>
     );

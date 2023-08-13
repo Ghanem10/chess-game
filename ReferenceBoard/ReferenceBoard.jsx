@@ -14,11 +14,13 @@ export default function ReferenceBoard() {
     const [highlightSquare, setHighlighSquare] = useState([]);
     const [pawnPromotion, setPawnPromotion] = useState();
     const [startGame, setStartGame] = useState(false);
+    const [isCheckMate, setisCheckMate] = useState(false);
 
     const board = new Board(
         piece, 
         setHighlighSquare, 
         piecesTurns,
+        setisCheckMate
     );
 
     function updateInitialStateArray() {
@@ -78,6 +80,7 @@ export default function ReferenceBoard() {
         return playMove && piecesTurns++;
     }
     
+    const checkMateStatus = () => board.checkMate();
     const updatePossibleMoves = (gridx, gridy) => board.calculateAllMoves(gridx, gridy);
 
     return (
@@ -98,6 +101,9 @@ export default function ReferenceBoard() {
                     updatePossibleMoves={updatePossibleMoves}
                     updateStateTwo={updateStateTwo}
                     setPiece={setPiece}
+                    checkMateStatus={checkMateStatus}
+                    isCheckMate={isCheckMate}
+                    setisCheckMate={setisCheckMate}
                 />
             )}
         </>

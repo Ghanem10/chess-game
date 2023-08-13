@@ -24,10 +24,11 @@ export default class Board {
      *         can move to.
      */
 
-    constructor(pieces, setReviewMoves, piecesTurns) {
+    constructor(pieces, setReviewMoves, piecesTurns, setisCheckMate) {
         this.pieces = pieces;
         this.setReviewMoves = setReviewMoves;
         this.piecesTurns = piecesTurns;
+        this.setisCheckMate = setisCheckMate;
     }
 
     get currentTeam() {
@@ -251,43 +252,6 @@ export default class Board {
     }
 
 
-    /**
-    
-        * @todo { king's checkmating attacks }
-    
-    */
-
-    // When the piece unlocks the path for a check from another piece to the enemy king.
-    discoverCheck() {}
-
-
-    // When the two enemy pieces deliver a check at the same time.
-    doubleCheck() {}
-
-    // When the knight delivers a check to the enemy king and the king has no moves to make.
-    smotheredMate() {}
-
-
-    // When the king is not in-check and has no moves or its pieces moves to make.
-    steelMate() {}
-
-
-    // When the king is in-check and has no moves or no pieces to cover or remove the attacking piece.
-    checkMate() {
-        
-        // Find the king piece position of the current team.
-        const king = this.pieces.find(
-            (t) => t.Piece === Type.KING && t.team === this.currentTeam
-        );
-
-        // TODO
-        // checkmate
-
-        return false;
-    }
-
-
-    // #todo. This fn should be called when drop piece is triggered.
     calculateAllMoves(gridx, gridy) {
 
         // This fn is triggere's the on-grab fn [chassBoard/component] to calcualte all moves.
@@ -323,8 +287,64 @@ export default class Board {
             ];
         }
 
-        // #The implementation for checkmates are ./interface folder - [later].
-        // this.checkMate();
         this.KingMovementsInCheck(gridx, gridy);
+    }
+
+
+    checkMate() {
+
+        // TODO, refactor this code after implementing the calcualte fn for getting the moves correctly.
+        
+        const king = this.pieces.find((k) => k.Piece === Type.KING && k.team !== this.currentTeam);
+        const current = this.pieces.filter((l) => l.team === this.currentTeam);
+        
+
+        king.possibleMoves = this.getValidMove(king, this.pieces);
+
+        const a = [];
+        let check = false;
+
+        for (const move of king.possibleMoves) {
+            let valid = true;
+
+            for (const enemy of this.pieces.filter((t) => t.team === this.currentTeam)) {
+                enemy.possibleMoves = this.getValidMove(enemy, this.pieces);
+
+                if (enemy.Piece === Type.PAWN) {
+                    if (enemy.possibleMoves.some((t) => this.samePosition(t, move.x, move.y))) {
+                        valid = false;
+                    }
+                    if (enemy.possibleMoves.some((t) => this.samePosition(t, king.x, king.y))) {
+                        check = true;
+                    }
+                } else { 
+                    if (enemy.possibleMoves.some((t) => this.samePosition(t, move.x, move.y))) {
+                        valid = false;
+                    }
+                    if (enemy.possibleMoves.some((t) => this.samePosition(t, king.x, king.y))) {
+                        check = true;
+                    }
+                }
+            }
+
+            if (valid) {
+                a.push(move);
+            }
+        }
+
+        king.possibleMoves = a;
+
+        if (king.possibleMoves <= 0 && check) {
+
+            for (const move of current) {
+
+                move.possibleMoves = this.getValidMove(move, this.pieces);
+                
+                if (move.possibleMoves.every((t) => t.length <= 0)) {
+                    
+                    this.setisCheckMate(true);
+                }
+            }
+        }
     }
 }

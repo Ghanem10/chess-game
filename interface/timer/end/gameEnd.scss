@@ -41,10 +41,9 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
         top: 50%;
         left: 62%;
         transform: translate(-57%, -50%);
-    
+        background-color: rgba(0, 0, 0, 0.8);
         gap: 2.7rem;
         border-radius: 9px;
-        background-image: linear-gradient(to right, rgb(167, 252, 167) , rgb(255, 255, 207));
         .title-end-game {
             display: flex;
             flex-direction: column;
@@ -54,9 +53,10 @@ $btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             h2 {
                 font-family: $font;
                 font-size: 30px;
+                color: white;
             }
             p {
-                color: #46413c;
+                color: #cec7c0;
                 font-family: $font;
                 font-size: large;
                 font-weight: 700;
