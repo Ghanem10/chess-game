@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { piecesTurns } from '../../ReferenceBoard/ReferenceBoard';
-import GameEnd from './end/gameEnd';
+import GameEnd from '../EndGame/gameEnd';
 import './timerPlayer.scss';
 
 export default function TimerPlayer({ startGame, setStartGame, updateStateTwo, isCheckMate, setisCheckMate }) {

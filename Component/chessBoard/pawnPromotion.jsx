@@ -1,5 +1,5 @@
 import React from "react";
-import { samePosition, Type, Team } from "../movement/constants/functions";
+import { samePosition, Type, Team } from "../../movement/constants/functions";
 
 export default function PawnPromotion(props) {
 
