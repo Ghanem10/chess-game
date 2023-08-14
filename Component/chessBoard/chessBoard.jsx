@@ -31,7 +31,8 @@ export default function ChessBoard({
     });
     const { 
         boardColor, 
-        setRecordMoves
+        setRecordMoves,
+        toggle
     } = useContext(LightContext);
 
     const [history, setHistory] = useState([]);
@@ -98,6 +99,8 @@ export default function ChessBoard({
                 }
             });
             
+            setHistory(pre => [ ...pre, { gx: gridx, gy: gridy }]);
+
             // The possible moves should really be in the dropping piece fn.
             updatePossibleMoves(gridx, gridy);
         }
@@ -167,42 +170,39 @@ export default function ChessBoard({
 
             setIsMatch((pr) => [...pr, opponentPiece ? "1" : "0"]);
 
-            if (currentPiece) {
-                const playMove = successMove(state, x, y, currentPiece, titleRef);
+            const playMove = successMove(state, x, y, currentPiece, titleRef);
 
-                if (playMove) {
+            if (playMove) {
 
-                    if (opponentPiece !== undefined) {
-                        setOpponent((preOPP) => [...preOPP, opponentPiece]);
-                    }
-                    updateRecordMoves(
-                        state, 
-                        setRecordMoves, x, y, 
-                        currentPiece, 
-                        opponentPiece
-                    );
-                    setHistory(pre => [
-                        ...pre, {
-                        gx: state.coordinates.GridX, 
-                        gy: state.coordinates.GridY 
-                    }]);
-                    setNextPosition(pre => [
-                        ...pre,
-                        { x: x, y: y }
-                    ]);
-                } else {
-                    state.activePiece.style.position = 'relative';
-                    state.activePiece.style.removeProperty('left');
-                    state.activePiece.style.removeProperty('top');
+                if (opponentPiece !== undefined) {
+                    setOpponent((preOPP) => [...preOPP, opponentPiece]);
                 }
-            }
 
+                updateRecordMoves(
+                    state, 
+                    setRecordMoves, x, y, 
+                    currentPiece, 
+                    opponentPiece
+                );
+
+                setNextPosition(pre => [
+                    ...pre,
+                    { x: x, y: y }
+                ]);
+                
+            } else {
+                state.activePiece.style.position = 'relative';
+                state.activePiece.style.removeProperty('left');
+                state.activePiece.style.removeProperty('top');
+            }
+            
             dispatch({
                 type: SQUARES.SET_ACTIVE_PIECE,
                 payload: {
                     activePiece: null
                 },
             });
+            
             checkMateStatus();
         }
     }
@@ -233,27 +233,31 @@ export default function ChessBoard({
                     className="chessBoard" 
                     ref={Board}
                     >
+                    
                     {state.squares.map((row, index) => (
                         <div
                             className="row"
                             key={index}
                         >
-                        {row.map(({ position, x, y }, index) => (
-                            <Squares 
-                                key={index}
-                                piece={piece}
-                                x={x} y={y}
-                                highlightSquare={highlightSquare}
-                                position={position}
-                                state={state}
-                                updateBoardColor={boardColor}
-                                grabbingPiece={grabbingPiece}
-                                MovingPiece={MovingPiece}
-                                droppingPiece={droppingPiece}
-                            />
-                        ))}
+                            {row.map(({ position, x, y }, index) => (
+                                <Squares 
+                                    key={index}
+                                    piece={piece}
+                                    x={x} y={y}
+                                    highlightSquare={highlightSquare}
+                                    position={position}
+                                    state={state}
+                                    updateBoardColor={boardColor}
+                                    grabbingPiece={grabbingPiece}
+                                    MovingPiece={MovingPiece}
+                                    droppingPiece={droppingPiece}
+                                />
+                            ))}
+                            {/** apply it up without div */}
+                            {toggle && <div className="review"></div>}
                         </div>
                     ))}
+                    
                 </div>
                 <Recorder 
                     pieces={piece}

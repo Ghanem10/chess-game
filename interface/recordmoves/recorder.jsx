@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { LightContext } from '../wraper/props';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { samePosition } from '../../movement/constants/functions';
+import { faArrowLeft, faArrowRight, faPause } from '@fortawesome/free-solid-svg-icons';
 import './recorder.scss';
 
 let count = 1;
@@ -10,20 +9,15 @@ let position = 0;
 
 export default function Recorder({ pieces, history, nextPosition, opponent, setPiece, isMatch }) {
 
-    // ##The castling moves and moving piece aren't implemented yet. So, this works only for capture.
-    // TODO: unimplemented code for handling king in-check logic is causing bugs. BUG!.
-    const { recordMoves, setRecordMoves } = useContext(LightContext);
+    const { recordMoves, setRecordMoves, setToggle } = useContext(LightContext);
     const [last, setLast] = useState([]);
-
-    // Deep cloning of the opponent piece and the chess board.
-    const cloneOpponent = opponent.map((t) => ({ ...t }));
-    const clonedBoard = pieces.map((t) => ({ ...t }));
-
 
     function moveBack() {
 
         // Edge cases if either the count or the moves are null, then simply return.
-        if (recordMoves.length === 0 || count < 0) return;
+        if (recordMoves.length <= 0 || count < 0) return;
+        
+        setToggle(true);
 
         // Get the last move of the recored array and store it in var.
         const lastMove = recordMoves[recordMoves.length - 1];
@@ -41,64 +35,45 @@ export default function Recorder({ pieces, history, nextPosition, opponent, setP
             ]
         );
         
-        /**
-         * @summary { prepos & nextpos }
-         * 
-         * These are indices in the ./chessBoard component.
-         * 
-         * The values they have its the previous position of
-         * the pieces as well as the next positions.
-        */
-        
         // Slice only the last index of the array on a click.
         const prepos = history[history.length - count];
         const nextpos = nextPosition[nextPosition.length - count];
 
-        // Map through the original state of the pieces and update
-        // their values accordingly.
-        pieces.map((t) => {
+        // This state tracks the positions where the pieces
+        // is captured. [0] -> normal move & [1] -> captured.
+        
+        setPiece((old) => old.map((t) => {
 
-            // If the pieces is in the next position
-            // then move it back to the previous pos.
             if (t.x === nextpos.x && t.y === nextpos.y) {
-                t.x = prepos.gx;
-                t.y = prepos.gy;
+
+                return { 
+                    ...t, 
+                    x: prepos.gx, 
+                    y: prepos.gy 
+                };
             }
 
             return t;
-        });
-    
-        // This state tracks the positions where the pieces
-        // is captured. [0] -> normal move & [1] -> captured.
-        const lastIndx = isMatch[isMatch.length - count];
+        }));
+
+        // const lastIndx = isMatch[isMatch.length - count];
+
+        // // Only if the pieces was in a captured position do this.
+        // if (lastIndx === "1") {
         
-
-        // Only if the pieces was in a captured position do this.
-        if (lastIndx === "1") {
-        
-            const len = cloneOpponent.length;
+        //     const len = opponent.length;
             
-            position += 1;
+        //     position += 1;
             
-            // Edge cases if the position > or < then stop.
-            if (position < 0 || position > len) return;
+        //     // Edge cases if the position > or < then stop.
+        //     if (position < 0 || position > len) return;
             
 
-            if (cloneOpponent !== undefined) {
+        //     if (opponent !== undefined) {
 
-                setPiece((w) => {
-
-                    // Update the captured piece of clonedOpponent
-                    // array and push it to the original pieces arr.
-                    const update = [
-                        ...w, 
-                        cloneOpponent[len - position]
-                    ];
-    
-                    return update;
-                });
-            }
-        }
+        //         setPiece((capture) => [...capture, opponent[len - position]]);
+        //     }
+        // }
 
         count += 1;
     }
@@ -107,8 +82,10 @@ export default function Recorder({ pieces, history, nextPosition, opponent, setP
     // the piece we're adding above to avoid any unexpected behavior.
     function moveForward() {
 
-        if (last.length === 0) return;
+        if (last.length <= 0) return;
         
+        setToggle(true);
+
         count -= 1;
 
         const nextMove = last[last.length - 1];
@@ -130,33 +107,32 @@ export default function Recorder({ pieces, history, nextPosition, opponent, setP
 
         if (prepos === undefined) return;
 
-        // Map and check if the piece in the previous position
-        // then, move them to the next.
-        pieces.map((t) => {
-        
+        setPiece((old) => old.map((t) => {
+
             if (t.x === prepos.gx && t.y === prepos.gy) {
-                t.x = nextpos.x;
-                t.y = nextpos.y;
-            } 
+
+                return { 
+                    ...t, 
+                    x: nextpos.x, 
+                    y: nextpos.y 
+                };
+            }
 
             return t;
-        });
+        }));
 
-        const lastIndx = isMatch[isMatch.length - count];
-        
-        if (lastIndx === "1") {
+        // const lastIndx = isMatch[isMatch.length - count];
+
+        // if (lastIndx === "1") {
             
-            const len = cloneOpponent.length;
-
-            const op = cloneOpponent[len - position];
-
-            // Remove the captured piece of the clonedboard array.
-            clonedBoard.filter((t) => !samePosition(t, op.x, op.y));
-
-            position -= 1;
-        }
+        //     position -= 1;
+        // }
     }
 
+    function removeReviewMovesTitle() {
+        setToggle(false);
+    }
+    
     const imgStyle = {
         width: "30px",
         height: "30px",
@@ -180,7 +156,7 @@ export default function Recorder({ pieces, history, nextPosition, opponent, setP
             </div>
             <div className='btns-record-moves'>
                 <button className='record-left' 
-                    // onClick={moveBack}
+                    onClick={moveBack}
                 >
                     <FontAwesomeIcon 
                         icon={faArrowLeft} 
@@ -188,20 +164,26 @@ export default function Recorder({ pieces, history, nextPosition, opponent, setP
                     />
                 </button>
                 <button className='record-right' 
-                    // onClick={moveForward}
+                    onClick={moveForward}
                 >
                     <FontAwesomeIcon 
                         icon={faArrowRight} 
                         id='arrow-right'
                     />
                 </button>
-                
+                <button className='record-left' 
+                    onClick={removeReviewMovesTitle}
+                >
+                    <FontAwesomeIcon 
+                        icon={faPause} 
+                        id='arrow-left'
+                    />
+                </button>
             </div>
             <div className='foot-record-moves'>
                 <img src='./crown.png' style={imgStyle} />
                 <span>One Game, let's play!</span>
             </div>
-            <span className='title'>Still, under development</span>
         </div>
     );
 }

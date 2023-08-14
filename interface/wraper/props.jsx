@@ -6,6 +6,7 @@ export default function Props({ children }) {
     const [lightUI, setLightUI] = useState(false);
     const [recordMoves, setRecordMoves] = useState([]);
     const [boardColor, setBoardColor] = useState("lightblue");
+    const [toggle, setToggle] = useState(false);
 
     return (
         <LightContext.Provider 
@@ -15,7 +16,9 @@ export default function Props({ children }) {
                 recordMoves, 
                 setRecordMoves,
                 boardColor,
-                setBoardColor
+                setBoardColor,
+                toggle,
+                setToggle
             }}>
             {children}
         </LightContext.Provider>

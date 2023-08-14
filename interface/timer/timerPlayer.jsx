@@ -18,7 +18,7 @@ export default function TimerPlayer({ startGame, setStartGame, updateStateTwo, i
     useEffect(() => {
         // Game start - update the timer for current team.
         if (startGame) {
-            if (piecesTurns % 2 === 1) {
+            if (piecesTurns % 2 === 1 && !isCheckMate) {
 
                 intervalId = setInterval(() => {
 
@@ -36,7 +36,7 @@ export default function TimerPlayer({ startGame, setStartGame, updateStateTwo, i
                 black.current.classList.remove('black-player');
                 white.current.classList.add('white-player');
 
-            } else if (piecesTurns % 2 === 0) {
+            } else if (piecesTurns % 2 === 0 && !isCheckMate) {
 
                 intervalId = setInterval(() => {
 

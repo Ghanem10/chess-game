@@ -1,6 +1,17 @@
 $width: 65px;
 $height: 65px;
 
+.review {
+  position: absolute;
+  width: 38.09%;
+  height: 80vh;
+  top: 50%;
+  left: 49.68%;
+  z-index: 1;
+  transform: translate(-57%, -50%);
+  background-color: rgba(0, 0, 0, 0.075);
+  opacity: 0.6;
+}
 .container {
     display: flex;
     justify-content: space-around;
@@ -138,5 +149,9 @@ $height: 65px;
     .container {
         justify-content: center;
         align-items: center;
+    }
+    .review {
+      width: 48.1%;
+      left: 47.3%;
     }
 }

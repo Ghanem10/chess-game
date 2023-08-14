@@ -27,6 +27,7 @@ $font: 'Karla', sans-serif;
         color: white;
         font-family: $font;
         background-color: #44413b;
+        overflow: auto;
     }
     .btns-record-moves {
         display: flex;
