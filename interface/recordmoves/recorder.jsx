@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { LightContext } from '../wraper/props';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faPause } from '@fortawesome/free-solid-svg-icons';
@@ -10,6 +10,7 @@ let position = 0;
 export default function Recorder({ pieces, history, nextPosition, opponent, setPiece, isMatch }) {
 
     const { recordMoves, setRecordMoves, setToggle } = useContext(LightContext);
+    const cloneOpponent = opponent.map((t) => ({ ...t }));
     const [last, setLast] = useState([]);
 
     function moveBack() {
@@ -42,38 +43,34 @@ export default function Recorder({ pieces, history, nextPosition, opponent, setP
         // This state tracks the positions where the pieces
         // is captured. [0] -> normal move & [1] -> captured.
         
-        setPiece((old) => old.map((t) => {
-
+        pieces.map((t) => {
+        
             if (t.x === nextpos.x && t.y === nextpos.y) {
-
-                return { 
-                    ...t, 
-                    x: prepos.gx, 
-                    y: prepos.gy 
-                };
+                t.x = prepos.gx; 
+                t.y = prepos.gy;
             }
 
             return t;
-        }));
+        });
 
-        // const lastIndx = isMatch[isMatch.length - count];
+        const lastIndx = isMatch[isMatch.length - count];
 
-        // // Only if the pieces was in a captured position do this.
-        // if (lastIndx === "1") {
+        console.log(isMatch, isMatch.length);
+        // Only if the pieces was in a captured position do this.
+        if (lastIndx === "1") {
         
-        //     const len = opponent.length;
+            const len = cloneOpponent.length;
             
-        //     position += 1;
+            position += 1;
             
-        //     // Edge cases if the position > or < then stop.
-        //     if (position < 0 || position > len) return;
+            // Edge cases if the position > or < then stop.
+            if (position <= 0 || position > len) return;
             
+            if (cloneOpponent !== undefined) {
 
-        //     if (opponent !== undefined) {
-
-        //         setPiece((capture) => [...capture, opponent[len - position]]);
-        //     }
-        // }
+                setPiece((capture) => [...capture, cloneOpponent[len - position]]);
+            }
+        }
 
         count += 1;
     }
@@ -107,26 +104,22 @@ export default function Recorder({ pieces, history, nextPosition, opponent, setP
 
         if (prepos === undefined) return;
 
-        setPiece((old) => old.map((t) => {
-
+        pieces.map((t) => {
+        
             if (t.x === prepos.gx && t.y === prepos.gy) {
-
-                return { 
-                    ...t, 
-                    x: nextpos.x, 
-                    y: nextpos.y 
-                };
+                t.x = nextpos.x; 
+                t.y = nextpos.y;
             }
 
             return t;
-        }));
+        });
 
-        // const lastIndx = isMatch[isMatch.length - count];
+        const lastIndx = isMatch[isMatch.length - count];
 
-        // if (lastIndx === "1") {
+        if (lastIndx === "1") {
             
-        //     position -= 1;
-        // }
+            position -= 1;
+        }
     }
 
     function removeReviewMovesTitle() {

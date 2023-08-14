@@ -98,8 +98,6 @@ export default function ChessBoard({
                     activePiece: Element,
                 }
             });
-            
-            setHistory(pre => [ ...pre, { gx: gridx, gy: gridy }]);
 
             // The possible moves should really be in the dropping piece fn.
             updatePossibleMoves(gridx, gridy);
@@ -168,15 +166,23 @@ export default function ChessBoard({
                 (t) => samePosition(t, x, y) && t.team !== currentPiece.team
             );
 
-            setIsMatch((pr) => [...pr, opponentPiece ? "1" : "0"]);
-
             const playMove = successMove(state, x, y, currentPiece, titleRef);
 
             if (playMove) {
 
+                setIsMatch((pr) => [...pr, opponentPiece ? "1" : "0"]);
+                
                 if (opponentPiece !== undefined) {
                     setOpponent((preOPP) => [...preOPP, opponentPiece]);
                 }
+
+                setHistory(pre => [ 
+                        ...pre, { 
+                            gx: state.coordinates.GridX, 
+                            gy: state.coordinates.GridY 
+                        }
+                    ]
+                );
 
                 updateRecordMoves(
                     state, 
