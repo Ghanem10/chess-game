@@ -7,13 +7,15 @@ import './recorder.scss';
 let count = 1;
 let position = 0;
 
-export default function Recorder({ pieces, history, nextPosition, opponent, setPiece, isMatch }) {
+export default function Recorder({ pieces, history, nextPosition, opponent, setPiece, isMatch, ours, enemy }) {
 
     const { recordMoves, setRecordMoves, setToggle } = useContext(LightContext);
     const cloneOpponent = opponent.map((t) => ({ ...t }));
     const [last, setLast] = useState([]);
 
     function moveBack() {
+
+        if (!(ours <= 0 || enemy <= 0)) return;
 
         // Edge cases if either the count or the moves are null, then simply return.
         if (recordMoves.length <= 0 || count < 0) return;
@@ -78,6 +80,8 @@ export default function Recorder({ pieces, history, nextPosition, opponent, setP
     // In this fn the logic is reversed - as we need to remove
     // the piece we're adding above to avoid any unexpected behavior.
     function moveForward() {
+
+        if (!(ours <= 0 || enemy <= 0)) return;
 
         if (last.length <= 0) return;
         
@@ -177,6 +181,7 @@ export default function Recorder({ pieces, history, nextPosition, opponent, setP
                 <img src='./crown.png' style={imgStyle} />
                 <span>One Game, let's play!</span>
             </div>
+            <p id='title-b'>Review the game after its end.</p>   
         </div>
     );
 }

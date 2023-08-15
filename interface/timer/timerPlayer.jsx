@@ -3,11 +3,16 @@ import { piecesTurns } from '../../ReferenceBoard/ReferenceBoard';
 import GameEnd from '../EndGame/gameEnd';
 import './timerPlayer.scss';
 
-export default function TimerPlayer({ startGame, setStartGame, updateStateTwo, isCheckMate, setisCheckMate }) {
+export default function TimerPlayer(props) {
+
+    const { 
+        startGame, setStartGame, 
+        updateStateTwo, isCheckMate, 
+        setisCheckMate, ours, 
+        opponent, setOurs, setOpponent
+    } = props;
     // TODO
     // Create a list of timers, optional choice.
-    const [ours, setOurs] = useState(180);
-    const [opponent, setOpponent] = useState(180);
     const [rematch, setRematch] = useState(false);
     
     // Reference for the winner title.

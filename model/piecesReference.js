@@ -342,7 +342,7 @@ export default class Board {
                 
                 if (move.possibleMoves.every((t) => t.length <= 0)) {
                     
-                    this.setisCheckMate(true);
+                    // this.setisCheckMate(true);
                 }
             }
         }

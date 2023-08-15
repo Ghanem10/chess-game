@@ -83,6 +83,11 @@ $font: 'Karla', sans-serif;
             font-family: $font;
         }
     }
+    #title-b {
+        margin-top: 0;
+        color: rgb(4, 175, 255);
+        font-family: $font;
+    }
     .title {
         text-align: center;
         width: 100%;

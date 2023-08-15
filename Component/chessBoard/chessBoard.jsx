@@ -39,6 +39,8 @@ export default function ChessBoard({
     const [nextPosition, setNextPosition] = useState([]);
     const [opponent, setOpponent] = useState([]);
     const [isMatch, setIsMatch] = useState([]);
+    const [ours, setOurs] = useState(60);
+    const [enemy, setEnemy] = useState(60);
 
     const Board = useRef(null);
     const titleRef = useRef();
@@ -234,6 +236,10 @@ export default function ChessBoard({
                     updateStateTwo={updateStateTwo}
                     isCheckMate={isCheckMate}
                     setisCheckMate={setisCheckMate}
+                    setOurs={setOurs}
+                    setOpponent= {setEnemy}
+                    ours={ours}
+                    opponent={enemy}
                 />
                 <div 
                     className="chessBoard" 
@@ -272,6 +278,8 @@ export default function ChessBoard({
                     nextPosition={nextPosition}
                     opponent={opponent}
                     isMatch={isMatch}
+                    ours={ours}
+                    enemy={enemy}
                 />
             </div>
         </>
