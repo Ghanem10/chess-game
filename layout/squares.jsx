@@ -36,7 +36,7 @@ export default function Squares(props) {
     for (let i = 1; i < totalNumberOfSquares; i++) {
         
         // squareColor checking if the square is white.
-        if (squareColor) {
+        if (!squareColor) {
 
             updatedClassName = `${updateBoardColor}-square`;
 
