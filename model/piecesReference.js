@@ -74,7 +74,7 @@ export default class Board {
     playMove(x, y, state, currentPiece, promotePawn, PawnDir, setPiece, validMove) {
         
         const targetRook = this.pieces.find(
-            (r) => this.samePosition(r, x, y)
+            (r) => this.samePosition(r, x, y) && r.team === currentPiece.team
         );
 
         const enpassant = this.isEnpassantMove(state, x, y, currentPiece, this.pieces);
