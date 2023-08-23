@@ -1,37 +1,45 @@
 
-import React, { useEffect, useState } from "react";
-import ReferenceBoard from "../ReferenceBoard/ReferenceBoard";
-import SideBar from '../interface/sidebar/sideBarItems';
-import Props from "../interface/wraper/props";
 import MAP from "./MAP";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Register from "../userprofile/log/register";
+import Login from "../userprofile/log/login";
+import SideBar from "../interface/sidebar/sideBarItems";
+import ReferenceBoard from "../ReferenceBoard/ReferenceBoard";
+import Props from "../interface/wraper/props";
 import '../Component/sass/board.scss';
 import './App.scss';
 
 export default function App() {
     const { width } = useWindowDimensions();
     
-    function windowSize() {
-
-        if (width <= 1075) {
-        
-            return <MAP />;
-        
-        } else {
-            return <Component />
-        }
-    }
-
-    return windowSize();
+    return (
+        <>
+            {(width <= 1075) ? <MAP /> : <AppRoute />}
+        </>
+    );
 }
 
-function Component() {
+function AppRoute() {
     return (
         <div className="app">
-            <Props>
-                <SideBar />
-                <ReferenceBoard />
-            </Props>
+            <BrowserRouter>
+                <Routes>
+                    <Route index element={<MainPage />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                </Routes>
+            </BrowserRouter>
         </div>
+    )
+}
+
+function MainPage() {
+    return (
+        <Props>
+            <SideBar />
+            <ReferenceBoard />
+        </Props>
     );
 }
 
