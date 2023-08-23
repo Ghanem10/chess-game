@@ -17,6 +17,11 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+/**
+    connect.session() MemoryStore is not
+    designed for a production environment, as it will leak
+    memory, and will not scale past a single process.
+ */
 
 app.use(session({
     secret: process.env.GITHUB_SECRET,
