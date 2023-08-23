@@ -10,8 +10,6 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-
-    
     let navigate = useNavigate();
 
     function handleEmailChange(e) {
@@ -29,18 +27,19 @@ export default function Login() {
         }
         
         try {
+            console.log(import.meta.env.VITE_URL)
             const { 
                 data: { 
                     t: token, 
                 }
-            } = await axios.post(`"http://localhost:4000"/auth/41v/login`, { email, password });
+            } = await axios.post(`${import.meta.env.VITE_URL}/auth/41v/login`, { email, password });
 
-            await axios.post(`"http://localhost:4000"/page/41v/Info`, {
+            await axios.get(`${import.meta.env.VITE_URL}/page/41v/Info`, {
                 headers: {
                     Authorization: token,
                     'Content-Type': 'application/json',
                 },
-            });
+            }).then(res => console.log(res.data))
 
             navigate("/");
 
@@ -60,11 +59,11 @@ export default function Login() {
     }
 
     function githubLoginProviders() {
-        window.location.href = `http://localhost:4000/auth/github`;
+        window.location.href = `${import.meta.env.VITE_URL}/auth/github`;
     }
 
     function googleLoginProviders() {
-        window.location.href = `http://localhost:4000/auth/google`;
+        window.location.href = `${import.meta.env.VITE_URL}/auth/google`;
     }
 
     return (

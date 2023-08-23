@@ -24,8 +24,7 @@ export default function Register() {
 
     async function sendUserData() {
         try {
-            
-            await axios.post(`/auth/41v/register`, { name, email, password });
+            await axios.post(`${import.meta.env.VITE_URL}/auth/41v/register`, { name, email, password });
 
             navigate("/login");
 
