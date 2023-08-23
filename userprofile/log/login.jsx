@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './style.scss';
 
 export default function Login() {
@@ -32,9 +33,9 @@ export default function Login() {
                 data: { 
                     t: token, 
                 }
-            } = await postData.post(`/auth/41v/login`, { email, password });
+            } = await axios.post(`"http://localhost:4000"/auth/41v/login`, { email, password });
 
-            await postData.post(`/page/41v/Info`, {
+            await axios.post(`"http://localhost:4000"/page/41v/Info`, {
                 headers: {
                     Authorization: token,
                     'Content-Type': 'application/json',
@@ -59,11 +60,11 @@ export default function Login() {
     }
 
     function githubLoginProviders() {
-        window.location.href = `${process.env.MAIN_PAGE}/auth/github`;
+        window.location.href = `http://localhost:4000/auth/github`;
     }
 
     function googleLoginProviders() {
-        window.location.href = `${process.env.MAIN_PAGE}/auth/google`;
+        window.location.href = `http://localhost:4000/auth/google`;
     }
 
     return (
