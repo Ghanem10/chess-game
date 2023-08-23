@@ -1,13 +1,13 @@
 
 $transition: 0.3s ease-in-out all;
 
-.login,
-.register {
+.login-auth,
+.register-auth {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 1rem;
+    margin-top: 0.3rem;
     width: 100%;
     gap: 19px;
 
@@ -27,12 +27,22 @@ $transition: 0.3s ease-in-out all;
         flex-direction: column;
         text-align: center;
         
-        height: 63vh;
+        height: auto;
         width: 40%;
         border-radius: 6px;
         background-color: #262421;
 
+        margin-top: 10px;
         gap: 15px;
+
+        .error-register-form {
+            text-align: start;
+            padding-top: 10px;
+            padding-left: 22px;
+            height: 15px;
+            font-size: 19px;
+            color: rgb(233, 22, 22);
+        }
 
         input:first-child {
             margin-top: 2rem;
@@ -109,6 +119,8 @@ $transition: 0.3s ease-in-out all;
             justify-content: center;
             align-items: center;
         
+            padding: 19px;
+            padding-top: 0;
             #git, #google {
                 color: white;
             }

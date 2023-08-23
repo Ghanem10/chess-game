@@ -7,6 +7,7 @@ export default function Register() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [handleError, setHandleError] = useState("");
 
     let navigate = useNavigate();
 
@@ -29,7 +30,7 @@ export default function Register() {
             navigate("/login");
 
         } catch (e) {
-            console.log(e);
+            setHandleError(e.response.data.mes);
         }
     }
 
@@ -41,6 +42,10 @@ export default function Register() {
         setPassword("");
 
         sendUserData();
+
+        setTimeout(() => {
+            setHandleError("");
+        }, 4000);
     }
  
     function continueWithLoginProivders () {
@@ -48,9 +53,10 @@ export default function Register() {
     }
 
     return(
-        <div className="register">
+        <div className="register-auth">
             <span id='title'>FIDE chess cup</span><img src='./horse.png' alt='' />
             <form onSubmit={handleSubmit} className="container-register">
+                <label className="error-register-form">{handleError}</label>
                 <input 
                     name="name" 
                     type="text"

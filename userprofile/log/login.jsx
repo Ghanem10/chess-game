@@ -27,7 +27,6 @@ export default function Login() {
         }
         
         try {
-            console.log(import.meta.env.VITE_URL)
             const { 
                 data: { 
                     t: token, 
@@ -67,7 +66,7 @@ export default function Login() {
     }
 
     return (
-        <div className="login">
+        <div className="login-auth">
             <span id='title'>FIDE chess cup</span><img src='./horse.png' alt='' />
             <form onSubmit={handleSubmit} className="container-login">
                 <input 
