@@ -5,7 +5,7 @@ import {
     faCircleQuestion
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { LightContext } from '../../wraper/props';
+import { LightContext } from '../../../contextprovider/context.provider';
 
 export default function Support() {
     const { setLightUI } = useContext(LightContext);

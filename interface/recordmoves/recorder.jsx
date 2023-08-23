@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { LightContext } from '../wraper/props';
+import { LightContext } from '../../contextprovider/context.provider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faPause } from '@fortawesome/free-solid-svg-icons';
 import './recorder.scss';

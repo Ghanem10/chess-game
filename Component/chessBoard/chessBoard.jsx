@@ -3,7 +3,7 @@ import Squares from "../../layout/squares";
 import PawnPromotion from "./pawnPromotion";
 import stateManagement, { SQUARES } from "../state/stateManagement";
 import TimerPlayer from "../../interface/timer/timerPlayer";
-import { LightContext } from "../../interface/wraper/props";
+import { LightContext } from "../../contextprovider/context.provider";
 import Recorder from "../../interface/recordmoves/recorder";
 import updateRecordMoves from "./updateRecordMoves";
 import { samePosition } from "../../movement/constants/functions";

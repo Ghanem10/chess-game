@@ -6,7 +6,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { LightContext } from '../../wraper/props';
+import { LightContext } from '../../../contextprovider/context.provider';
 
 
 export default function UnorderList() {

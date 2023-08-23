@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import { faBoltLightning } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { LightContext } from '../wraper/props';
+import { LightContext } from '../../contextprovider/context.provider';
 import './list.scss';
 
 export default function ListOptions({ setStartGame }) {

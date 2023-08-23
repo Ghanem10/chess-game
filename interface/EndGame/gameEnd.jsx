@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import { faChessQueen, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { LightContext } from '../wraper/props';
+import { LightContext } from '../../contextprovider/context.provider';
 import './gameEnd.scss';
 import './checkmate.scss';
 

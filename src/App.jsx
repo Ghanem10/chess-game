@@ -6,7 +6,7 @@ import Register from "../userprofile/log/register";
 import Login from "../userprofile/log/login";
 import SideBar from "../interface/sidebar/sideBarItems";
 import ReferenceBoard from "../ReferenceBoard/ReferenceBoard";
-import Props from "../interface/wraper/props";
+import ContextProvider from "../contextprovider/context.provider";
 import '../Component/sass/board.scss';
 import './App.scss';
 
@@ -36,10 +36,10 @@ function AppRoute() {
 
 function MainPage() {
     return (
-        <Props>
+        <ContextProvider>
             <SideBar />
             <ReferenceBoard />
-        </Props>
+        </ContextProvider>
     );
 }
 
