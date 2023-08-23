@@ -251,9 +251,9 @@ export default function ChessBoard({
                             className="row"
                             key={index}
                         >
-                            {row.map(({ position, x, y }, index) => (
+                            {row.map(({ position, x, y }) => (
                                 <Squares 
-                                    key={index}
+                                    key={`${x}-${y}`}
                                     piece={piece}
                                     x={x} y={y}
                                     highlightSquare={highlightSquare}

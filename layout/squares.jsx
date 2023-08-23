@@ -5,7 +5,7 @@ export default function Squares(props) {
         grabbingPiece,
         MovingPiece,
         droppingPiece,
-        index, piece, x, y,
+        piece, x, y,
         position, state,
         highlightSquare,
         updateBoardColor
@@ -66,7 +66,6 @@ export default function Squares(props) {
 
     return (
         <div
-            key={index}
             className={updatedClassName}
             onMouseDown={(e) => grabbingPiece(e)}
             onMouseMove={(e) => MovingPiece(e)}
