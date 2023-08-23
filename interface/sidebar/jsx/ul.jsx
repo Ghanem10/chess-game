@@ -54,39 +54,33 @@ export default function UnorderList() {
                 <ul className='social'>
 
                     <li>
-                        <button className='linkedin'>
-                            <Link to={'https://www.linkedin.com/in/gani-al'}>
-                                <FontAwesomeIcon 
-                                    id='social-icon-linkedin' 
-                                    icon={faLinkedin}
-                                /> 
-                                <span id='social-links'>LinkedIn</span>
-                            </Link>
-                        </button>
+                        <FontAwesomeIcon 
+                            id='social-icon-linkedin' 
+                            icon={faLinkedin}
+                        /> 
+                        <Link to={'https://www.linkedin.com/in/gani-al'}>
+                            <span id='social-links'>LinkedIn</span>
+                        </Link>
                     </li>
 
                     <li>
-                        <button className='gitHub'>
-                            <Link to={'https://github.com/gani1000'}>
-                                <FontAwesomeIcon 
-                                    id='social-icon-github' 
-                                    icon={faGithub}
-                                /> 
-                                <span id='social-links'>GitHub</span>
-                            </Link>
-                        </button>
+                        <FontAwesomeIcon 
+                            id='social-icon-github' 
+                            icon={faGithub}
+                        /> 
+                        <Link to={'https://github.com/gani1000'}>
+                            <span id='social-links'>GitHub</span>
+                        </Link>
                     </li>
 
                     <li>
-                        <button className='twitter'>
-                            <Link to={'https://twitter.com/gani10000'}>
-                                <FontAwesomeIcon 
-                                    id='social-icon-twitter' 
-                                    icon={faTwitter}
-                                /> 
-                                <span id='social-links'>Twitter</span>
-                            </Link>
-                        </button>
+                        <FontAwesomeIcon 
+                            id='social-icon-twitter' 
+                            icon={faTwitter}
+                        /> 
+                        <Link to={'https://twitter.com/gani10000'}>
+                            <span id='social-links'>Twitter</span>
+                        </Link>
                     </li>
 
                 </ul>
@@ -97,12 +91,12 @@ export default function UnorderList() {
                 </li>
 
                 <ul className='themes'>
-                    <li onClick={() => getValue("green")}><img src='./chess6.png' /> <h5>Green</h5></li>
-                    <li onClick={() => getValue("lightblue")}><img src='./chess2.png' /> <h5>Blue</h5></li>
-                    <li onClick={() => getValue("brown")}><img src='./chess1.png' /> <h5>Brown</h5></li>
-                    <li onClick={() => getValue("purple")}><img src='./chess4.png' /> <h5>Purple</h5></li>
-                    <li onClick={() => getValue("black")}><img src='./chess3.png' /> <h5>Black</h5></li>
-                    <li onClick={() => getValue("darkblue")}><img src='./chess5.png' /> <h5>Original</h5></li>
+                    <li onClick={() => getValue("green")}><img src='./chess6.png' /> <span>Green</span></li>
+                    <li onClick={() => getValue("lightblue")}><img src='./chess2.png' /> <span>Blue</span></li>
+                    <li onClick={() => getValue("brown")}><img src='./chess1.png' /> <span>Brown</span></li>
+                    <li onClick={() => getValue("purple")}><img src='./chess4.png' /> <span>Purple</span></li>
+                    <li onClick={() => getValue("black")}><img src='./chess3.png' /> <span>Black</span></li>
+                    <li onClick={() => getValue("darkblue")}><img src='./chess5.png' /> <span>Original</span></li>
                 </ul>
                 
                 <li className='news-list one'>
