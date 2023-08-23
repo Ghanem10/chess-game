@@ -9,7 +9,7 @@ export const getInfoUser = async (req, res) => {
     
     const userData = await SchemaUser.findOne({ gmail });
     
-    res.status(StatusCodes.OK).json({ name: userData });
+    res.status(StatusCodes.OK).json({ name: userData.email });
 };
 
 export const login = async (req, res) => {
