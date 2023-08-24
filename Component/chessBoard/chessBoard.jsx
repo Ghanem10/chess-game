@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useRef, useState } from "react";
 import Squares from "../../layout/squares";
-import PawnPromotion from "./pawnPromotion";
+import { PawnPromotion } from "./pawnPromotion";
 import stateManagement, { SQUARES } from "../state/stateManagement";
 import TimerPlayer from "../../interface/timer/timerPlayer";
 import { LightContext } from "../../contextprovider/context.provider";
