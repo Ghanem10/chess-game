@@ -46,9 +46,6 @@ export default function ReferenceBoard() {
         return m ? true : false;
     }
 
-    /// TODO, You can't pass ref as a props. 
-    /// Create forwardRef for this fn and Pawnpromotion.
-    /// fix square grabbing empty obj.
     function successMove(state, x, y, currentPiece, titleRef) {
 
         function promotePawn(piece) {

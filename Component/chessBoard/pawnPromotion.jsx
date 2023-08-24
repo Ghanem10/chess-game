@@ -1,13 +1,12 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { samePosition, Type, Team } from "../../movement/constants/functions";
 
-export default function PawnPromotion(props) {
+export const PawnPromotion = forwardRef(function(props, ref) {
 
     let {
         x, y,
         pawnPromotion,
         setPawnPromotion,
-        titleRef,
         piece
     } = props;
 
@@ -39,7 +38,7 @@ export default function PawnPromotion(props) {
     }
     
     return (
-        <div id="Pawn-promotion" className="hide-title" ref={titleRef}>
+        <div id="Pawn-promotion" className="hide-title" ref={ref}>
             <div className="body-promotion">
                 <div id="PiecesPromotion" 
                     onClick={() => promotPawn(Type.ROCK)} 
@@ -60,4 +59,4 @@ export default function PawnPromotion(props) {
             </div>
         </div>
     );
-}
+});

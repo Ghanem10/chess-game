@@ -226,7 +226,7 @@ export default function ChessBoard({
                 y={state.nextPosition.y}
                 pawnPromotion={pawnPromotion}
                 setPawnPromotion={setPawnPromotion}
-                titleRef={titleRef}
+                ref={titleRef}
                 piece={piece}
             />
             <div className="container">
