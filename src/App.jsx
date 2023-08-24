@@ -9,6 +9,7 @@ import ReferenceBoard from "../ReferenceBoard/ReferenceBoard";
 import ContextProvider from "../contextprovider/context.provider";
 import '../Component/sass/board.scss';
 import './App.scss';
+import NotFound from "./NotFound";
 
 export default function App() {
     const { width } = useWindowDimensions();
@@ -28,6 +29,7 @@ function AppRoute() {
                     <Route index element={<MainPage />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>
         </div>

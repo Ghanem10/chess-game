@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-export default function MAP() {
-
+export default function NotFound() {
+    
     const divStyle = {
         display: "flex",
         flexDirection: "column",
@@ -23,14 +24,20 @@ export default function MAP() {
         height: "auto",  
     };
 
+    const linkStyle = {
+        color: "green",
+        fontSize: "20px"
+    };
+
     return (
         <div style={divStyle}>
-            <img src="./engineer.png" style={imageStyle} />
+            <img src="./plug-in.png" style={imageStyle} />
             <p 
                 style={paragraphStyle}
             >
-                we don't have version for small devices.
+                I don't know where we're!
             </p>
+            <Link style={linkStyle} to={"/"}>Get back</Link>
         </div>
     );
 }
