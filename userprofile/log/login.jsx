@@ -1,14 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './style.scss';
+import { LightContext } from '../../contextprovider/context.provider';
 
 export default function Login() {
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { setUserEmail } = useContext(LightContext);
 
     let navigate = useNavigate();
 
@@ -33,14 +35,15 @@ export default function Login() {
                 }
             } = await axios.post(`${import.meta.env.VITE_URL}/auth/41v/login`, { email, password });
 
-            await axios.get(`${import.meta.env.VITE_URL}/page/41v/Info`, {
+            await axios.post(`${import.meta.env.VITE_URL}/page/41v/Info`, {
                 headers: {
                     Authorization: token,
                     'Content-Type': 'application/json',
                 },
-            }).then(res => console.log(res.data))
-
-            navigate("/");
+                email: email
+            }).then(res => setUserEmail(res.data.gmail));
+            
+            navigate("/profile");
 
         } catch (e) {
             console.log(e);

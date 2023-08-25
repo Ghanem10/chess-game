@@ -7,6 +7,7 @@ import Login from "../userprofile/log/login";
 import SideBar from "../interface/sidebar/sideBarItems";
 import ReferenceBoard from "../ReferenceBoard/ReferenceBoard";
 import ContextProvider from "../contextprovider/context.provider";
+import UserProfile from "../userprofile/profile/profile";
 import '../Component/sass/board.scss';
 import './App.scss';
 import NotFound from "./NotFound";
@@ -25,12 +26,15 @@ function AppRoute() {
     return (
         <div className="app">
             <BrowserRouter>
-                <Routes>
-                    <Route index element={<MainPage />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
+                <ContextProvider>
+                    <Routes>
+                        <Route index element={<MainPage />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/profile" element={<UserProfile />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </ContextProvider>
             </BrowserRouter>
         </div>
     )
@@ -38,10 +42,10 @@ function AppRoute() {
 
 function MainPage() {
     return (
-        <ContextProvider>
+        <>
             <SideBar />
             <ReferenceBoard />
-        </ContextProvider>
+        </>
     );
 }
 
