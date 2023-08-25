@@ -5,11 +5,11 @@ import SchemaUser from "../model/schema.js";
 
 export const getInfoUser = async (req, res) => {
 
-    const { gmail } = req.body;
+    const { email } = req.body;
     
-    const userData = await SchemaUser.findOne({ gmail });
+    const userData = await SchemaUser.findOne({ email });
     
-    res.status(StatusCodes.OK).json({ name: userData.email });
+    res.status(StatusCodes.OK).json({ gmail: userData.email });
 };
 
 export const login = async (req, res) => {

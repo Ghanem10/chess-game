@@ -5,6 +5,6 @@ const routes = express.Router();
 
 routes.route('/login').post(login);
 routes.route('/register').post(register);
-routes.route('/Info').get(getInfoUser);
+routes.route('/Info').post(getInfoUser);
 
 export default routes;
