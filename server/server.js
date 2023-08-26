@@ -1,12 +1,14 @@
 import express from 'express';
 import { config } from 'dotenv';
-import { connectDB } from './authentication/connect.js';
+import { connectDB } from './db/connect.js';
 import authorizeMiddleWare from './error/middleware.js';
 import session from 'express-session';
 import GitHubAuth from './log/github.js';
 import GoogleAuth from './log/google.js';
 import passport from 'passport';
-import routes from './authentication/routes.js';
+import routes from './routes/routes.js';
+import { StatusCodes } from 'http-status-codes';
+import loginProdiver from './routes/loginProviders.js';
 import cors from 'cors';
 config();
 
@@ -18,73 +20,69 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 /**
-    connect.session() MemoryStore is not
-    designed for a production environment, as it will leak
-    memory, and will not scale past a single process.
- */
+ * A middleware to support persistent login from users
+*/
 
 app.use(session({
-    secret: process.env.GITHUB_SECRET,
+    secret: process.env.SECRET_SESSION,
     resave: true,
     saveUninitialized: true,
 }));
 
-
-app.use(session({
-    secret: process.env.GOOGLE_SECRET,
-    resave: true,
-    saveUninitialized: true,
-}));
+/**
+ * .initialize() Initialize Passport on the app instance.
+ * .session() Enables persistent login with passport.JS on app.
+*/
 
 app.use(passport.initialize());
 app.use(passport.session());
 
+/**
+ * Configure session middleware for passport to use GitHub and Google middlewares.
+*/
 
 passport.use(GitHubAuth);
 passport.use(GoogleAuth);
 
 
-passport.serializeUser((user, done) => {
-    done(null, user);
+/**
+ * Save user info in a session to be obtained later.
+*/
+
+passport.serializeUser(function(user, done) {
+    return done(null, user.id);
+});
+
+passport.deserializeUser(function(user, done) {
+    console.log(req.session.passport.user);
+    return done(null, user);
 });
 
 
-passport.deserializeUser((user, done) => {
-    done(null, user);
-});
+/**
+ * App Routes for JWT and login provider auth. 
+*/
 
+app.use('/auth', loginProdiver);
+app.use('/auth/41v', routes);
+app.use('/page/41v', routes, authorizeMiddleWare);
 
-app.get('/auth/github', passport.authenticate('github', { 
-    scope: "user" 
-}));
+/**
+ * Sign-out route
+*/
 
+app.post('/logout', function(req, res, next) {
 
-app.get('/auth/github/callback', 
+    req.logout(function(error) {
     
-    passport.authenticate("github", { 
-        failureRedirect: "/login"
-    }) ,(req, res) => {
+        if (error) { 
 
-    res.redirect('/page');
+            return next(error); 
+        }
+
+        res.redirect('/');
+    });
 });
-
-
-app.get('/auth/google', passport.authenticate('google'));
-
-
-app.get('/auth/google/callback', 
-
-    passport.authenticate("google", { 
-        failureRedirect: "/login"
-    }) ,(req, res) => {
-
-    const { id, email, username } = req.user;
-    res.json({ id, email, username });
-});
-
-
-app.use("/auth/41v", routes);
-app.use("/page/41v", routes, authorizeMiddleWare);
 
 
 const start = async () => {
@@ -92,11 +90,15 @@ const start = async () => {
     try {
     
         await connectDB(process.env.CLOUD_URL);
-        
         app.listen(port);
     
     } catch (error) {
-        console.log("internal error: ", error);
+
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(
+            { 
+                mes: `internal error: ${error}`
+            }
+        );
     }
 }
 

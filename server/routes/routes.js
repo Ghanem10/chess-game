@@ -1,5 +1,7 @@
 import express from 'express';
-import { login, register, getInfoUser } from './controller.js';
+import { login, register, getInfoUser } from '../controller/controller.js';
+import { config } from 'dotenv';
+config();
 
 const routes = express.Router();
 

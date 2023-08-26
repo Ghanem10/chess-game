@@ -2,6 +2,20 @@ import mongoose from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+const UserAuthLogin = new mongoose.Schema({
+    github: {
+        id: { type: String, unique: true },
+        username: { type: String },
+        githubtoken: { type: String },
+    },
+    google: {
+        id: { type: String, unique: true },
+        username: { type: String },
+        googletoken: { type: String },
+        picture: { type: String }
+    },
+});
+
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -24,43 +38,19 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide a password!'],
         minlength: 3
-    },
-    github: {
-        id: {
-            type: String
-        },
-        username: {
-            type: String
-        },
-        gittoken: {
-            type: String
-        },
-        gittokenref: {
-            type: String
-        }
-    },
-    google: {
-        id: {
-            type: String
-        },
-        username: {
-            type: String
-        },
-        googletoken: {
-            type: String
-        },
-        googletokenref: {
-            type: String
-        }
     }
+    // poulate the other schema here and add a ref to the module.
 });
+
+/**
+ * Save the user's credentionals from the JWT auth methods. 
+*/
 
 UserSchema.pre('save', async function() {
 
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(this.password, salt);
     this.password = hashedPassword;
-    console.log(this.password)
 });
 
 UserSchema.methods.createJWT = function () {
@@ -83,6 +73,10 @@ UserSchema.methods.comparePassword = async function (candatespassword) {
     return isMatch;
 }
 
+const SchemaAuthUser = mongoose.model('UserAuth', UserAuthLogin);
 const SchemaUser = mongoose.model('User', UserSchema);
 
-export default SchemaUser;
+export {
+    SchemaUser,
+    SchemaAuthUser,
+};

@@ -1,7 +1,7 @@
 
 import { StatusCodes } from "http-status-codes";
 import { BadRequest, Unauthorized } from "../error/error.js";
-import SchemaUser from "../model/schema.js";
+import { SchemaUser } from "../model/schema.js";
 
 export const getInfoUser = async (req, res) => {
 

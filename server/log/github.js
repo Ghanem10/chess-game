@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { Strategy as GithubStrategy } from 'passport-github';
-import SchemaUser from '../model/schema.js';
+import { SchemaAuthUser } from '../model/schema.js';
 config();
 
 const GitHubAuth = new GithubStrategy(
@@ -8,31 +8,36 @@ const GitHubAuth = new GithubStrategy(
         clientID: process.env.GITHUB_ID, 
         clientSecret: process.env.GITHUB_SECRET,
         callbackURL: process.env.GITHUB_URL
-    },
+    }, 
     async (accessToken, refreshToken, profile, done) => {
-        let user = await SchemaUser.findOne({ "github.id": profile.id });
-        
+        let user = await SchemaAuthUser.findOne({ "github.id": profile.id });
+
         try {
             if (user) {
-                user.github.gittoken = accessToken;
-                user.github.gittokenref = refreshToken;
-
+                // If the user exist, update the github token.
+                user.github.githubtoken = accessToken;
+    
+                // Save the changes in the db.
                 await user.save();
                 return done(null, user);
             } else {
-                user = new SchemaUser({
-                    github: {
+                
+                // If the user doesn't exist create one.
+                user = new SchemaAuthUser({
+                    github: { 
                         id: profile.id,
-                        username: profile.username,
-                        gittoken: accessToken,
-                        gittokenref: refreshToken,
+                        username: profile.displayName,
+                        githubtoken: accessToken,
+                        picture: profile.photos.value,
                     }
                 });
             }
 
+            // Save it and return
             await user.save();
             return done(null, user);
         } catch (error) {
+
             return done(error);
         }
     }
