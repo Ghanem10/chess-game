@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "jest --watchAll"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,8 @@
     "express-session": "^1.17.3",
     "http-status-codes": "^2.2.0",
     "jsonwebtoken": "^9.0.1",
+    "mongodb": "^5.8.1",
+    "mongodb-memory-server": "^8.15.1",
     "mongoose": "^7.3.2",
     "nodemon": "^2.0.22",
     "passport": "^0.6.0",
@@ -31,6 +33,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.22.11",
+    "@shelf/jest-mongodb": "^4.1.7",
     "jest": "^29.6.4",
     "supertest": "^6.3.3"
   }

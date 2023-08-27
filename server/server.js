@@ -89,7 +89,7 @@ const start = async () => {
     
     try {
     
-        await connectDB(process.env.CLOUD_URL);
+        await connectDB(process.env.CLOUD_URI);
         app.listen(port);
     
     } catch (error) {
