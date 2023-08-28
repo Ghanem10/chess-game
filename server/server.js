@@ -9,15 +9,82 @@ import passport from 'passport';
 import routes from './routes/routes.js';
 import { StatusCodes } from 'http-status-codes';
 import loginProdiver from './routes/loginProviders.js';
+import { createRoom } from './player/room.js';
+import { WebSocketServer } from 'ws';
+import http from 'http';
 import cors from 'cors';
 config();
 
 const app = express();
+const server = http.createServer(app);
+const wss = new WebSocketServer({ server: server });
+
+// Create a room for each connection
+const rooms = new Map();
+
 const port = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+
+/**
+ * Create a WS connection on the top of express
+ * 
+ * @function{createRoom(rooms, player1, player2)} 
+ *      - Except two IDs after implementing the ranking system.
+*/
+
+wss.on("connection", (ws) => {
+
+    ws.on("error", (error) => {
+        ws.send(`Something went wrong: ${error}`)
+    });
+
+    /**
+     * Initial set up.
+     * @param{message} => { _ID, type, player1: id, player2: id, move: { x, y } }
+    */
+
+    ws.on("message", (message) => {
+
+        const received = JSON.parse(message);
+
+        // Once the players starts seraching in Queue - create a room
+        if (received.type === "join") {
+
+            // Create a unique room ID
+            createRoom(rooms, message);
+
+            // When the move has been played
+        } else if (received.type === "move") {
+        
+            // Iterate over the current players
+            wss.clients.forEach((client) => {
+
+                try {
+                    // Don't show moves for the same player who's playing
+                    if (client !== ws && client.readyState === WebSocket.OPEN) {
+    
+                        // Get the move's coordinates
+                        const move = message.move;
+                        
+                        // Broadcast move to the other player
+                        ws.send(JSON.stringify(move));
+                    }
+
+                } catch (error) {
+                    // error handler
+                    console.log(error);
+                }
+            });
+        }
+
+        // Close connection
+        ws.close();
+    });
+});
 
 /**
  * A middleware to support persistent login from users
