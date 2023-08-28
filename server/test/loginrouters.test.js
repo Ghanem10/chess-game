@@ -72,3 +72,14 @@ app.get('/auth/google/callback', (req, res) => {
         }
     });
 });
+
+describe("Authentication with google", () => {
+    it('should redirect to google login page with status 200', async () => {
+
+      const response = await request(app)
+        .get('/auth/google')
+        .expect(200);
+
+        expect(response.status).toBe(StatusCodes.OK);
+    });
+});
