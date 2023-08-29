@@ -11,6 +11,7 @@ import { StatusCodes } from 'http-status-codes';
 import loginProdiver from './routes/loginProviders.js';
 import { createRoom } from './player/room.js';
 import { WebSocketServer } from 'ws';
+import MemoryStore from 'memorystore';
 import http from 'http';
 import cors from 'cors';
 config();
@@ -18,6 +19,7 @@ config();
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server: server });
+const sessionMemo = new MemoryStore(session);
 
 // Create a room for each connection
 const rooms = new Map();
@@ -92,6 +94,7 @@ wss.on("connection", (ws) => {
 
 app.use(session({
     secret: process.env.SECRET_SESSION,
+    store: new sessionMemo(),
     resave: true,
     saveUninitialized: true,
 }));
@@ -140,15 +143,26 @@ app.use('/page/41v', routes, authorizeMiddleWare);
 
 app.post('/logout', function(req, res, next) {
 
-    req.logout(function(error) {
+    try {
+        
+        req.logout(function(error) {
     
-        if (error) { 
+            if (error) { 
+    
+                return next(error); 
+            }
+    
+            res.redirect('/');
+        });
 
-            return next(error); 
-        }
+    } catch (error) {
 
-        res.redirect('/');
-    });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(
+            { 
+                mes: `internal error: ${error}`
+            }
+        );
+    }
 });
 
 
@@ -161,11 +175,7 @@ const start = async () => {
     
     } catch (error) {
 
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(
-            { 
-                mes: `internal error: ${error}`
-            }
-        );
+        console.log(error)
     }
 }
 
