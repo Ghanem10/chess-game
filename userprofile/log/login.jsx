@@ -2,15 +2,14 @@ import React, { useCallback, useContext, useState } from 'react';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 import './style.scss';
-import { LightContext } from '../../contextprovider/context.provider';
 
 export default function Login() {
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { setUserEmail } = useContext(LightContext);
 
     let navigate = useNavigate();
 
@@ -29,23 +28,45 @@ export default function Login() {
         }
         
         try {
+            
+            // POST / return a token to be verified by the next middleware
             const { 
                 data: { 
                     t: token, 
                 }
-            } = await axios.post(`${import.meta.env.VITE_URL}/auth/41v/login`, { email, password });
+            } = await axios.post(`${import.meta.env.VITE_URL}/auth/41v/login`, 
+                { 
+                    email, 
+                    password 
+                },
+            );
 
+            // Roll the user on the auth middleware to verify the JWT token
             await axios.post(`${import.meta.env.VITE_URL}/page/41v/Info`, {
                 headers: {
                     Authorization: token,
                     'Content-Type': 'application/json',
                 },
-                email: email
-            }).then(res => setUserEmail(res.data.gmail));
+                email
+            }).then(res => {
+
+                // Get the user ID from the returned data
+                const playerID = res.data.player._id;
+
+                // Store the user's ID in a cookie to fetch for its info in profile
+                Cookies.set("loggedIn-User", JSON.stringify(playerID), 
+                    { 
+                        expires: 7 
+                    }
+                );
+            });
             
             navigate("/profile");
 
         } catch (e) {
+
+            // TODO, handle error on login, and add loading
+            // while waiting to move to the other page.
             console.log(e);
         }
 

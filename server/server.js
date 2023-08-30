@@ -34,7 +34,7 @@ app.use(express.json());
 /**
  * Create a WS connection on the top of express
  * 
- * @function{createRoom(rooms, player1, player2)} 
+ * @function{createRoom(rooms, message)} 
  *      - Except two IDs after implementing the ranking system.
 */
 
@@ -135,6 +135,7 @@ passport.deserializeUser(function(user, done) {
 
 app.use('/auth', loginProdiver);
 app.use('/auth/41v', routes);
+app.use('/player', routes);
 app.use('/page/41v', routes, authorizeMiddleWare);
 
 /**

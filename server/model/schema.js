@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -7,12 +7,18 @@ const UserAuthLogin = new mongoose.Schema({
         id: { type: String, unique: true },
         username: { type: String },
         githubtoken: { type: String },
+        rank: { type: Number },
+        wins: { type: Number },
+        losses: { type: Number },
     },
     google: {
         id: { type: String, unique: true },
         username: { type: String },
         googletoken: { type: String },
-        picture: { type: String }
+        picture: { type: String },
+        rank: { type: Number },
+        wins: { type: Number },
+        losses: { type: Number },
     },
 });
 
@@ -38,8 +44,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide a password!'],
         minlength: 3
-    }
-    // poulate the other schema here and add a ref to the module.
+    },
+    rank: { type: Number },
+    wins: { type: Number },
+    losses: { type: Number },
+    
+    // TODO, poulate the schema and refactor the code.
+    // loginAuth: { type: Schema.Types.ObjectId, ref: "UserAuthLogin" }
 });
 
 /**
@@ -53,6 +64,7 @@ UserSchema.pre('save', async function() {
     this.password = hashedPassword;
 });
 
+// Create a JWT token to verify it in the next middleware
 UserSchema.methods.createJWT = function () {
 
     const payload = {
@@ -67,6 +79,7 @@ UserSchema.methods.createJWT = function () {
     });
 }
 
+// Compare the password stored in the DB with the provided one
 UserSchema.methods.comparePassword = async function (candatespassword) {
 
     const isMatch = await bcryptjs.compare(candatespassword, this.password);

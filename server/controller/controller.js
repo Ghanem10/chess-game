@@ -3,13 +3,13 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequest, Unauthorized } from "../error/error.js";
 import { SchemaUser } from "../model/schema.js";
 
-export const getInfoUser = async (req, res) => {
+export const getPlayerInfo = async (req, res) => {
 
     const { email } = req.body;
     
-    const userData = await SchemaUser.findOne({ email });
+    const playerData = await SchemaUser.findOne({ email });
     
-    res.status(StatusCodes.OK).json({ gmail: userData.email });
+    res.status(StatusCodes.OK).json({ player: playerData });
 };
 
 export const login = async (req, res) => {

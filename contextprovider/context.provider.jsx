@@ -7,7 +7,6 @@ export default function ContextProvider({ children }) {
     const [recordMoves, setRecordMoves] = useState([]);
     const [boardColor, setBoardColor] = useState("lightblue");
     const [toggle, setToggle] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
 
     return (
         <LightContext.Provider 
@@ -20,8 +19,6 @@ export default function ContextProvider({ children }) {
                 setBoardColor,
                 toggle,
                 setToggle,
-                userEmail,
-                setUserEmail
             }}>
             {children}
         </LightContext.Provider>
