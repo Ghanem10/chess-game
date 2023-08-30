@@ -31,7 +31,7 @@ export default function NotFound() {
 
     return (
         <div style={divStyle}>
-            <img src="./plug-in.png" style={imageStyle} />
+            <img src="/plug-in.png" style={imageStyle} />
             <p 
                 style={paragraphStyle}
             >
