@@ -30,6 +30,12 @@
     
     ![main](https://github.com/gani1000/ChessGame/assets/107857762/79860080-c2c5-4be5-a755-d4816456773d)
 
+# System design of the app:
+  [Here's a link to the eraser system design app](https://app.eraser.io/workspace/YtnNZoWYZfP73BtqVlln?origin=share) 
+  
+  ![Capture](https://github.com/gani1000/chess-game/assets/107857762/a791b936-62ae-40df-892b-49f8072c6c4d)
+
+
 # Application Roadmap
 ```
 |
@@ -204,11 +210,6 @@
 |    .____ Server.JS
 
 ```
-# System design of the app:
-  [Here's a link to the eraser system design app](https://app.eraser.io/workspace/YtnNZoWYZfP73BtqVlln?origin=share) 
-  
-  ![Capture](https://github.com/gani1000/chess-game/assets/107857762/a791b936-62ae-40df-892b-49f8072c6c4d)
-
 
 # Features supported in the application:
 * Client:
