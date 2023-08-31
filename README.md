@@ -86,7 +86,7 @@
           .____ Hook context provider
 ```
 # System design of the app:
-  https://app.eraser.io/workspace/YtnNZoWYZfP73BtqVlln?origin=share
+  [Here's a link to the eraser system design app](https://app.eraser.io/workspace/YtnNZoWYZfP73BtqVlln?origin=share) 
   
   ![Capture](https://github.com/gani1000/chess-game/assets/107857762/a791b936-62ae-40df-892b-49f8072c6c4d)
 
