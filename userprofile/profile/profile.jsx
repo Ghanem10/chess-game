@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import './profile.scss';
 
 export default function UserProfile() {
 
@@ -45,13 +46,10 @@ export default function UserProfile() {
 
     return (
         <div className="user-auth">
-            <img src='' alt=''/>
+            <div className='img'></div>
             <div className="user-profile">
+                <h3>{data.email}</h3>
                 <ul>
-                    <li>
-                        <h1>Player</h1>
-                        <span>{data.email}</span>
-                    </li>
                     <li>
                         <h3>Status</h3>
                         <span>{userStatus ? "Online" : "Offline"}</span>
@@ -64,8 +62,11 @@ export default function UserProfile() {
                         <h3>Losses</h3>
                         <span>{data.losses}</span>
                     </li>
+                    <li>
+                        <h3>Points</h3>
+                        <span>{data.rank}</span>
+                    </li>
                 </ul>
-                <h3>Points: {data.rank}</h3>             
             </div>
         </div>
     );

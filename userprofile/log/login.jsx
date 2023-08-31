@@ -81,6 +81,7 @@ export default function Login() {
         fetchBackEndData();
     }
 
+    // TODO, get the information of the logged users via these login providers throught their APIs.
     function githubLoginProviders() {
         window.location.href = `${import.meta.env.VITE_URL}/auth/github`;
     }
