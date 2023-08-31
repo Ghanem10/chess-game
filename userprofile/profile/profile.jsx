@@ -40,6 +40,10 @@ export default function UserProfile() {
         }
     }
 
+    function mainPage() {
+        window.location.href = '/';
+    }
+
     useEffect(() => {
         updatePlayerInfo();
     }, []);
@@ -68,6 +72,7 @@ export default function UserProfile() {
                     </li>
                 </ul>
             </div>
+            <button className='btn-profile' onClick={mainPage}>Main page</button>
         </div>
     );
 }

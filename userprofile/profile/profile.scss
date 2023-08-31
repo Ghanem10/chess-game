@@ -3,10 +3,12 @@
     display: flex;
     flex-direction: column;
     margin: 0 auto;
-    margin-top: 8rem;
+    margin-top: 6rem;
+    padding-top: 20px;
     width: 50%;
-    height: 50vh;
+    height: 70vh;
     background-color: rgb(48, 51, 54);
+    gap: 30px;
 
     .img {
         margin: 0 auto;
@@ -36,6 +38,23 @@
             span {
                 color: green;
             }
+        }
+    }
+    .btn-profile {
+        margin: 0 auto;
+        width: 50%;
+        cursor: pointer;
+        height: 2.7rem;
+        cursor: pointer;
+        border-style: none;
+        outline: none;
+        border-radius: 6px;
+        color: white;
+        font-size: 20px;
+        background-color: #ff4b04;
+        &:hover {
+            color: white;
+            background: #cc3b02;
         }
     }
 }
