@@ -1,0 +1,28 @@
+
+
+.navigate {
+    position: absolute;
+    top: 3%;
+    left: 93%;
+    width: 5%;
+    height: 50%;
+
+    .btn-profile {
+        width: 65%;
+        height: 13%;
+        border-radius: 50%;
+        outline: none;
+        border-style: none;
+        cursor: pointer;
+        background-color: rgb(80, 80, 82);
+
+        &:hover {
+            background-color: rgb(54, 54, 56);
+        }
+        #icon {
+            color: rgb(255, 255, 255);
+            width: 20px;
+            height: 20px;
+        }
+    }
+}

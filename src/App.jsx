@@ -8,9 +8,11 @@ import SideBar from "../interface/sidebar/sideBarItems";
 import ReferenceBoard from "../ReferenceBoard/ReferenceBoard";
 import ContextProvider from "../contextprovider/context.provider";
 import UserProfile from "../userprofile/profile/profile";
-import '../Component/sass/board.scss';
-import './App.scss';
+import ButtonNavigation from "../Component/chessBoard/ButtonNavigation";
 import NotFound from "./NotFound";
+import '../Component/sass/board.scss';
+import '../Component/sass/button.scss';
+import './App.scss';
 
 export default function App() {
     const { width } = useWindowDimensions();
@@ -25,6 +27,7 @@ export default function App() {
 function AppRoute() {
     return (
         <div className="app">
+            <ButtonNavigation />
             <BrowserRouter>
                 <ContextProvider>
                     <Routes>
