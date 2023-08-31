@@ -33,57 +33,176 @@
 # Application Roadmap
 ```
 |
-.____ _test_
+.____ Component
 |    |
-|    .____ testing_pieces_movements
-|
-.____ component
-|    |
-|    .____ chessboard
+|    .____ chessBoard
 |    |    |
-|    |    .____ ChessBoard.jsx
+|    |    .____ chessBoard.JSX
 |    |    |
-|    |    .____ UpdateRecordeMoves.js
+|    |    .____ pawnPromotion.JSX
+|    |    |
+|    |    .____ updateRecordMoves.JS
 |    |
-|    .____ SCSS
+|    .____ sass
+|    |    |
+|    |    .____ board.SCSS
 |    |
 |    .____ state
 |         |
-|         .____ stateManagement.ts
+|         .____ stateManagement.JS
+|
+.____ contextprovider
+|    |
+|    .____ context.provider.JSX
+|
+.____ Engine
+|    |
+|    .____ recordsGames
+|         |
+|         .____ eval.engine.JS
+|         |
+|         .____ main.engine.JS
 |
 .____ interface
-     |
-     .____ listfront
-     |    |
-     |    .____ list.jsx
-     |    |
-     |    .____ list.scss
-     |
-     .____ recordmoves
-     |    |
-     |    .____ record.jsx
-     |    |
-     |    .____ record.scss
-     |
-     .____ sidebar
-     |    |
-     |    .____ JSX/static
-     |    |
-     |    .____ SCSS
-     |    |
-     |    .____ sideBarItems.jsx
-     |
-     .____ timer
-     |    |
-     |    .____ EndGame/JSX
-     |         |
-     |         .____ timerplayer.jsx
-     |         |
-     |         .____ timerplayer.scss
-     |
-     .____ warper
-          |
-          .____ Hook context provider
+|    |
+|    .____ EndGame
+|    |    |
+|    |    .____ checkmate.SCSS
+|    |    |
+|    |    .____ gameEnd.SCSS
+|    |    |
+|    |    .____ gameEnd.JSX
+|    |
+|    .____ listFront
+|    |    |
+|    |    .____ list.JSX
+|    |    |
+|    |    .____ list.SCSS
+|    |
+|    .____ recordmoves
+|    |    |
+|    |    .____ recorder.JSX
+|    |    |
+|    |    .____ recorder.SCSS
+|    |
+|    .____ sidebar
+|    |    |
+|    |    .____ JSX
+|    |    |
+|    |    .____ SCSS
+|    |    |
+|    |    .____ sidebar.SCSS
+|    |    |
+|    |    .____ sideBarItems.JSX
+|    |
+|    .____ timer
+|         |
+|         .____ timerPlayer.JSX
+|         |
+|         .____ timerPlayer.SCSS
+|
+.____ layout
+|    |
+|    .____ pieceImages.JS
+|    |
+|    .____ squares.JSX
+|
+.____ model
+|    |
+|    .____ piecesReference.JS
+|
+.____ Movement
+|    |
+|    .____ constant
+|    |
+|    .____ pieces
+|    |
+|    .____ rules
+|
+.____ ReferenceBoard
+|    |
+|    .____ ReferenceBoard.JSX
+|
+.____ test
+|    |
+|    .____ chessBoard.test.JS
+|    |
+|    .____ king.in-check.test.JS
+|
+.____ userprofile
+|    |
+|    .____ log
+|    |    |
+|    |    .____ login.JSX
+|    |    |
+|    |    .____ register.JSX
+|    |    |
+|    |    .____ style.SCSS
+|    |
+|    .____ profile
+|         |
+|         .____ profile.JSX
+|         |
+|         .____ profile.SCSS
+|
+.____ Server
+|    |
+|    .____ controller
+|    |    |
+|    |    .____ controller.JS
+|    |    |
+|    |    .____ playerStatus.JS
+|    |
+|    .____ DB
+|    |    |
+|    |    .____ connect.JS
+|    |
+|    .____ error
+|    |    |
+|    |    .____ error.JS
+|    |    |
+|    |    .____ middleware.JS
+|    |
+|    .____ graphQL
+|    |    |
+|    |    .____ playerInfo.gql
+|    |    |
+|    |    .____ playerRanking.gql
+|    |
+|    .____ log
+|    |    |
+|    |    .____ github.JS
+|    |    |
+|    |    .____ google.JS
+|    |
+|    .____ model
+|    |    |
+|    |    .____ schema.JS
+|    |
+|    .____ player
+|    |    |
+|    |    .____ game.JS
+|    |    |
+|    |    .____ room.JS
+|    |
+|    .____ routes
+|    |    |
+|    |    .____ loginProviders.JS
+|    |    |
+|    |    .____ routes.JS
+|    |
+|    .____ test
+|         |
+|         .____ createRoom.test.JS
+|         |
+|         .____ database.test.JS
+|         |
+|         .____ loginrouters.test.JS
+|         |
+|         .____ routes.test.JS
+|    |
+|    .____ Server.JS
+
 ```
 # System design of the app:
   [Here's a link to the eraser system design app](https://app.eraser.io/workspace/YtnNZoWYZfP73BtqVlln?origin=share) 
