@@ -135,6 +135,7 @@ export default class Board {
             }, []);
             
             setPiece(EnpassantPawn);
+            this.calculateAllMoves();
 
         } else if (validMove) {
 
@@ -161,6 +162,7 @@ export default class Board {
             }, []);
             
             setPiece(pawns);
+            this.calculateAllMoves();
         
         } else {
             return false;
@@ -255,96 +257,42 @@ export default class Board {
     calculateAllMoves(gridx, gridy) {
 
         // This fn is triggere's the on-grab fn [chassBoard/component] to calcualte all moves.
-        this.pieces.map((p) => {
+        for (const p of this.pieces.filter((t) => t.team === this.currentTeam)) {
             
+            // update the possible moves for all the pieces regardless which pieces is grabbed
             p.possibleMoves = this.getValidMove(p, this.pieces);
             
-            if (p.team !== this.currentTeam) {
-                p.possibleMoves = [];
-            }
-            
-            if (this.samePosition(p, gridx, gridy)) {
-                this.setReviewMoves(p.possibleMoves);
-            }
-            
-            return p;
-        });
+            // If the piece is a king of the current pieces
+            if (p.Piece === Type.KING) {
 
-        
-        // Calculate king's moves for castling move by finding the target rock.
-        for (const king of this.pieces.filter(
-            (k) => k.Piece === Type.KING && k.team === this.currentTeam)
-            ) {
+                // Wrap the king's possible moves along with the rock possible moves for castling logic
+                const previousKingPossibleMoves = p.possibleMoves
+                const newCastlingPossibleMoves = getCastlingKingMoves(p, this.pieces);
             
-            const previousKingPossibleMoves = king.possibleMoves
-            const newCastlingPossibleMoves = getCastlingKingMoves(king, this.pieces);
-           
+                
+                // Update the king possible moves with the matched rock position for castling.
+                p.possibleMoves = [
+                    ...previousKingPossibleMoves,
+                    ...newCastlingPossibleMoves
+                ];
+            }
             
-            // Update the king possible moves with the matched rock position for castling.
-            king.possibleMoves = [
-                ...previousKingPossibleMoves,
-                ...newCastlingPossibleMoves
-            ];
+            this.setReviewMoves(p.possibleMoves);
         }
-
+        
         this.KingMovementsInCheck(gridx, gridy);
     }
 
 
     checkMate() {
 
-        // TODO, refactor this code after implementing the calcualte fn for getting the moves correctly.
-        
-        const king = this.pieces.find((k) => k.Piece === Type.KING && k.team !== this.currentTeam);
-        const current = this.pieces.filter((l) => l.team === this.currentTeam);
-        
+        // CheckMate
+        const IsCheckMate = this.pieces
+                                .filter(t => t.team === this.currentTeam)
+                                .every((t) => t.possibleMoves.length <= 0);
 
-        king.possibleMoves = this.getValidMove(king, this.pieces);
-
-        const a = [];
-        let check = false;
-
-        for (const move of king.possibleMoves) {
-            let valid = true;
-
-            for (const enemy of this.pieces.filter((t) => t.team === this.currentTeam)) {
-                enemy.possibleMoves = this.getValidMove(enemy, this.pieces);
-
-                if (enemy.Piece === Type.PAWN) {
-                    if (enemy.possibleMoves.some((t) => this.samePosition(t, move.x, move.y))) {
-                        valid = false;
-                    }
-                    if (enemy.possibleMoves.some((t) => this.samePosition(t, king.x, king.y))) {
-                        check = true;
-                    }
-                } else { 
-                    if (enemy.possibleMoves.some((t) => this.samePosition(t, move.x, move.y))) {
-                        valid = false;
-                    }
-                    if (enemy.possibleMoves.some((t) => this.samePosition(t, king.x, king.y))) {
-                        check = true;
-                    }
-                }
-            }
-
-            if (valid) {
-                a.push(move);
-            }
-        }
-
-        king.possibleMoves = a;
-
-        if (king.possibleMoves <= 0 && check) {
-
-            for (const move of current) {
-
-                move.possibleMoves = this.getValidMove(move, this.pieces);
-                
-                if (move.possibleMoves.every((t) => t.length <= 0)) {
-                    
-                    // this.setisCheckMate(true);
-                }
-            }
+        if (IsCheckMate) {
+            this.setisCheckMate(true);
         }
     }
 }
