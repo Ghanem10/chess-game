@@ -1,8 +1,8 @@
 
 # Chess Game
 
-  ![front page chess](https://github.com/gani1000/ChessGame/assets/107857762/63011f0d-0a1d-4d08-8c35-b43aef5b4d26)
-     
+  ![front page chess](https://github.com/gani1000/chess-game/assets/107857762/4f091739-509f-4f61-9aba-fd57e5431c7c)
+
 # User Interface
 
    - In this section, the user interface is divided into several components, react hooks handle and provides seamless navigation 
@@ -27,8 +27,8 @@
 - Then, on the main page, all the logic is handled by several components to provide instant updates to the UI.
     they render the main chess component with the timer and record moves components with endless features. Using react hooks
     to provide the best UX.
-    
-    ![main](https://github.com/gani1000/ChessGame/assets/107857762/79860080-c2c5-4be5-a755-d4816456773d)
+  
+    ![main](https://github.com/gani1000/chess-game/assets/107857762/955574cf-3cb5-449c-b063-da588b6a17a9)
 
 # System design of the app:
   [Here's a link to the eraser system design app](https://app.eraser.io/workspace/YtnNZoWYZfP73BtqVlln?origin=share) 
