@@ -15,7 +15,7 @@ export default function ListOptions({ setStartGame, startGame }) {
         temp.current.classList.add('switch');
 
         const serverURL = location.protocol;
-        const serverProtocol = serverURL.replace('http:', 'ws:');
+        const serverProtocol = serverURL.replace('https:', 'ws:');
         const hostingServer = location.hostname;
         const webSocketProtocol = serverProtocol + '//' + hostingServer;
 
