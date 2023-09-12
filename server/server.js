@@ -1,92 +1,30 @@
-import express from 'express';
-import { config } from 'dotenv';
-import { connectDB } from './db/connect.js';
 import authorizeMiddleWare from './error/middleware.js';
-import session from 'express-session';
+import loginProdiver from './routes/loginProviders.js';
+import { StatusCodes } from 'http-status-codes';
+import { createRoom } from './player/room.js';
+import { connectDB } from './db/connect.js';
 import GitHubAuth from './log/github.js';
 import GoogleAuth from './log/google.js';
-import passport from 'passport';
 import routes from './routes/routes.js';
-import { StatusCodes } from 'http-status-codes';
-import loginProdiver from './routes/loginProviders.js';
-import { createRoom } from './player/room.js';
-import { WebSocketServer } from 'ws';
 import MemoryStore from 'memorystore';
+import session from 'express-session';
+import { WebSocketServer } from 'ws';
+import passport from 'passport';
+import { config } from 'dotenv';
+import express from 'express';
 import http from 'http';
 import cors from 'cors';
 config();
 
 const app = express();
 const server = http.createServer(app);
-const wss = new WebSocketServer({ server: server });
-const sessionMemo = new MemoryStore(session);
-
-// Create a room for each connection
-const rooms = new Map();
-
+const webSocketServer = new WebSocketServer({ noServer: true });
+const sessionMemoStore = new MemoryStore(session);
 const port = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
-
-/**
- * Create a WS connection on the top of express
- * 
- * @function{createRoom(rooms, message)} 
- *      - Except two IDs after implementing the ranking system.
-*/
-
-wss.on("connection", (ws) => {
-
-    ws.on("error", (error) => {
-        ws.send(`Something went wrong: ${error}`)
-    });
-
-    /**
-     * Initial set up.
-     * @param{message} => { _ID, type, player1: id, player2: id, move: { x, y } }
-    */
-
-    ws.on("message", (message) => {
-
-        const received = JSON.parse(message);
-
-        // Once the players starts seraching in Queue - create a room
-        if (received.type === "join") {
-
-            // Create a unique room ID
-            createRoom(rooms, message);
-
-            // When the move has been played
-        } else if (received.type === "move") {
-        
-            // Iterate over the current players
-            wss.clients.forEach((client) => {
-
-                try {
-                    // Don't show moves for the same player who's playing
-                    if (client !== ws && client.readyState === WebSocket.OPEN) {
-    
-                        // Get the move's coordinates
-                        const move = message.move;
-                        
-                        // Broadcast move to the other player
-                        ws.send(JSON.stringify(move));
-                    }
-
-                } catch (error) {
-                    // error handler
-                    console.log(error);
-                }
-            });
-        }
-
-        // Close connection
-        ws.close();
-    });
-});
 
 /**
  * A middleware to support persistent login from users
@@ -94,7 +32,7 @@ wss.on("connection", (ws) => {
 
 app.use(session({
     secret: process.env.SECRET_SESSION,
-    store: new sessionMemo(),
+    store: new sessionMemoStore(),
     resave: true,
     saveUninitialized: true,
 }));
@@ -124,60 +62,66 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(user, done) {
-    console.log(req.session.passport.user);
     return done(null, user);
 });
-
-
-/**
- * App Routes for JWT and login provider auth. 
-*/
 
 app.use('/auth', loginProdiver);
 app.use('/auth/41v', routes);
 app.use('/player', routes);
 app.use('/page/41v', routes, authorizeMiddleWare);
 
-/**
- * Sign-out route
-*/
 
 app.post('/logout', function(req, res, next) {
 
     try {
-        
         req.logout(function(error) {
-    
-            if (error) { 
-    
-                return next(error); 
-            }
-    
+            if (error) return next(error); 
             res.redirect('/');
         });
-
     } catch (error) {
-
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(
-            { 
-                mes: `internal error: ${error}`
-            }
-        );
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ mes: `internal error: ${error}` });
     }
 });
 
+//TODO, handle failing cases for either side, client & server.
+const onSocketPreError = (e) => { console.log(e) }; // Error for HTTP failing case.
+const onSocketPostError = (e) => { console.log(e) }; // Error for ws failing case.
 
-const start = async () => {
-    
+const startServer = async () => {
     try {
-    
         await connectDB(process.env.CLOUD_URI);
-        app.listen(port);
-    
-    } catch (error) {
+        const serverListeing = server.listen(port);
 
-        console.log(error)
+        serverListeing.on("upgrade", (req, socket, head) => {
+            socket.on("error", onSocketPreError);
+
+            if (!!req.headers['BadAuth']) {
+                socket.write("HTTP/1.1 401 Unauthorized \r\n\r\n");
+                socket.destroy();
+                return;
+            }
+            
+            webSocketServer.handleUpgrade(req, socket, head, (ws) => {
+                socket.removeListener("error", onSocketPreError);
+                ws.emit("connection", socket, req);
+            });
+        });
+
+        webSocketServer.on("connection", (ws, req) => {
+            ws.on("error", onSocketPostError);
+            ws.on("message", (msg, isBinary) => {
+                webSocketServer.clients.forEach((client) => {
+                    if (ws !== client && client.readyState === WebSocket.OPEN) {
+                        client.send(msg, { binary: isBinary });
+                    }
+                })
+            });
+            ws.on("close", () => console.log("connection closed."));
+        });
+
+    } catch (error) {
+        console.log(`Internal server error: ${error.message}`)
     }
 }
 
-start();
+startServer();
