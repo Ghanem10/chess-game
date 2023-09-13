@@ -19,9 +19,6 @@ export default class Board {
      * 
      * @param {number} piecesTurns - The number of turns to determine the current team.
      * 
-     * 
-     * ##NOTE: Moves in this class represent the possible moves where the piece
-     *         can move to.
      */
 
     constructor(pieces, setReviewMoves, piecesTurns, setisCheckMate) {
@@ -48,13 +45,11 @@ export default class Board {
         piece.EnpassantMove = Math.abs(state.coordinates.GridY - y) === 2;
     }
 
-    // Calculate the en-passant move for the pawns, and return false if !hasEn-passant.
     isEnpassantMove(state, x, y, currentPiece, chessBoard) {
         const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
         
         if (currentPiece.Piece === Type.PAWN) {
-            
-            // Check the col of the enemy piece and if has-Enpassant property is true, then move across.
+
             if ((x - state.coordinates.GridX === -1 || x - state.coordinates.GridX === 1)
                 && y - state.coordinates.GridY === PawnDiraction) {
 
@@ -70,7 +65,6 @@ export default class Board {
         return false;
     }
 
-    // If this function returns true, then, a move has been successfully made - otherwise false.
     playMove(x, y, state, currentPiece, promotePawn, PawnDir, setPiece, validMove) {
         
         const targetRook = this.pieces.find(
@@ -79,31 +73,20 @@ export default class Board {
 
         const enpassant = this.isEnpassantMove(state, x, y, currentPiece, this.pieces);
 
-
-        // Castle if the path to the targeted rock is true and not blocked by our or the enemy pieces.
         if (currentPiece.Piece === Type.KING && targetRook?.Piece === Type.ROCK && this.currentTeam) {
 
-            
-            // Determine which rock position is available, and find specify the potential position of the king.
             const direction = (targetRook.x - currentPiece.x > 0) ? 1 : -1;
             const newKingPosition = currentPiece.x + direction * 2;
-
-            
-            // Check if the rock and the king possible moves matches, whithout this it causes duplicates and potential bugs.
             const K = currentPiece.Piece === Type.KING && currentPiece.possibleMoves.some(
                 (t) => this.samePosition(t, targetRook.x, targetRook.y)
             );
-            
-            // Loop through the pieces and if the king's and the rock's possible moves matches, perform castling.
+
             this.pieces.map((p) => {
 
                 if (p.team === this.currentTeam) {
-                    
-                    // We check if the position to drop the piece matches the rock possible moves
+
                     if (p.Piece === currentPiece.Piece && K) {
                         p.x = newKingPosition;
-                        
-                        // 
                     } else if (this.samePosition(p, targetRook.x, targetRook.y) && K) {
                         p.x = newKingPosition - direction;
                     }
@@ -115,11 +98,7 @@ export default class Board {
         
         if (enpassant) {
 
-            // If the property of the pawn [is-Enpassant] is true, then we eliminate the enemy piece.
             const EnpassantPawn = this.pieces.reduce((result, p) => {
-
-
-                // When the pawn on it's first rank and moved two square up, then, its enpassant is true.
                 if (this.samePosition(p, state.coordinates.GridX, state.coordinates.GridY)) {
 
                     p.EnpassantMove = false;
@@ -139,7 +118,6 @@ export default class Board {
 
         } else if (validMove) {
 
-            // This returns true only if the piece position is matches the dropping position. See ./ReferenceBoard.
             const pawns = this.pieces.reduce((result, p) => {
             
                 if (this.samePosition(p, state.coordinates.GridX, state.coordinates.GridY)) {
@@ -171,7 +149,6 @@ export default class Board {
         return true;
     }
     
-    // Get all the piece's calculated possible moves based on the piece type.
     getValidMove(piece, chessBoard) {
         switch(piece.Piece) {
             case Type.PAWN:
@@ -193,51 +170,31 @@ export default class Board {
     
     KingMovementsInCheck(gridx, gridy) {
         
-        // Loop through all the pieces and filter the current team pieces.
         for (const piece of this.pieces.filter((t) => t.team === this.currentTeam)) {
-            
-            // Iterate over the current pieces' possible moves.
             for (const move of piece.possibleMoves) {
 
-                // Deep cloning the positions of all the pieces by creating new object for each piece.
                 let clonedChessBoard = this.pieces.map((q) => ({ ...q }));
                 
-                // Filter all the pieces possible moves by removing the piece's current move from the copied board.                
                 clonedChessBoard = clonedChessBoard.filter((q) => !this.samePosition(q, move.x, move.y));
-                
-                // Find the cloned piece that corresponds to the current piece's position.
                 let clonedPiecePosition = clonedChessBoard.find((t) => this.samePosition(t, piece.x, piece.y));
 
-                
-                // Update the cloned piece's position to the move's position.
                 clonedPiecePosition.x = move.x;
                 clonedPiecePosition.y = move.y;
                 
-                // At each iteration, clone the current king's position for later checks if its position is under attack by other pieces.
                 const clonedKing = clonedChessBoard.find((p) => p.Piece === Type.KING && p.team === this.currentTeam);
     
-                
-                // Loop over the enemy pieces of the cloned chess board.
                 for (const enemy of clonedChessBoard.filter((t) => t.team !== this.currentTeam)) {
                     
-                    // Update the possible moves of the enemy's possible moves.
                     enemy.possibleMoves = this.getValidMove(enemy, clonedChessBoard);
                     
                     if (enemy.Piece === Type.PAWN) {
 
-                        // Check if the possible moves of the pawn matches the cloned king's position - only the attack moves.
                         if (enemy.possibleMoves?.some((t) => this.samePosition(t, clonedKing.x, clonedKing.y))) {
-                            
-                            // Update the possible moves of the current pieces that doesn't matches the possible moves.
                             piece.possibleMoves = piece.possibleMoves?.filter((t) => !this.samePosition(t, move.x, move.y));
                         }
                     
                     } else {
-
-                        // Check if the possible moves of the other enemy pieces match the cloned king's position.
                         if (enemy.possibleMoves?.some((t) => this.samePosition(t, clonedKing.x, clonedKing.y))) {
-                        
-                            // Update the possible moves of the current pieces of the current team that doesn't match the move.
                             piece.possibleMoves = piece.possibleMoves?.filter((t) => !this.samePosition(t, move.x, move.y));
                         }
                     }
@@ -255,38 +212,26 @@ export default class Board {
 
 
     calculateAllMoves(gridx, gridy) {
-
-        // This fn is triggere's the on-grab fn [chassBoard/component] to calcualte all moves.
         for (const p of this.pieces.filter((t) => t.team === this.currentTeam)) {
             
-            // update the possible moves for all the pieces regardless which pieces is grabbed
             p.possibleMoves = this.getValidMove(p, this.pieces);
-            
-            // If the piece is a king of the current pieces
             if (p.Piece === Type.KING) {
 
-                // Wrap the king's possible moves along with the rock possible moves for castling logic
                 const previousKingPossibleMoves = p.possibleMoves
                 const newCastlingPossibleMoves = getCastlingKingMoves(p, this.pieces);
             
-                
-                // Update the king possible moves with the matched rock position for castling.
                 p.possibleMoves = [
                     ...previousKingPossibleMoves,
                     ...newCastlingPossibleMoves
                 ];
             }
-            
             this.setReviewMoves(p.possibleMoves);
         }
-        
         this.KingMovementsInCheck(gridx, gridy);
     }
 
 
     checkMate() {
-
-        // CheckMate
         const IsCheckMate = this.pieces
                                 .filter(t => t.team === this.currentTeam)
                                 .every((t) => t.possibleMoves.length <= 0);
