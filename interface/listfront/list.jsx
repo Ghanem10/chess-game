@@ -9,7 +9,7 @@ import './list.scss';
 export default function ListOptions({ setStartGame, startGame }) {
 
     const { lightUI, setLoading } = useContext(LightContext);
-    const ID = JSON.parse(Cookies.get("loggedIn-User"));
+    // const ID = JSON.parse(Cookies.get("loggedIn-User"));
     const temp = useRef(null);
     let ws;
     
