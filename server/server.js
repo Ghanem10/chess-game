@@ -68,6 +68,7 @@ passport.deserializeUser(function(user, done) {
 app.use('/auth', loginProdiver);
 app.use('/auth/41v', routes);
 app.use('/player', routes);
+app.use('/gameplay', routes);
 app.use('/page/41v', routes, authorizeMiddleWare);
 
 

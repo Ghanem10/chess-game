@@ -29,3 +29,18 @@ export const getPlayerStatus = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).json({ mes: `Something went wrong: ${error}` });
     }
 };
+
+/** https://www.mongodb.com/docs/manual/reference/method/db.collection.countDocuments/#syntax */
+export const getPlayerMatchStart = async (req, res) => {
+    const { ID } = req.body;
+    const numCollections = await SchemaUser.countDocuments({});
+    const page = numCollections;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    const query = await SchemaUser.find({ _id: { $ne: ID }})
+        .skip(skip)
+        .limit(limit);
+
+    res.status(StatusCodes.OK).json({ query });
+};
