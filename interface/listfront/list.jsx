@@ -20,11 +20,9 @@ export default function ListOptions({ setStartGame, startGame }) {
         const webSocketProtocol = serverProtocol + '//' + hostingServer;
 
         if (!!ws) ws.close();
-        //TODO, implement closing conncetion after the game is over & sending moves to server.
-        ws = new WebSocket(webSocketProtocol);
+        ws = new WebSocket("ws://localhost:4000");
         ws.addEventListener("error", () => console.log("connection error"));
         ws.addEventListener("open", () => console.log("connection established"));
-        ws.addEventListener("message", (msg) => console.log(`Message received: ${msg.data}`));
     }
 
     return (

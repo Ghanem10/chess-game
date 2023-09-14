@@ -44,8 +44,11 @@ export default function ChessBoard({
 
     const Board = useRef(null);
     const titleRef = useRef();
+    let ws;
+    
+    if (!!ws) ws.close();
+    ws = new WebSocket("ws://localhost:4000");
 
-    // Create the chess board with variables declared at the top level of the component.
     function createBoard() {
         const Board = [];
 
@@ -66,6 +69,11 @@ export default function ChessBoard({
                 squares: Board
             },
         });
+    }
+
+    function sendMovesCoordinates(mes) {
+        ws.send(mes);
+        ws.addEventListener("message", (msg) => console.log(`Message received: ${msg.data}`));
     }
 
     function grabbingPiece(e) {
@@ -148,7 +156,7 @@ export default function ChessBoard({
             
             const x = Math.floor((e.clientX - Edges.offsetLeft) / 65);
             const y = Math.floor((e.clientY - Edges.offsetTop) / 65);
-            
+
             dispatch({
                 type: SQUARES.UPDATE_NEXT_X_Y,
                 payload: {
@@ -158,12 +166,10 @@ export default function ChessBoard({
                 }
             });
 
-            // Get the piece previous position.
             const currentPiece = piece.find(
                 (t) => t.x === state.coordinates.GridX && t.y === state.coordinates.GridY
             );
             
-            // Get the enemy piece that has the same position of the current piece.
             const opponentPiece = piece.find(
                 (t) => samePosition(t, x, y) && t.team !== currentPiece.team
             );
@@ -171,7 +177,18 @@ export default function ChessBoard({
             const playMove = successMove(state, x, y, currentPiece, titleRef);
 
             if (playMove) {
-
+                const coordinatesMove = {
+                    pre: {
+                        x: state.coordinates.GridX,
+                        y: state.coordinates.GridY
+                    },
+                    next: {
+                        x: x,
+                        y: y,
+                    },
+                };
+                
+                sendMovesCoordinates(JSON.stringify(coordinatesMove));
                 setIsMatch((pr) => [...pr, opponentPiece ? "1" : "0"]);
                 
                 if (opponentPiece !== undefined) {

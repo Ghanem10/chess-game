@@ -29,7 +29,6 @@ export default function Login() {
         
         try {
             
-            // POST / return a token to be verified by the next middleware
             const { 
                 data: { 
                     t: token, 
@@ -41,7 +40,6 @@ export default function Login() {
                 },
             );
 
-            // Roll the user on the auth middleware to verify the JWT token
             await axios.post(`${import.meta.env.VITE_URL}/page/41v/Info`, {
                 headers: {
                     Authorization: token,
@@ -50,23 +48,13 @@ export default function Login() {
                 email
             }).then(res => {
 
-                // Get the user ID from the returned data
                 const playerID = res.data.player._id;
+                Cookies.set("loggedIn-User", JSON.stringify(playerID));
 
-                // Store the user's ID in a cookie to fetch for its info in profile
-                Cookies.set("loggedIn-User", JSON.stringify(playerID), 
-                    { 
-                        expires: 7 
-                    }
-                );
+                navigate("/profile");
             });
-            
-            navigate("/profile");
 
         } catch (e) {
-
-            // TODO, handle error on login, and add loading
-            // while waiting to move to the other page.
             console.log(e);
         }
 

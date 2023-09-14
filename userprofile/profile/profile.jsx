@@ -5,10 +5,9 @@ import './profile.scss';
 
 export default function UserProfile() {
 
-    const [userStatus, setUserStatus] = useState(false);
+    const [status, setStatus] = useState(navigator.onLine);
     const [data, setData] = useState([]);
 
-    // Default player rates/wins/losses
     let playerRating = {
         rank: 600,
         wins: 0,
@@ -16,13 +15,9 @@ export default function UserProfile() {
     };
     
     async function updatePlayerInfo() {
-
-        // Get the player's ID from cookie stored in the browser
         const playerID = JSON.parse(Cookies.get("loggedIn-User"));
-
         try {
 
-            // POST / update the player info based on the played match
             await axios.post(`${import.meta.env.VITE_URL}/player/status`, 
             { 
                 playerID, 
@@ -30,9 +25,7 @@ export default function UserProfile() {
 
             }).then(res => {
 
-                // Store the returned Obj in var
                 setData(res.data.player);
-
             });
 
         } catch (error) {
@@ -46,6 +39,8 @@ export default function UserProfile() {
 
     useEffect(() => {
         updatePlayerInfo();
+        window.addEventListener("online", () => setStatus(true));
+        window.addEventListener("offline", () => setStatus(false));
     }, []);
 
     return (
@@ -56,19 +51,19 @@ export default function UserProfile() {
                 <ul>
                     <li>
                         <h3>Status</h3>
-                        <span>{userStatus ? "Online" : "Offline"}</span>
+                        <span>{status ? "Online" : "Offline"}</span>
                     </li>
                     <li>
                         <h3>Wins</h3>
-                        <span>{data.wins}</span>
+                        <span>{(!data.wins) ? playerRating.wins : data.wins}</span>
                     </li>
                     <li>
                         <h3>Losses</h3>
-                        <span>{data.losses}</span>
+                        <span>{(!data.losses) ? playerRating.losses : data.losses}</span>
                     </li>
                     <li>
                         <h3>Points</h3>
-                        <span>{data.rank}</span>
+                        <span>{(!data.rank) ? playerRating.rank : data.rank}</span>
                     </li>
                 </ul>
             </div>
