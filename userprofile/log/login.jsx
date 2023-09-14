@@ -55,6 +55,9 @@ export default function Login() {
             });
 
         } catch (e) {
+
+            // TODO, handle error on login, and add loading
+            // while waiting to move to the other page.
             console.log(e);
         }
 

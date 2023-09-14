@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Team, Type } from '../movement/constants/functions';
 import { addChessPieces } from '../layout/pieceImages';
 import ChessBoard from '../Component/chessBoard/chessBoard';
 import ListOptions from '../interface/listfront/list';
 import Board from '../model/piecesReference';
+import { LightContext } from '../contextprovider/context.provider';
 
 const initialstate = [];
 export let piecesTurns = 1;
@@ -22,6 +23,8 @@ export default function ReferenceBoard() {
         piecesTurns,
         setisCheckMate
     );
+
+    const { loading } = useContext(LightContext);
 
     function updateInitialStateArray() {
         // Deep copy the initialState array and push the copied array.
@@ -90,21 +93,25 @@ export default function ReferenceBoard() {
                     setStartGame={setStartGame}
                 />
             ) : (
-                <ChessBoard 
-                    successMove={successMove}
-                    piece={piece}
-                    startGame={startGame}
-                    setStartGame={setStartGame}
-                    highlightSquare={highlightSquare}
-                    pawnPromotion={pawnPromotion}
-                    setPawnPromotion={setPawnPromotion}
-                    updatePossibleMoves={updatePossibleMoves}
-                    updateStateTwo={updateStateTwo}
-                    setPiece={setPiece}
-                    checkMateStatus={checkMateStatus}
-                    isCheckMate={isCheckMate}
-                    setisCheckMate={setisCheckMate}
-                />
+                // (!loading) ? (
+                    <ChessBoard 
+                        successMove={successMove}
+                        piece={piece}
+                        startGame={startGame}
+                        setStartGame={setStartGame}
+                        highlightSquare={highlightSquare}
+                        pawnPromotion={pawnPromotion}
+                        setPawnPromotion={setPawnPromotion}
+                        updatePossibleMoves={updatePossibleMoves}
+                        updateStateTwo={updateStateTwo}
+                        setPiece={setPiece}
+                        checkMateStatus={checkMateStatus}
+                        isCheckMate={isCheckMate}
+                        setisCheckMate={setisCheckMate}
+                    />
+                // ) : (
+                //     <div></div>
+                // )
             )}
         </>
     );

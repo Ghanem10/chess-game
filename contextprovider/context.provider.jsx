@@ -7,6 +7,7 @@ export default function ContextProvider({ children }) {
     const [recordMoves, setRecordMoves] = useState([]);
     const [boardColor, setBoardColor] = useState("lightblue");
     const [toggle, setToggle] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     return (
         <LightContext.Provider 
@@ -19,6 +20,8 @@ export default function ContextProvider({ children }) {
                 setBoardColor,
                 toggle,
                 setToggle,
+                loading,
+                setLoading
             }}>
             {children}
         </LightContext.Provider>
