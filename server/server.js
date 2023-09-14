@@ -8,7 +8,7 @@ import GoogleAuth from './log/google.js';
 import routes from './routes/routes.js';
 import MemoryStore from 'memorystore';
 import session from 'express-session';
-import { WebSocketServer } from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
 import passport from 'passport';
 import { config } from 'dotenv';
 import express from 'express';
@@ -87,7 +87,6 @@ app.post('/logout', function(req, res, next) {
 const onSocketPreError = (e) => { console.log(e) }; // Error for HTTP failing case.
 const onSocketPostError = (e) => { console.log(e) }; // Error for ws failing case.
 
-const startServer = async () => {
     try {
         await connectDB(process.env.CLOUD_URI);
         const serverListeing = server.listen(port);
@@ -103,13 +102,14 @@ const startServer = async () => {
             
             webSocketServer.handleUpgrade(req, socket, head, (ws) => {
                 socket.removeListener("error", onSocketPreError);
-                ws.emit("connection", socket, req);
+                webSocketServer.emit("connection", ws, req);
             });
         });
 
         webSocketServer.on("connection", (ws, req) => {
             ws.on("error", onSocketPostError);
             ws.on("message", (msg, isBinary) => {
+                console.log(msg)
                 webSocketServer.clients.forEach((client) => {
                     if (ws !== client && client.readyState === WebSocket.OPEN) {
                         client.send(msg, { binary: isBinary });
@@ -122,6 +122,3 @@ const startServer = async () => {
     } catch (error) {
         console.log(`Internal server error: ${error.message}`)
     }
-}
-
-startServer();
