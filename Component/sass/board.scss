@@ -96,6 +96,7 @@ $height: 65px;
 
 .piece:hover {
   cursor: grab;
+  z-index: 1;
 }
 
 #Pawn-promotion {
