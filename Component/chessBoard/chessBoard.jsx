@@ -6,7 +6,7 @@ import TimerPlayer from "../../interface/timer/timerPlayer";
 import { LightContext } from "../../contextprovider/context.provider";
 import Recorder from "../../interface/recordmoves/recorder";
 import updateRecordMoves from "./updateRecordMoves";
-import { samePosition } from "../../movement/constants/functions";
+import { Team, samePosition } from "../../movement/constants/functions";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -16,7 +16,7 @@ export default function ChessBoard({
     piece, setPiece,
     updatePossibleMoves, 
     highlightSquare, 
-    pawnPromotion, 
+    pawnPromotion, ws,
     setPawnPromotion, updateStateTwo,
     startGame, setStartGame, 
     checkMateStatus, isCheckMate,
@@ -32,7 +32,8 @@ export default function ChessBoard({
     const { 
         boardColor, 
         setRecordMoves,
-        toggle
+        toggle,
+        vsEngine
     } = useContext(LightContext);
 
     const [history, setHistory] = useState([]);
@@ -44,10 +45,6 @@ export default function ChessBoard({
 
     const Board = useRef(null);
     const titleRef = useRef();
-    let ws;
-    
-    if (!!ws) ws.close();
-    ws = new WebSocket("ws://localhost:4000");
 
     function createBoard() {
         const Board = [];
@@ -71,19 +68,14 @@ export default function ChessBoard({
         });
     }
 
-    function sendMovesCoordinates(mes) {
-        ws.send(mes);
-        ws.addEventListener("message", (msg) => console.log(`Message received: ${msg.data}`));
-    }
-
     function grabbingPiece(e) {
         
         const Element = e.target;
         const Edges = Board.current;
+        const DataAttr = Element.getAttribute('datatype');
+        const PieceExists = Element.classList.contains('piece');
 
-        if (Element.classList.contains('piece') && Edges) {
-            const x = e.clientX - 40;
-            const y = e.clientY - 40;
+        if (PieceExists && DataAttr === Team.WHITE && Edges && vsEngine) {
 
             const gridx = Math.floor((e.clientX - Edges.offsetLeft) / 65);
             const gridy = Math.floor((e.clientY - Edges.offsetTop) / 65);
@@ -98,9 +90,29 @@ export default function ChessBoard({
                 },
             });
 
-            Element.style.position = 'absolute';
-            Element.style.left = `${x}px`;
-            Element.style.top = `${y}px`;
+            dispatch({
+                type: SQUARES.SET_ACTIVE_PIECE,
+                payload: {
+                    activePiece: Element,
+                }
+            });
+
+            updatePossibleMoves(gridx, gridy);
+
+        } else if (PieceExists && Edges && !vsEngine){
+
+            const gridx = Math.floor((e.clientX - Edges.offsetLeft) / 65);
+            const gridy = Math.floor((e.clientY - Edges.offsetTop) / 65);
+            
+            dispatch({
+                type: SQUARES.COORDINATES_X_Y,
+                payload: {
+                    coordinates: {
+                        GridX: gridx,
+                        GridY: gridy
+                    }
+                },
+            });
 
             dispatch({
                 type: SQUARES.SET_ACTIVE_PIECE,
@@ -109,7 +121,6 @@ export default function ChessBoard({
                 }
             });
 
-            // The possible moves should really be in the dropping piece fn.
             updatePossibleMoves(gridx, gridy);
         }
     }
@@ -128,7 +139,6 @@ export default function ChessBoard({
             const y = e.clientY - 40;
             
             state.activePiece.style.position = 'absolute';
-            state.activePiece.style.cursor = "grabbing";
 
             if (x < MinX) {
                 state.activePiece.style.left = `${MinX}px`;
@@ -147,8 +157,16 @@ export default function ChessBoard({
             }
         }
     }
+    
+    function sendMovesCoordinates(mes) {
+        ws.send(mes);
+        ws.addEventListener("message", (event) => { 
+            console.log(`Message received: ${event.data}`);
+            //OKS
 
-    // This function handles all the logic of the pieces.
+        });
+    }
+
     function droppingPiece(e) {
         const Edges = Board.current;
 
@@ -188,7 +206,7 @@ export default function ChessBoard({
                     },
                 };
                 
-                sendMovesCoordinates(JSON.stringify(coordinatesMove));
+                if (!vsEngine) { sendMovesCoordinates(JSON.stringify(coordinatesMove)); }
                 setIsMatch((pr) => [...pr, opponentPiece ? "1" : "0"]);
                 
                 if (opponentPiece !== undefined) {
@@ -282,7 +300,6 @@ export default function ChessBoard({
                                     droppingPiece={droppingPiece}
                                 />
                             ))}
-                            {/** apply it up without div */}
                             {toggle && <div className="review"></div>}
                         </div>
                     ))}

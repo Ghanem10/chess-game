@@ -25,6 +25,7 @@ export default function ReferenceBoard() {
     );
 
     const { loading } = useContext(LightContext);
+    const [ws, setWs] = useState();
 
     function updateInitialStateArray() {
         // Deep copy the initialState array and push the copied array.
@@ -91,12 +92,15 @@ export default function ReferenceBoard() {
             {(!startGame) ? (
                 <ListOptions 
                     setStartGame={setStartGame}
+                    ws={ws}
+                    setWs={setWs}
                 />
             ) : (
                 // (!loading) ? (
                     <ChessBoard 
                         successMove={successMove}
                         piece={piece}
+                        ws={ws}
                         startGame={startGame}
                         setStartGame={setStartGame}
                         highlightSquare={highlightSquare}

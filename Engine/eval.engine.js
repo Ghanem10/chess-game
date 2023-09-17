@@ -1,6 +1,6 @@
 
 // Initial tables
-const evaltable = {
+export const evaltable = {
     'pawn': [ 
         [100, 100, 100, 100, 100, 100, 100, 100],
         [90,  90,  90,  90,  90,  90,  90,  90],

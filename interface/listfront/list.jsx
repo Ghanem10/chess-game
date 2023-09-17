@@ -6,26 +6,36 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import './list.scss';
 
-export default function ListOptions({ setStartGame, startGame }) {
+export default function ListOptions({ setStartGame, startGame, ws, setWs }) {
 
-    const { lightUI, setLoading } = useContext(LightContext);
+    const { lightUI, setLoading, setVsEngine } = useContext(LightContext);
     // const ID = JSON.parse(Cookies.get("loggedIn-User"));
     const temp = useRef(null);
-    let ws;
     
     function toggleStartGame() {
+
         setStartGame(true);
         temp.current.classList.add('switch');
 
-        const serverURL = location.protocol;
-        const hostingServer = location.hostname;
-        const serverProtocol = serverURL.replace('https:', 'wss:');
-        const webSocketProtocol = serverProtocol + '//' + hostingServer;
+        try {
 
-        if (!!ws) ws.close();
-        ws = new WebSocket("ws://localhost:4000");
-        ws.addEventListener("error", () => console.log("connection error"));
-        ws.addEventListener("open", () => console.log("connection established"));
+            const serverURL = import.meta.env.VITE_URL;
+            const serverProtocol = serverURL.replace('https:', 'wss:');
+
+            if (!!ws) ws.close();
+            ws = new WebSocket(serverProtocol);
+            
+            ws.onopen = (event) => {
+                console.log("connection established", event)
+            }
+            ws.onerror = (event) => {
+                console.log("connection error", event)
+            }
+            setWs(ws);
+            
+        } catch (error) {
+            console.log(`Error-list: ${error}`);
+        }
         
         // const cb = async () => {
         //     try {
@@ -42,6 +52,11 @@ export default function ListOptions({ setStartGame, startGame }) {
         // cb();
     }
 
+    function startWithEngine() {
+        setVsEngine(true);
+        setStartGame(true);
+    }
+
     return (
       <section className={`start ${ lightUI ? "light" : "" }`} ref={temp}>
           <header className='game-type'>
@@ -51,7 +66,8 @@ export default function ListOptions({ setStartGame, startGame }) {
                 </div>
           </header>
           <div className='game-start-btn'>
-                <button className='new-game' onClick={() => toggleStartGame()}>New Game</button>
+                <button className='new-game' onClick={() => toggleStartGame()}>Game test</button>
+                <button className='vs-engine' onClick={() => startWithEngine()}>play vs Engine</button>
                 <button className='rematch'>Tournament</button>
           </div>
       </section>

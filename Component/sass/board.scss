@@ -98,11 +98,6 @@ $height: 65px;
   cursor: grab;
 }
 
-.piece:active {
-  cursor: grabbing;
-  z-index: 1;
-}
-
 #Pawn-promotion {
     position: absolute;
     left: 0;

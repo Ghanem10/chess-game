@@ -1,4 +1,5 @@
 import React from "react";
+import { Team } from "../movement/constants/functions";
 
 export default function Squares(props) {
     const {
@@ -74,6 +75,7 @@ export default function Squares(props) {
             {currentPiece && (
                 <div
                     className={`piece ${squaresOccupiedByEnemy}`}
+                    datatype={currentPiece.team === Team.WHITE ? "white" : "black"}
                     style={{
                         backgroundImage: `url(${currentPiece.image})`,
                     }}

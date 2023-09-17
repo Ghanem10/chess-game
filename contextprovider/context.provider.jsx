@@ -8,6 +8,7 @@ export default function ContextProvider({ children }) {
     const [boardColor, setBoardColor] = useState("lightblue");
     const [toggle, setToggle] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [vsEngine, setVsEngine] = useState(false);
 
     return (
         <LightContext.Provider 
@@ -21,7 +22,9 @@ export default function ContextProvider({ children }) {
                 toggle,
                 setToggle,
                 loading,
-                setLoading
+                setLoading,
+                vsEngine,
+                setVsEngine
             }}>
             {children}
         </LightContext.Provider>
