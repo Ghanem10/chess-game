@@ -7,6 +7,8 @@ import { LightContext } from "../../contextprovider/context.provider";
 import Recorder from "../../interface/recordmoves/recorder";
 import updateRecordMoves from "./updateRecordMoves";
 import { Team, samePosition } from "../../movement/constants/functions";
+import { piecesTurns } from "../../ReferenceBoard/ReferenceBoard";
+import { playGame } from "../../Engine/main.engine";
 
 const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -22,7 +24,7 @@ export default function ChessBoard({
     checkMateStatus, isCheckMate,
     setisCheckMate
 }) {
-    
+
     const [state, dispatch] = useReducer(stateManagement, { 
         squares: [], 
         coordinates: { GridX: -1, GridY: -1 },
@@ -249,6 +251,14 @@ export default function ChessBoard({
             checkMateStatus();
         }
     }
+
+    function useEngineMoves() {
+        if (piecesTurns % 2 === 0 && vsEngine) { playGame(piece); }
+    }
+
+    useEffect(() => {
+        useEngineMoves();
+    }, [piecesTurns]);
 
     useEffect(() => {
         createBoard();
