@@ -205,44 +205,45 @@
 |    .____ Server.JS
 
 ```
-
 # Features supported in the application:
-* Client:
+
+## Client:
 * Engine & gameplay: player vs. an engine or multiple players.
 
-* ChessComponent:
-    - Record moves after the game is ended.
-    - Block check when the king is in danger.
-    - Show possible moves for the pieces - on the grab.
-    - Capture the enemy piece when the king is in check.
-    - Castling, Checkmate and stelmate.
+## ChessComponent:
+- Record moves after the game is ended.
+- Block check when the king is in danger.
+- Show possible moves for the pieces - on the grab.
+- Capture the enemy piece when the king is in check.
+- Castling, Checkmate, and stalemate.
+- **TO ADD:** Resign, offer a draw.
 
-** TOADD: Resign, offer a draw.
+## Timer:
+- Who runs out of time loses.
+- **TO ADD:** Timer with increment.
+- List of timers/options.
 
-* Timer:
-    - Who runs out of time loses.
-    ** TOADD: - timer with increment.
-    - list of timers/options.
-    * SideBar - context provider (react hooks):
-    - Update the square's colors.
+## SideBar - context provider (React hooks):
+- Update the square's colors.
 
-* Authentication:
-    - Login and register with JWT.
-    - Authenticate with login providers, Github, and Google.
+## Authentication:
+- Login and register with JWT.
+- Authenticate with login providers: Github and Google.
 
-* Profile:
-    - Update the player's status/ranking after every game.
-    - Losses and wins as well as the total points he has.
-    
-* Server:
-    - WS server for simulating the player's moves
-    - real-time updates.
-    - creating a room for each player.
-    - ranking system for matching online players.
-* DB:
-* Schema Mongoose:
-    - Write and read from HTTP requests.
-    - Save player info "ranking" after every game.
+## Profile:
+- Update the player's status/ranking after every game.
+- Losses and wins as well as the total points they have.
+
+## Server:
+- WS server for simulating the player's moves.
+- Real-time updates.
+- Creating a room for each player.
+- Ranking system for matching online players.
+
+## DB:
+### Schema Mongoose:
+- Write and read from HTTP requests.
+- Save player info "ranking" after every game.
 
 # README.md updates
 
