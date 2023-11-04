@@ -3,27 +3,7 @@
 }
 
 body {
-    background-color: #312e2b;
+    background-color: #000000;
     margin: 0;
     padding: 0;
-}
-
-.app {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .notify {
-        position: absolute;
-        background-color: #ffd23f;
-        color: rgb(255, 255, 255);
-        right: 29%;
-        top: 0;
-        padding-left: 2px;
-        padding-right: 2px;
-        border-radius: 10px;
-        transition:  0.3 all ease-in-out;
-        font-size: 20px;
-    }
 }

@@ -1,0 +1,51 @@
+.hide-title {
+    display: none;
+}
+
+#Pawn-promotion {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    z-index: 3;
+    
+    .body-promotion {
+        position: absolute;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        width: 500px; 
+        height: 190px;
+
+        top: 56%;
+        left: 34.5%;
+
+        z-index: 3;
+
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        
+        gap: 10px;
+        
+        #PiecesPromotion {
+            width: 60px; 
+            height: 50px;
+            padding: 20px;
+
+            border-radius: 50%;
+            
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 60px;
+        }
+    }
+
+    #PiecesPromotion:hover {
+        cursor: pointer;
+        background-color: rgba(230, 230, 230, 0.5);
+    }
+}

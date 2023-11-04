@@ -1,0 +1,147 @@
+@import '../colors';
+
+.login-page-container, 
+.register-page-container {
+    display: flex;
+    flex-direction: column;
+
+    margin: 0 auto;
+    margin-top: 7rem;
+    
+    padding: 10px;
+    width: 500px;
+    height: auto;
+    
+    border-radius: 9px;
+    color: $bs-color-white;
+    font-family: $bs-font-sans-serif;
+    background-color: #141516;
+
+
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 10%;
+        height: 0;
+        background-color: $bs-red-dark;
+        transition: height 1s;
+    }
+    
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 50%;
+        width: 10%;
+        height: 0;
+        background-color: $bs-gold;
+        transition: height 1s;
+    }
+
+    &::before {
+        z-index: -1;
+        transform: skewX(45deg);
+        transform-origin: bottom left;
+    }
+
+    &::after {
+        z-index: -1;
+        transform: skewX(45deg);
+        transform-origin: top right;
+    }
+
+    &::before, &::after {
+        z-index: -1;
+        height: 100%;
+    }
+
+    span {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-family: $bs-font-monospace;
+    }
+
+    .login-page-form, 
+    .register-page-container-form{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        gap: 10px;
+
+        @for $i from 1 through 3 {
+            input:nth-child(#{$i}) {
+                padding: 6px 4px;
+
+                width: 400px;
+                height: 25px;
+
+                border-radius: 6px;
+
+                background-color: #141516;
+                border: 1px solid rgba(192, 192, 192, 0.432);
+                
+                &::placeholder {
+                    color: $bs-gray-dark;
+                }
+
+                &:focus {
+                    color: $bs-color-white;
+                }
+            }
+        }
+
+        .register-page-form-button,
+        .login-page-form-button {
+            @include buttonStyle;
+            margin: 1rem 0;
+            border: 1px solid rgba(192, 192, 192, 0.301);
+        }
+    }
+
+    .spliter-section {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        margin-top: 1rem;
+        gap: 10px;
+
+        .first-line {
+            width: 40%;
+            height: 1px;
+            margin-left: 20px;
+            background-color: #4e4e4e8c;
+        }
+
+        .last-line {
+            width: 40%;
+            height: 1px;
+            margin-right: 20px;
+            background-color: #4e4e4e8c;
+        }
+    }
+
+    .buttons-social-providers {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        margin: .5rem 0;
+        gap: 1rem;
+        
+        button {
+            @include buttonStyle;
+            border: 1px solid rgba(192, 192, 192, 0.301);
+
+            .google-icon {
+                color: $bs-red-dark;
+            }
+        }
+    }
+}

@@ -1,0 +1,117 @@
+@import './colors';
+
+
+.nav-notification {
+    position: absolute;
+    
+    display: flex;
+    flex-direction: column;
+
+    width: 200px;
+    height: 170px;
+    top: 100%;
+    right: -10%;
+
+    border-radius: 8px;
+
+    border-radius: 4px;
+    background-color: rgb(27, 24, 24);
+
+    span {
+        margin: 0 auto;
+        text-align: center;
+        width: 100px;
+        padding: 10px 0;
+        border-bottom: 2px solid rgba(0, 248, 248, 0.767);
+    }
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    
+    z-index: 2;
+    background: transparent;
+
+    backdrop-filter: blur(2px);
+    font-family: $bs-font-sans-serif;
+    color: $bs-color-white;
+
+    h2 {
+        a {
+            text-decoration: none;
+            color: $bs-color-white;
+        }
+    }
+
+    ul {
+        display: flex;
+        flex-direction: row;
+
+        gap: 3.5rem;
+
+        li {
+            list-style: none;
+
+            a {
+                text-decoration: none;
+                color: $bs-color-white;
+                
+                &:hover {
+                    color: $bs-gray;
+                }
+            }
+        }
+    }
+
+    .nav-profile {
+        position: relative;
+
+        display: flex;
+        flex-direction: row;
+        
+        cursor: pointer;
+        gap: 1rem;
+
+        @for $i from 1 through 2 {
+
+            .nav-profile-icon-#{$i} {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                color: $bs-color-white;
+                background-color: rgb(10, 9, 9);
+
+                @if $i % 2 == 0 {
+                 
+                    .profile-icon-#{$i} {
+                        width: 23px;
+                        height: 23px;
+                    }
+                 
+                } @else {
+
+                    .profile-icon-#{$i} {
+                        color: $bs-color-white;
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+
+                &:hover {
+                    transition: all .6s;
+                    background-color: $bs-gray-nav;
+                }
+            }
+        }
+    }
+}

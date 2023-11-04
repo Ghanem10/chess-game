@@ -1,0 +1,102 @@
+@import '../colors';
+
+.main-page-settings {
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+
+    top: 12%;
+    left: 23%;
+
+    width: 750px;
+    height: 500px;
+    padding: 10px;
+
+    z-index: 3;
+
+    border-radius: 10px;
+    color: $bs-color-white;
+    font-family: $bs-font-sans-serif;
+    background-color: $bs-gray-settings;
+
+    .main-page-settings-header{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        border-bottom: 1px solid $bs-gray-border;
+
+        button {
+            outline: none;
+            border-style: none;
+            background-color: transparent;
+
+            .icon-x {
+                font-weight: 900;
+                width: 40px;
+                height: 40px;
+                color: $bs-color-white;
+
+                &:hover {
+                    cursor: pointer;
+                    color: $bs-gray;
+                }
+            }
+        }
+    }
+
+    .main-page-settings-colors {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        height:  200px;
+        border-bottom: 1px solid $bs-gray-border;
+
+        gap: 50px;
+
+        h2 {
+            font-size: 19px;
+        }
+
+        .scroll-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            width: 33.33%;
+            height: 150px;
+
+            img {
+                width: 70px;
+                height: 70px;
+                opacity: 0.4;
+
+                &:hover {
+                    opacity: 1;
+                    cursor: pointer;
+
+                    transition: all 0.3s ease;
+                }
+            }
+        }
+    }
+
+    .main-page-settings-pieces {
+        display: flex;
+        justify-content: center;
+        height:  200px;
+        
+        span {
+            margin: 5rem 0;
+            font-size: 19px;
+            color: $bs-gray-dark;
+        }
+    }
+}

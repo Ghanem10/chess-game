@@ -1,0 +1,98 @@
+$bs-orange-lighting: #ffaf01;
+$bs-purple: #6610f2;
+$bs-purple-light: #6f42c1;
+$bs-blue-light: #446fff;
+$bs-pink: #d63384;
+$bs-red-light: #ff2727;
+$bs-red-dark: #dd0a0acb;
+$bs-orange: #ff8100;
+$bs-orange-hover:  #ce6e0e;
+$bs-yellow: #ffc107;
+$bs-gold: #fdfa4a;
+$bs-green: #00a524;
+$bs-green-hover: #07751f;
+$bs-teal: #20c997;
+$bs-cyan: #14c2e5;
+$bs-color-white: #ffffff;
+$bs-primary-light: #dbe9ff;
+$bs-secondary: #141516a4;
+$bs-secondary-light: #e9eaec;
+$bs-blue: #004de6;
+$bs-success: $bs-green;
+$bs-success-light: #d1efd8;
+$bs-warning: $bs-orange;
+$bs-warning-light: #ffe8d1;
+$bs-danger-light: #ffd8de;
+$bs-info: $bs-cyan;
+$bs-light: #f8f9fa;
+$bs-gray: #ccd1d6;
+$bs-gray-nav: #e9ecef25;
+$bs-gray-light: #e9ecef;
+$bs-gray-border: #868a8f5e;
+$bs-gray-dark: #868a8f;
+$bs-gray-body: #898b8fe1;
+$bs-gray-settings: #18191a;
+$bs-dark: #212529;
+$bs-intro: #000000;
+$bs-chat: #0e0d0d;
+$bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+$bs-gradient: linear-gradient(180deg, rgba(197, 1, 1, 0.753), rgba(182, 2, 2, 0.795));
+
+section {
+    height: 90vh;
+    background-color: $bs-intro;
+}
+
+
+/* Handle scroll browser */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: $bs-intro;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $bs-gray-dark; 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: $bs-gray-dark; 
+}
+
+@mixin buttonStyle {
+    width: 82%;
+    height: 40px;
+    
+    outline: none;
+    border-style: none;
+    cursor: pointer;
+
+    border-radius: 8px;
+    color: $bs-color-white;
+    background-color: #1d2127;
+
+    &:hover {
+        color: $bs-gray-dark;
+        background-color: #0c0d0f;
+        transition: all 0.5s ease;
+    }
+}
+
+@mixin profileSection {
+    display: flex;
+    align-items: center;
+    
+    width: 800px;
+
+    border-radius: 9px;
+    padding: 10px;
+
+    color: $bs-color-white;
+    font-family: $bs-font-sans-serif;
+    background-color: $bs-gray-settings;
+}

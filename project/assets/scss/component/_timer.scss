@@ -1,0 +1,53 @@
+@import '../colors';
+
+.timers {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    
+    width: 78%;
+    height: 12vh;
+
+    font-size: 25px;
+    font-weight: 600;
+    
+    font-family: $bs-font-sans-serif;
+    gap: 10px;
+
+    .img-avatar {
+        width: 40px;
+        height: 38px;
+
+        padding: 7px;
+
+        border-radius: 50%;
+
+        background-image: url("/avatar.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+    
+    .opponent, .ours {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 39%;
+        height: 44px;
+
+        color: #81817793;
+        background-color: #1b1b1a93;
+    }
+    
+    .white-player {
+        color: rgb(20, 20, 20);
+        background-color: #ffffff;
+    }
+
+    .black-player {
+        color: rgb(27, 27, 27);
+        background-color: #ffffff;
+    }
+}

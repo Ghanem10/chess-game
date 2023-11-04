@@ -1,0 +1,45 @@
+
+$width: 62px;
+$height: 62px;
+
+
+@mixin squares {
+    .white-square,
+    .lightskyblue-square,
+    .lightgreen-square,
+    .green-square,
+    .brown-square,
+    .purple-square,
+    .black-square {
+        width: $width;
+        height: $height;
+    }
+    
+    .white-square {
+        background-color: #eeeed2;
+    }
+        
+    .lightgreen-square {
+        background-color: #769656;
+    }
+        
+    .green-square {
+        background-color: rgb(18, 87, 18);
+    }
+    
+    .lightskyblue-square {
+        background-color: #014181;
+    }
+    
+    .brown-square {
+        background-color: rgb(165, 87, 42);
+    }
+    
+    .purple-square {
+        background-color: rgb(175, 80, 175);
+    }
+    
+    .black-square {
+        background-color: rgb(46, 44, 44);
+    }
+}
