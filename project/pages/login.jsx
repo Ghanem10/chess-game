@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Icon from 'react-bootstrap-icons';
 import { instanceAPI } from '../api/auth';
@@ -10,6 +10,7 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [sendingReq, setSendingReq] = useState(false);
+    const [error, setError] = useState("");
 
     let navigate = useNavigate();
 
@@ -17,6 +18,10 @@ export default function Login() {
         e.preventDefault();
 
         if (!email || !password) {
+            setError("Please, fill up the form.");
+            setTimeout(() => {
+                setError(null);
+            }, 3000);
             return;
         }
 
@@ -25,35 +30,33 @@ export default function Login() {
         setSendingReq(true);
 
         try {
-            const axiosResponse = await instanceAPI.post("/auth/41v/login", { 
-                data: {
-                    email, password
-                }
-            });
+            const axiosResponse = await instanceAPI.post(`${import.meta.env.VITE_URL}/auth/41v/login`, { 
+                email, password
+            }, { timeout: 2000 });
 
-            const status = axiosResponse.status;
-
-            if (status === 200) {
-                console.log("AUTH USER");
-                const { token } = axiosResponse.data;
-                localStorage.setItem("AuthUser", { token });
-                navigate("/");
+            if (axiosResponse.status === 200) {
+                const ID = axiosResponse.data._id;
+                localStorage.setItem("Provider", JSON.stringify("JWT"));
+                navigate(`/Profile?id=${ID}`);
             } else {
                 setSendingReq(false);
                 return false;
             }
 
         } catch (error) {
-            return `Error/Login: ${error}`;
+            setSendingReq(false);
+            console.log(`Error/Login: ${error}`);
         }
     };
 
-    const githubLoginProviders = () => {
-        window.location.href = `${import.meta.env.VITE_URL}/auth/github`;
+    const githubLoginProviders = async () => {
+        localStorage.setItem("Provider", JSON.stringify("github"));
+        window.open(`${import.meta.env.VITE_URL}/auth/42v/github`, "_self");
     };
 
-    const googleLoginProviders = () => {
-        window.location.href = `${import.meta.env.VITE_URL}/auth/google`;
+    const googleLoginProviders = async () => {
+        localStorage.setItem("Provider", JSON.stringify("google"));
+        window.open(`${import.meta.env.VITE_URL}/auth/42v/google`, "_self");
     };
 
     return (
@@ -64,15 +67,25 @@ export default function Login() {
                     type="text" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)} 
-                    placeholder="Email" 
+                    placeholder="Email"
+                    tabIndex={1}
                 />
                 <input 
                     type="password" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)} 
                     placeholder="Password" 
+                    tabIndex={2}
                 />
-                <button disabled={sendingReq === true} type="submit" className="login-page-form-button">Login</button>
+                <button 
+                    tabIndex={3} 
+                    disabled={sendingReq === true} 
+                    type="submit" 
+                    className="login-page-form-button"
+                >
+                    Login
+                </button>
+                {error && <span>{error}</span>}
             </form>
             <div className="spliter-section">
                 <span className='first-line'></span>
@@ -80,10 +93,18 @@ export default function Login() {
                 <span className='last-line'></span>
             </div>
             <div className="buttons-social-providers">
-                <button disabled={sendingReq === true}  onClick={() => githubLoginProviders()}>
+                <button 
+                    disabled={sendingReq === true} 
+                    tabIndex={4} 
+                    onClick={() => githubLoginProviders()}
+                >
                     GitHub <Icon.Github className='github-icon'/>
                 </button>
-                <button disabled={sendingReq === true} onClick={() => googleLoginProviders()}>
+                <button 
+                    disabled={sendingReq === true} 
+                    tabIndex={5} 
+                    onClick={() => googleLoginProviders()}
+                >
                     Google <Icon.Google className='google-icon' />
                 </button>
             </div>

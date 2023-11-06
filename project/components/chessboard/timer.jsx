@@ -76,10 +76,10 @@ export default function TimerPlayer(props) {
     return (
         <React.Fragment>
             <div className="timers">
-                <div className="img-avatar"></div>
+                <img src={"/avatar.png"} referrerPolicy='no-referrer'/>
                 <div ref={black} className='opponent'>{formatTime(enemyTeam)}</div>
                 <div ref={white} className='ours'>{formatTime(ourTeam)}</div>
-                <div className="img-avatar"></div>
+                <img src={"/avatar.png"} referrerPolicy='no-referrer'/>
             </div>
             <GameEnd 
                 ourTeam={ourTeam}

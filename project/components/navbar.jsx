@@ -4,6 +4,8 @@ import * as Icon from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 
 export default function Navbar() {
+    const searchParams = new URLSearchParams(location.search);
+    const ID = searchParams.get("id");
 
     useEffect(() => {
         const span = document.querySelector('.nav-profile-icon-1');
@@ -28,15 +30,15 @@ export default function Navbar() {
     return (
         <nav>
             <h2>
-                <Link to={'/'}>
+                <Link to={`/${ID ? `?id=${ID}`:''}`}>
                     Chess Plus
                 </Link>
             </h2>
             <ul>
-                <li><Link to={'/'}>Puzzels</Link></li>
-                <li><Link to={'/'}>Learn</Link></li>
-                <li><Link to={'/'}>Community</Link></li>
-                <li><Link to={'/'}>Tools</Link></li>
+                <li><Link to={`/${ID ? `?id=${ID}`:''}`}>Puzzels</Link></li>
+                <li><Link to={`/${ID ? `?id=${ID}`:''}`}>Learn</Link></li>
+                <li><Link to={`/${ID ? `?id=${ID}`:''}`}>Community</Link></li>
+                <li><Link to={`/${ID ? `?id=${ID}`:''}`}>Tools</Link></li>
             </ul>
             <div className='nav-profile'>
                 <span className='nav-profile-icon-1'>
@@ -45,7 +47,7 @@ export default function Navbar() {
                 <div className='nav-notification'>
                     <span>Notifications</span>
                 </div>
-                <Link to={'/Profile'}>
+                <Link to={`/Profile${ID ? `?id=${ID}`:''}`}>
                     <span className='nav-profile-icon-2'>
                         <Icon.Person className='profile-icon-2'/>
                     </span>

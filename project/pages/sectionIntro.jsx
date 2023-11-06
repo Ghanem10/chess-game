@@ -12,6 +12,9 @@ import Setting from '../components/settings/setting';
 export default function SectionIntro() {
     
     const [openSettings, setOpenSettings] = useState(false);
+    const authUser = JSON.parse(localStorage.getItem("Provider"));
+    const searchParams = new URLSearchParams(location.search);
+    const ID = searchParams.get("id");
 
     const startGame = () => {
         Cookies.set("startGame", "true");
@@ -37,9 +40,15 @@ export default function SectionIntro() {
                 {openSettings && <div className='highlight'></div>}
                 <div className='section-intro-page-animation'>
                     <div className='section-intro-page-login'>
-                        <Link to={'/Register'}>
-                            <button>Sign up</button>
-                        </Link>
+                        {(authUser) ? (
+                            <Link to={`/${ID ? `?id=${ID}`:''}`}>
+                                <button>Welcome</button>
+                            </Link>
+                        ): (
+                            <Link to={'/Register'}>
+                                <button>Sign up</button>
+                            </Link>
+                        )}
                     </div>
                     <div className='section-intro-animation-left'>
                         <h1 className='right'>Chess Game with supported features</h1>
@@ -52,19 +61,19 @@ export default function SectionIntro() {
                     </div>
                     <div className='section-intro-animation-right'>
                         <div className='left'>
-                            <Link to={'/GameStart'}>
+                            <Link to={`/GameStart${ID ? `?id=${ID}`:''}`}>
                                 <button onClick={startGame}>
                                     Start Game
                                 </button>
                             </Link>
                         </div>
                         <div className='left'>
-                            <Link to={'/VsEngine'}>
+                            <Link to={`/VsEngine${ID ? `?id=${ID}`:''}`}>
                                 <button>Vs Engine</button>
                             </Link>
                         </div>
                         <div className='left'>
-                            <Link to={'/'}>
+                            <Link to={`/${ID ? `?id=${ID}`:''}`}>
                                 <button>Tournament</button>
                             </Link>
                         </div>

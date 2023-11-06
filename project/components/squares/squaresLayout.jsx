@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Team } from "../lib/movement/constants/functions";
 import { piecesTurns } from "../boardTemplate/mainTemplate";
 import Cookies from "js-cookie";
@@ -13,7 +13,7 @@ export default function Squares(props) {
     const totalNumberOfSquares = 8;
 
     let updatedClassName, squaresOccupiedByEnemy = "";
-    let updateBoardColor = Cookies.get("color");
+    let updateBoardColor = Cookies.get("color") ? Cookies.get("color") : "lightskyblue";
 
 
     const currentPiece = piece.find((p) => p.x === x && p.y === y);
