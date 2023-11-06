@@ -13,7 +13,7 @@ export default function App() {
     return (
         <React.Fragment>
             {
-                (width <= 10) ? (
+                (width <= 1110) ? (
                     <MAP />
                 ) : (
                     <Routes>
