@@ -20,6 +20,8 @@ export default function Recorder(props) {
 
     const [lastPositionIdx, setLastPositionIdx] = useState([]);
     const cloneOpponent = opponent.map((t) => ({ ...t }));
+    const searchParams = new URLSearchParams(location.search);
+    const ID = searchParams.get("id");
 
     const moveBack = () => {
 
@@ -105,7 +107,7 @@ export default function Recorder(props) {
                 </div>
                 <Chat />
             </div>
-            <Link to={'/'}>
+            <Link to={`/${ID ? `?id=${ID}`:''}`}>
                 <button className='record-go-back'>Main page</button>
             </Link>
         </div>
