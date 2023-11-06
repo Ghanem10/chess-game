@@ -1,1 +1,2 @@
-# Live -> https://chessgame-ghanem10.vercel.app/
+# chess game
+- Live -> https://chessgame-ghanem10.vercel.app/
