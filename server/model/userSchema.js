@@ -1,29 +1,40 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from "mongoose";
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const UserAuthLogin = new mongoose.Schema({
+const logWithGithub = new mongoose.Schema({
     github: {
         id: { type: String, unique: true },
         username: { type: String },
-        githubtoken: { type: String },
-        rank: { type: Number },
-        wins: { type: Number },
-        losses: { type: Number },
-    },
+        accessToken: { type: String },
+        picture: { type: String },
+        location: { type: String },
+        email: { type: String },
+        rank: { type: Number, default: 500 },
+        wins: { type: Number, default: 0 },
+        losses: { type: Number, default: 0 },
+        draws: { type: Number, default: 0 },
+    }
+});
+
+
+const logWithGoogle = new mongoose.Schema({
     google: {
         id: { type: String, unique: true },
         username: { type: String },
-        googletoken: { type: String },
+        accessToken: { type: String },
         picture: { type: String },
-        rank: { type: Number },
-        wins: { type: Number },
-        losses: { type: Number },
-    },
+        location: { type: String },
+        email: { type: String },
+        rank: { type: Number, default: 500 },
+        wins: { type: Number, default: 0 },
+        losses: { type: Number, default: 0 },
+        draws: { type: Number, default: 0 },
+    }
 });
 
 const UserSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
         required: [true, 'Name is required.'],
         minlength: 2,
@@ -45,51 +56,38 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Please provide a password!'],
         minlength: 3
     },
-    rank: { type: Number },
-    wins: { type: Number },
-    losses: { type: Number },
-    
-    // TODO, poulate the schema and refactor the code.
-    // loginAuth: { type: Schema.Types.ObjectId, ref: "UserAuthLogin" }
+    rank: { type: Number, default: 500 },
+    wins: { type: Number, default: 0 },
+    losses: { type: Number, default: 0 },
+    draws: { type: Number, default: 0 },
 });
 
-/**
- * Save the user's credentionals from the JWT auth methods. 
-*/
-
 UserSchema.pre('save', async function() {
-
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(this.password, salt);
     this.password = hashedPassword;
 });
 
-// Create a JWT token to verify it in the next middleware
-UserSchema.methods.createJWT = function () {
-
+UserSchema.methods.createJWT = function createJWT () {
     const payload = {
         user: { 
             id: this._id,
             user: this.name
-        }
-    }
-    
+        },
+    };
+
     return jwt.sign(payload, process.env.JWT_SECRET, { 
         expiresIn: process.env.JWT_LIFETIME
     });
 }
 
-// Compare the password stored in the DB with the provided one
-UserSchema.methods.comparePassword = async function (candatespassword) {
-
+UserSchema.methods.comparePassword = async function comparePassword (candatespassword) {
     const isMatch = await bcryptjs.compare(candatespassword, this.password);
     return isMatch;
 }
 
-const SchemaAuthUser = mongoose.model('UserAuth', UserAuthLogin);
 const SchemaUser = mongoose.model('User', UserSchema);
+const Github = mongoose.model("GithubProvider", logWithGithub);
+const Google = mongoose.model("GoogleProvider", logWithGoogle);
 
-export {
-    SchemaUser,
-    SchemaAuthUser,
-};
+export { SchemaUser, Github, Google };

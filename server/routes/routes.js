@@ -1,15 +1,13 @@
 import express from 'express';
-import { login, register, getPlayerInfo } from '../controller/controller.js';
-import { getPlayerStatus, getPlayerMatchStart } from '../controller/playerStatus.js';
+import { login, register } from '../controller/authUser.js';
 import { config } from 'dotenv';
+import { deleteUser, getUserData } from '../controller/users/userData.js';
 config();
 
 const routes = express.Router();
 
 routes.route('/login').post(login);
 routes.route('/register').post(register);
-routes.route('/Info').post(getPlayerInfo);
-routes.route('/status').post(getPlayerStatus);
-routes.route('/start').post(getPlayerMatchStart);
+routes.route('/userInfo/:id').delete(deleteUser).get(getUserData);
 
 export default routes;

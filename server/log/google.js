@@ -1,7 +1,7 @@
 
 import { config } from "dotenv";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
-import { SchemaAuthUser } from "../model/schema.js";
+import { Google } from "../model/userSchema.js";
 config();
 
 const GoogleAuth = new GoogleStrategy(
@@ -12,36 +12,29 @@ const GoogleAuth = new GoogleStrategy(
         scope: ['profile']
     },
     async (accessToken, refreshToken, profile, done) => {
-        let user = await SchemaAuthUser.findOne({ "google.id": profile.id });
+        let user = await Google.findOne({ "google.id": profile.id });
         
         try {
-
             if (user) {
-                // If the user exist, update the google token.
-                user.google.googletoken = accessToken;
+                user.google.accessToken = accessToken;
 
-                // Save the changes in the db.
                 await user.save();
                 return done(null, user);
-
             } else {
-
-                // If the user doesn't exist create one.
-                user = new SchemaAuthUser({
+                user = new Google({
                     google: {
                         id: profile.id,
                         username: profile.displayName,
-                        googletoken: accessToken,
+                        accessToken: accessToken,
                         picture: profile.picture,
+                        email: profile.given_name + "@gmail.com",
                     }
                 });
             }
 
-            // Save it and return
             await user.save();
             return done(null, user);
         } catch (error) {
-            
             return done(error);
         }
     }

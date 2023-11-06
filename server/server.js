@@ -1,19 +1,16 @@
-import authorizeMiddleWare from './error/middleware.js';
-import loginProdiver from './routes/loginProviders.js';
-import { StatusCodes } from 'http-status-codes';
-import { createRoom } from './player/room.js';
-import { connectDB } from './db/connect.js';
 import GitHubAuth from './log/github.js';
 import GoogleAuth from './log/google.js';
-import routes from './routes/routes.js';
 import MemoryStore from 'memorystore';
 import session from 'express-session';
+import routes from './routes/routes.js';
 import { WebSocketServer, WebSocket } from 'ws';
 import passport from 'passport';
 import { config } from 'dotenv';
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
+import mongoose from 'mongoose';
+import loginProdiver from './routes/loginProviders.js';
 config();
 
 const app = express();
@@ -25,11 +22,6 @@ const port = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
-/**
- * A middleware to support persistent login from users
-*/
-
 app.use(session({
     secret: process.env.SECRET_SESSION,
     store: new sessionMemoStore(),
@@ -37,25 +29,11 @@ app.use(session({
     saveUninitialized: true,
 }));
 
-/**
- * .initialize() Initialize Passport on the app instance.
- * .session() Enables persistent login with passport.JS on app.
-*/
-
 app.use(passport.initialize());
 app.use(passport.session());
 
-/**
- * Configure session middleware for passport to use GitHub and Google middlewares.
-*/
-
 passport.use(GitHubAuth);
 passport.use(GoogleAuth);
-
-
-/**
- * Save user info in a session to be obtained later.
-*/
 
 passport.serializeUser(function(user, done) {
     return done(null, user.id);
@@ -65,31 +43,16 @@ passport.deserializeUser(function(user, done) {
     return done(null, user);
 });
 
-app.use('/auth', loginProdiver);
-app.use('/auth/41v', routes);
-app.use('/player', routes);
-app.use('/gameplay', routes);
-app.use('/page/41v', routes, authorizeMiddleWare);
+app.use("/auth/41v", routes);
+app.use("/auth/42v", loginProdiver);
 
+const onSocketPreError = (e) => { console.log(e) };
+const onSocketPostError = (e) => { console.log(e) };
 
-app.post('/logout', function(req, res, next) {
-
+const runServer = async () => {
     try {
-        req.logout(function(error) {
-            if (error) return next(error); 
-            res.redirect('/');
-        });
-    } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ mes: `internal error: ${error}` });
-    }
-});
-
-//TODO, handle failing cases for either side, client & server.
-const onSocketPreError = (e) => { console.log(e) }; // Error for HTTP failing case.
-const onSocketPostError = (e) => { console.log(e) }; // Error for ws failing case.
-
-    try {
-        await connectDB(process.env.CLOUD_URI);
+        await mongoose.connect(process.env.CLOUD_URI);
+        console.log(":::::::CONNECTED::::::::");
         const serverListeing = server.listen(port);
 
         serverListeing.on("upgrade", (req, socket, head) => {
@@ -121,5 +84,8 @@ const onSocketPostError = (e) => { console.log(e) }; // Error for ws failing cas
         });
 
     } catch (error) {
-        console.log(`Internal server error: ${error.message}`)
+        console.log(`Internal server error: ${error}`)
     }
+}
+
+runServer();
