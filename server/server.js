@@ -3,19 +3,18 @@ import GoogleAuth from './log/google.js';
 import MemoryStore from 'memorystore';
 import session from 'express-session';
 import routes from './routes/routes.js';
-import { WebSocketServer, WebSocket } from 'ws';
 import passport from 'passport';
 import { config } from 'dotenv';
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
+import { Server } from 'socket.io';
 import mongoose from 'mongoose';
 import loginProdiver from './routes/loginProviders.js';
 config();
 
 const app = express();
 const server = http.createServer(app);
-const webSocketServer = new WebSocketServer({ noServer: true });
 const sessionMemoStore = new MemoryStore(session);
 const port = process.env.PORT || 4000;
 
@@ -46,46 +45,36 @@ passport.deserializeUser(function(user, done) {
 app.use("/auth/41v", routes);
 app.use("/auth/42v", loginProdiver);
 
-const onSocketPreError = (e) => { console.log(e) };
-const onSocketPostError = (e) => { console.log(e) };
-
 const runServer = async () => {
     try {
         await mongoose.connect(process.env.CLOUD_URI);
         console.log(":::::::CONNECTED::::::::");
-        const serverListeing = server.listen(port);
+        server.listen(port);
 
-        serverListeing.on("upgrade", (req, socket, head) => {
-            socket.on("error", onSocketPreError);
-
-            if (!!req.headers['BadAuth']) {
-                socket.write("HTTP/1.1 401 Unauthorized \r\n\r\n");
-                socket.destroy();
-                return;
+        const io = new Server(server, {
+            cors: {
+                origin: process.env.NODE_ENV ? false : "http://localhost:5173"
             }
-            
-            webSocketServer.handleUpgrade(req, socket, head, (ws) => {
-                socket.removeListener("error", onSocketPreError);
-                webSocketServer.emit("connection", ws, req);
-            });
         });
 
-        webSocketServer.on("connection", (ws, req) => {
-            ws.on("error", onSocketPostError);
-            ws.on("message", (msg, isBinary) => {
-                console.log(msg)
-                webSocketServer.clients.forEach((client) => {
-                    if (ws !== client && client.readyState === WebSocket.OPEN) {
-                        client.send(msg, { binary: isBinary });
-                    }
-                })
+        io.on("connection", (socket) => {
+
+            socket.on("message", (msg) => {
+                socket.broadcast.emit("message", msg);
             });
-            ws.on("close", () => console.log("connection closed."));
+
+            socket.on("chatBox", (chatMsg) => {
+                io.emit("chatBox", { chatMsg, id: socket.id  });
+            });
+
+            socket.on("endMatch", () => {
+                io.emit("endMatch");
+            });
         });
 
     } catch (error) {
         console.log(`Internal server error: ${error}`)
     }
-}
+};
 
 runServer();

@@ -31,7 +31,7 @@
     "passport-github2": "^0.1.12",
     "passport-google-oauth2": "^0.2.0",
     "prisma": "^4.16.2",
-    "ws": "^8.13.0"
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.22.11",

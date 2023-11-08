@@ -4,7 +4,6 @@ import { addChessPieces } from '../squares/pieces';
 import ChessBoard from '../chessboard/board';
 import Board from '../lib/piecesLogic';
 
-export let piecesTurns = 1;
 const initialstate = [];
 
 export default function MainTemplateBoard() {
@@ -13,6 +12,7 @@ export default function MainTemplateBoard() {
     const [highlightSquare, setHighlighSquare] = useState([]);
     const [isCheckMate, setisCheckMate] = useState(false);
     const [pawnPromotion, setPawnPromotion] = useState();
+    const [piecesTurns, setPiecesTurns] = useState(1);
         
     const board = new Board(
         piece, 
@@ -61,7 +61,13 @@ export default function MainTemplateBoard() {
             validMove,
         );
 
-        return playMove ? piecesTurns++ : false;
+        if (playMove) {
+            setPiecesTurns(pre => pre + 1)
+        } else {
+            return false;
+        }
+
+        return playMove;
     }
     
     const updatePossibleMoves = (gridx, gridy) => {
@@ -80,6 +86,8 @@ export default function MainTemplateBoard() {
 
     return (
         <ChessBoard 
+            setPiecesTurns={setPiecesTurns}
+            piecesTurns={piecesTurns}
             piece={piece}
             setPiece={setPiece}
             successMove={successMove}

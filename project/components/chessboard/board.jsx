@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import { Team, samePosition } from "../lib/movement/constants/functions";
 import stateManagement, { SQUARES } from './state/stateManagement';
-import { piecesTurns } from "../boardTemplate/mainTemplate";
 import { PawnPromotion } from "./pawnPromotion";
 import updateRecordMoves from "./_updateMoves";
 import Squares from '../squares/squaresLayout';
@@ -12,16 +11,18 @@ import Spinner from "../animation/spinner";
 
 import '../../assets/scss/board/chessboard.scss';
 import '../../assets/scss/board/pawnPromotion.scss';
-import Chat from "../chatbox/chat";
+import { io } from "socket.io-client";
+
+const websocket = io("ws://localhost:4000");
 
 export default function ChessBoard(props) {
 
     const { 
         successMove, piece, setPiece,
-        updatePossibleMoves, 
+        updatePossibleMoves, setPiecesTurns,
         highlightSquare, pawnPromotion,
         setPawnPromotion, updateStateTwo,
-        isCheckMate, setisCheckMate
+        isCheckMate, setisCheckMate, piecesTurns
     } = props;
 
     const [state, dispatch] = useReducer(stateManagement, { 
@@ -52,11 +53,11 @@ export default function ChessBoard(props) {
         const chessBoardEdges = chessBoard.current;
         const DataAttr = Element.getAttribute('datatype');
         const PieceExists = Element.classList.contains('piece');
+        const currentTeam = piecesTurns % 2 === 0 ? Team.BLACK : Team.WHITE;
 
-        if (PieceExists && chessBoardEdges) {
+        if (PieceExists && currentTeam === DataAttr && chessBoardEdges) {
             const gridx = Math.floor((e.clientX - chessBoardEdges.offsetLeft) / 62);
             const gridy = Math.floor((e.clientY - chessBoardEdges.offsetTop) / 62);
-            const currentTeam = piecesTurns % 2 === 0 ? Team.BLACK : Team.WHITE;
 
             dispatch({
                 type: SQUARES.COORDINATES_X_Y,
@@ -131,6 +132,17 @@ export default function ChessBoard(props) {
 
             if (playMove) {
 
+                websocket.emit("message", {
+                    prePosition: {
+                        gx: state.coordinates.GridX,
+                        gy: state.coordinates.GridY,
+                    },
+                    nextPosition: {
+                        x: x,
+                        y: y,
+                    },
+                });
+
                 updatePossibleMoves(state.coordinates.GridX, state.coordinates.GridY);
                 setPieceCapturedPosition((prePos) => [...prePos, opponentPiece ? "1" : "0"]);
 
@@ -171,6 +183,26 @@ export default function ChessBoard(props) {
             });
         }
     }
+
+    useEffect(() => {
+
+        websocket.on("message", (incomingMoves) => {
+
+            setPiece((piece) => {
+                return piece.map((p) => {
+
+                    if (p.x === incomingMoves.prePosition.gx && p.y === incomingMoves.prePosition.gy) {
+                        p.x = incomingMoves.nextPosition.x;
+                        p.y = incomingMoves.nextPosition.y;
+                    }
+                    
+                    return p;
+                });
+            });
+            
+            setPiecesTurns(pre => pre + 1);
+        });
+    }, []);
 
     useEffect(() => {
         function createBoard() {
@@ -219,6 +251,7 @@ export default function ChessBoard(props) {
                     updateStateTwo={updateStateTwo}
                     isCheckMate={isCheckMate}
                     setisCheckMate={setisCheckMate}
+                    piecesTurns={piecesTurns}
                     setOurTeam={setOurTeam}
                     setEnemyTeam= {setEnemyTeam}
                     ourTeam={ourTeam}
@@ -232,6 +265,7 @@ export default function ChessBoard(props) {
                                     key={`${x}-${y}`}
                                     piece={piece}
                                     x={x} y={y}
+                                    piecesTurns={piecesTurns}
                                     highlightSquare={highlightSquare}
                                     position={position}
                                     state={state}
@@ -250,6 +284,7 @@ export default function ChessBoard(props) {
                 previousPositions={previousPositions}
                 nextPosition={nextPosition}
                 opponent={opponent}
+                websocket={websocket}
                 pieceCapturedPosition={pieceCapturedPosition}
                 recordMoves={recordMoves}
                 setRecordMoves={setRecordMoves}

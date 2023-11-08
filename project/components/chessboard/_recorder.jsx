@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import * as Icon from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
@@ -13,7 +13,7 @@ let position = 0;
 export default function Recorder(props) {
 
     const {  
-        recordMoves, setRecordMoves, 
+        recordMoves, setRecordMoves, websocket,
         pieces, previousPositions, nextPosition, 
         opponent, setPiece, pieceCapturedPosition
     } = props;
@@ -105,7 +105,7 @@ export default function Recorder(props) {
                         <Icon.Pause className='icon-3'/>
                     </button>
                 </div>
-                <Chat />
+                <Chat websocket={websocket} />
             </div>
             <Link to={`/${ID ? `?id=${ID}`:''}`}>
                 <button className='record-go-back'>Main page</button>

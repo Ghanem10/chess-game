@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { piecesTurns } from '../boardTemplate/mainTemplate';
 import GameEnd from './_gameEnd';
 import Cookies from 'js-cookie';
 
@@ -8,7 +7,7 @@ import '../../assets/scss/component/_timer.scss';
 export default function TimerPlayer(props) {
 
     const { 
-        updateStateTwo, isCheckMate, 
+        updateStateTwo, isCheckMate, piecesTurns,
         setisCheckMate, ourTeam, setRecordMoves,
         enemyTeam, setOurTeam, setEnemyTeam
     } = props;

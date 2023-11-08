@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Team } from "../lib/movement/constants/functions";
-import { piecesTurns } from "../boardTemplate/mainTemplate";
 import Cookies from "js-cookie";
 
 export default function Squares(props) {
     const {
         highlightSquare, grabbingPiece,
-        MovingPiece, droppingPiece,
+        MovingPiece, droppingPiece, piecesTurns,
         piece, x, y, position, state,
     } = props;
 
