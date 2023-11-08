@@ -53,7 +53,7 @@ const runServer = async () => {
 
         const io = new Server(server, {
             cors: {
-                origin: process.env.NODE_ENV ? false : "http://localhost:5173"
+                origin: process.env.NODE_ENV ? process.env.GAME_URL : process.env.MAIN_PAGE
             }
         });
 
