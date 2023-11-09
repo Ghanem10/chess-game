@@ -72,7 +72,10 @@ export default function Profile() {
         <div className='profile-page-container'>
             {
                 (loading) ? (
-                    <span>Loading...</span>
+                    <React.Fragment>
+                        <div className='profile-page-header-animate'></div>
+                        <div className='profile-page-body-animate'></div>
+                    </React.Fragment>
                 ) : (
                     <React.Fragment>
                         <div className='profile-page-header'>

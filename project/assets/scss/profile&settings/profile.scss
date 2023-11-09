@@ -51,6 +51,7 @@
         @include profileSection;
         flex-direction: row;
         justify-content: space-between;
+        min-height: 133px;
         height: auto;
 
         z-index: 2;
