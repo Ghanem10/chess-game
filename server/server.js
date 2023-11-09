@@ -61,6 +61,10 @@ const runServer = async () => {
 
         io.on("connection", (socket) => {
 
+            socket.on("Greeting", () => {
+                socket.emit("Greeting", "Hey! Chess plus is a great place to start your chess journey.")
+            });
+
             socket.on("message", (msg) => {
                 socket.broadcast.emit("message", msg);
             });

@@ -118,7 +118,7 @@ export default function Recorder(props) {
             <div className='record-container-body'>
                 <div className='record-moves'>
                     <span>Record game moves</span>
-                    <div>{recordMoves}</div>
+                    <div style={{ padding: "6px"}}>{recordMoves}</div>
                 </div>
                 <div className='btns-record-moves'>
                     <button className='record-1' onClick={moveBack}>
