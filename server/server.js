@@ -54,7 +54,7 @@ const runServer = async () => {
         const io = new Server(server, {
             allowEIO3: true,
             cors: {
-                origin: process.env.MAIN_PAGE,
+                origin: process.env.GAME_URL,
                 methods: ["GET", "POST"],
             }
         });
