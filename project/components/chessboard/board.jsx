@@ -14,7 +14,7 @@ import '../../assets/scss/board/pawnPromotion.scss';
 import { io } from "socket.io-client";
 
 const websocket = io(`${import.meta.env.VITE_URL}`, {
-    withCredentials: false,
+    withCredentials: true,
 });
 
 export default function ChessBoard(props) {
@@ -43,6 +43,7 @@ export default function ChessBoard(props) {
     const [enemyTeam, setEnemyTeam] = useState(180);
     const [ourTeam, setOurTeam] = useState(180);
     const [loading, setLoading] = useState(true);
+    const [idxCount, setIdxCount] = useState(1);
 
     const chessBoard = useRef(null);
     const titleRef = useRef(null);
@@ -167,6 +168,8 @@ export default function ChessBoard(props) {
                 
                 updateRecordMoves(
                     state, 
+                    idxCount,
+                    setIdxCount,
                     setRecordMoves, x, y, 
                     currentPiece, 
                     opponentPiece

@@ -1,6 +1,5 @@
-let count = 1;
 
-export default function updateRecordMoves(state, setRecord, x, y, cur, oppCap) {
+export default function updateRecordMoves(state, idxCount, setIdxCount, setRecord, x, y, cur, oppCap) {
     
     state.squares.map(row => {
         row.forEach(p => {
@@ -8,11 +7,11 @@ export default function updateRecordMoves(state, setRecord, x, y, cur, oppCap) {
                 
                 let capturePos = oppCap ? "x" : "";
                 const moves = ` 
-                    ${count}. ${checkPieceType(cur)}${capturePos}${p.position}, 
+                    ${idxCount}. ${checkPieceType(cur)}${capturePos}${p.position}, 
                 `;
                 
                 setRecord((prePos) => [...prePos, moves]);
-                count++;
+                setIdxCount(pre => pre + 1);
             }
         });
     });
