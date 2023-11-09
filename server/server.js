@@ -53,7 +53,9 @@ const runServer = async () => {
 
         const io = new Server(server, {
             cors: {
-                origin: process.env.NODE_ENV ? process.env.GAME_URL : process.env.MAIN_PAGE
+                origin: process.env.NODE_ENV ? process.env.GAME_URL : process.env.MAIN_PAGE,
+                methods: ["GET", "POST"],
+                credentials: false,
             }
         });
 
@@ -64,6 +66,7 @@ const runServer = async () => {
             });
 
             socket.on("chatBox", (chatMsg) => {
+                console.log(chatMsg)
                 io.emit("chatBox", { chatMsg, id: socket.id  });
             });
 

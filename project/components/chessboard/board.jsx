@@ -13,7 +13,9 @@ import '../../assets/scss/board/chessboard.scss';
 import '../../assets/scss/board/pawnPromotion.scss';
 import { io } from "socket.io-client";
 
-const websocket = io(`${import.meta.env.VITE_URL}`);
+const websocket = io(`${import.meta.env.VITE_URL}`, {
+    withCredentials: false,
+});
 
 export default function ChessBoard(props) {
 
