@@ -12,14 +12,14 @@ export default function Chat({ websocket }) {
     useEffect(() => {
 
         websocket.on("chatBox", (socketData) => {
-            const { chatMsg, id } = socketData;
+            const { message, id } = socketData;
 
             if (websocket.id !== id) {
                 // style --
                 const somelist = messageListRef.current.querySelector("li");
             }
 
-            setIncomingMsg(pre => [...pre, chatMsg]);
+            setIncomingMsg(pre => [...pre, socketData]);
         });
 
         websocket.on("endMatch", () => {
@@ -42,12 +42,25 @@ export default function Chat({ websocket }) {
         setMessage("");
     };
 
+    const receiver = {
+        marginLeft: "auto",
+        marginRight: "10px"
+    };
+
+    const sender = {
+        marginLeft: "-25px",
+    };
+
     return (
         <form onSubmit={handleSubmit} className='chat-box'>
             <div className='chat-box-messages' ref={messageListRef}>
+                <span className='chat-box-title'>Chat with player</span>
                 <ul>
-                    {incomingMsg.map((msg, idx) => (
-                        <li key={idx}>{msg}</li>
+                    {incomingMsg.map((msgData, idx) => (
+                        <li style={(websocket.id !== msgData.id) ? receiver : sender} key={idx}>
+                            <span className='li-message'>{msgData.message}</span>
+                            <span className='li-time'>{msgData.time}</span>
+                        </li>
                     ))}
                 </ul>
             </div>

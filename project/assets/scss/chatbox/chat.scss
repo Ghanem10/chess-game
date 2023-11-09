@@ -22,21 +22,50 @@
         background-color: rgba(14, 13, 13, 0.678);
         border: 1px solid rgba(192, 192, 192, 0.253);
 
+        .chat-box-title {
+            text-align: center;
+            background-color: #1d2127e5;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: $bs-font-monospace;
+        }
+
         ul {
             display: flex;
             flex-direction: column;
-            width: 300px;
+            justify-content: center;
+
+            width: 370px;
             gap: 10px;
 
             li {
+                display: flex;
+                flex-direction: column;
+
                 width: fit-content;
-                max-width: 100%;
+                max-width: 80%;
                 height: auto;
                 list-style: none;
                 padding: 5px;
                 border-radius: 7px;
                 word-wrap: break-word;
                 background-color: rgba(59, 60, 61, 0.295);
+
+                gap: 4px;
+
+                .li-message {
+                    text-align: start;
+                    font-size: 15px;
+                }
+
+                .li-time {
+                    text-align: end;
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: #626263;
+                }
             }
         }
     }

@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import * as Icon from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 
-import '../../assets/scss/component/_recorder.scss';
 import Chat from '../chatbox/chat';
+import updateRecordMoves from './_updateMoves';
 
-let count = 1;
-let position = 0;
+import '../../assets/scss/component/_recorder.scss';
 
 // adjust with objs
 export default function Recorder(props) {
 
     const {  
-        recordMoves, setRecordMoves, websocket,
-        pieces, previousPositions, nextPosition, 
-        opponent, setPiece, pieceCapturedPosition
+        recordMoves, setRecordMoves, websocket, idxPosition, state, setIdxCount,
+        pieces, previousPositions, nextPosition, recodCount, setRecordCount,
+        opponent, setPiece, pieceCapturedPosition, setIdxPosition, idxCount
     } = props;
 
     const [lastPositionIdx, setLastPositionIdx] = useState([]);
@@ -23,17 +22,41 @@ export default function Recorder(props) {
     const searchParams = new URLSearchParams(location.search);
     const ID = searchParams.get("id");
 
+    useEffect(() => {
+        websocket.on("message", (msgData) => {
+            
+            // incoming position from another player
+            const { prePosition, nextPosition } = msgData;
+
+            const currentPiece = pieces.find(
+                (t) => t.x === prePosition.gx && t.y === prePosition.gy
+            );
+            
+            // -- dec
+            updateRecordMoves(
+                state, 
+                idxCount,
+                setIdxCount,
+                setRecordMoves,
+                nextPosition.x,
+                nextPosition.y,
+                currentPiece,
+                opponent
+            );
+        });
+    }, []);
+
     const moveBack = () => {
 
-        if (recordMoves.length <= 0 || count < 0) return;
+        if (recordMoves.length <= 0 || recodCount < 0) return;
 
         const lastPositionIdxMove = recordMoves[recordMoves.length - 1];
 
         setRecordMoves((prevMoves) => prevMoves.slice(0, -1));
         setLastPositionIdx((prevlastPositionIdx) => [...prevlastPositionIdx, lastPositionIdxMove]);
 
-        const prepos = previousPositions[previousPositions.length - count];
-        const nextpos = nextPosition[nextPosition.length - count];
+        const prepos = previousPositions[previousPositions.length - recodCount];
+        const nextpos = nextPosition[nextPosition.length - recodCount];
 
         pieces.map((t) => {
         
@@ -45,32 +68,32 @@ export default function Recorder(props) {
             return t;
         });
 
-        const lastIndx = pieceCapturedPosition[pieceCapturedPosition.length - count];
+        const lastIndx = pieceCapturedPosition[pieceCapturedPosition.length - recodCount];
 
         if (lastIndx === "1") {
             const len = cloneOpponent.length;
-            position += 1;
+            setIdxPosition(pre => pre + 1);
 
-            if (position <= 0 || position > len) return;
+            if (idxPosition <= 0 || idxPosition > len) return;
             if (cloneOpponent !== undefined) {
-                setPiece((capture) => [...capture, cloneOpponent[len - position]]);
+                setPiece((capture) => [...capture, cloneOpponent[len - idxPosition]]);
             }
         }
 
-        count += 1;
+        setRecordCount(pre => pre + 1);
     }
 
     const moveForward = () => {
         if (lastPositionIdx.length <= 0) return;
         
-        count -= 1;
+        setRecordCount(pre => pre - 1);
         const nextMove = lastPositionIdx[lastPositionIdx.length - 1];
 
         setLastPositionIdx((prevlastPositionIdx) => prevlastPositionIdx.slice(0, -1));
         setRecordMoves((prevMoves) => [...prevMoves, nextMove]);
 
-        const prepos = previousPositions[previousPositions.length - count];
-        const nextpos = nextPosition[nextPosition.length - count];
+        const prepos = previousPositions[previousPositions.length - recodCount];
+        const nextpos = nextPosition[nextPosition.length - recodCount];
 
         if (prepos === undefined) return;
 
@@ -83,17 +106,20 @@ export default function Recorder(props) {
             return t;
         });
 
-        const lastIndx = pieceCapturedPosition[pieceCapturedPosition.length - count];
+        const lastIndx = pieceCapturedPosition[pieceCapturedPosition.length - recodCount];
 
         if (lastIndx === "1") {
-            position -= 1;
+            setIdxPosition(pre => pre - 1);
         }
     }
 
     return (
         <div className='record-container'>
             <div className='record-container-body'>
-                <div className='record-moves'>{recordMoves}</div>
+                <div className='record-moves'>
+                    <span>Record game moves</span>
+                    <div>{recordMoves}</div>
+                </div>
                 <div className='btns-record-moves'>
                     <button className='record-1' onClick={moveBack}>
                         <Icon.ArrowLeft className='icon-1'/>

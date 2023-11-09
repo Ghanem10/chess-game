@@ -13,9 +13,7 @@ import '../../assets/scss/board/chessboard.scss';
 import '../../assets/scss/board/pawnPromotion.scss';
 import { io } from "socket.io-client";
 
-const websocket = io(`${import.meta.env.VITE_URL}`, {
-    withCredentials: true,
-});
+const websocket = io(`${import.meta.env.VITE_URL}`);
 
 export default function ChessBoard(props) {
 
@@ -44,6 +42,8 @@ export default function ChessBoard(props) {
     const [ourTeam, setOurTeam] = useState(180);
     const [loading, setLoading] = useState(true);
     const [idxCount, setIdxCount] = useState(1);
+    const [recordCount, setRecordCount] = useState(0);
+    const [idxPosition, setIdxPosition] = useState(1);
 
     const chessBoard = useRef(null);
     const titleRef = useRef(null);
@@ -99,6 +99,7 @@ export default function ChessBoard(props) {
             const y = e.clientY - 40;
             
             state.activePiece.style.position = 'absolute';
+            state.activePiece.style.zIndex = '4';
 
             if (x < MinX || x > MaxX || y < MinY || y > MaxY) {
                 state.activePiece.style.removeProperty('left');
@@ -192,13 +193,14 @@ export default function ChessBoard(props) {
     useEffect(() => {
 
         websocket.on("message", (incomingMoves) => {
+            const { prePosition, nextPosition } = incomingMoves;
 
             setPiece((piece) => {
                 return piece.map((p) => {
 
-                    if (p.x === incomingMoves.prePosition.gx && p.y === incomingMoves.prePosition.gy) {
-                        p.x = incomingMoves.nextPosition.x;
-                        p.y = incomingMoves.nextPosition.y;
+                    if (p.x === prePosition.gx && p.y === prePosition.gy) {
+                        p.x = nextPosition.x;
+                        p.y = nextPosition.y;
                     }
                     
                     return p;
@@ -285,10 +287,17 @@ export default function ChessBoard(props) {
             </div>
             <Recorder 
                 pieces={piece}
+                state={state}
+                idxCount={idxCount}
+                setIdxCount={setIdxCount}
                 setPiece={setPiece}
                 previousPositions={previousPositions}
                 nextPosition={nextPosition}
                 opponent={opponent}
+                idxPosition={idxPosition}
+                recordCount={recordCount}
+                setIdxPosition={setIdxPosition}
+                setRecordCount={setRecordCount}
                 websocket={websocket}
                 pieceCapturedPosition={pieceCapturedPosition}
                 recordMoves={recordMoves}

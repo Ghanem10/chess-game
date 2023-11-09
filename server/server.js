@@ -52,10 +52,10 @@ const runServer = async () => {
         server.listen(port);
 
         const io = new Server(server, {
+            allowEIO3: true,
             cors: {
-                origin: process.env.GAME_URL,
+                origin: process.env.MAIN_PAGE,
                 methods: ["GET", "POST"],
-                credentials: true,
             }
         });
 
@@ -66,7 +66,7 @@ const runServer = async () => {
             });
 
             socket.on("chatBox", (chatMsg) => {
-                io.emit("chatBox", { chatMsg, id: socket.id  });
+                io.emit("chatBox", formateDate(chatMsg, socket.id));
             });
 
             socket.on("endMatch", () => {
@@ -78,5 +78,16 @@ const runServer = async () => {
         console.log(`Internal server error: ${error}`)
     }
 };
+
+function formateDate(message, id) {
+    return {
+        message,
+        id,
+        time: new Intl.DateTimeFormat('default', {
+            hour: "numeric",
+            minute: "numeric",
+        }).format(new Date()),
+    };
+}
 
 runServer();
