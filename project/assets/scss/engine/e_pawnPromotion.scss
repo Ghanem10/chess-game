@@ -1,8 +1,10 @@
+@import '../board/pawnPromotion.scss';
+
 .hide-title {
     display: none;
 }
 
-#Pawn-promotion {
+#Pawn-promotion-engine {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -10,7 +12,7 @@
     right: 0;
     z-index: 3;
     
-    .body-promotion {
+    .body-promotion-engine {
         position: absolute;
 
         display: flex;
@@ -21,8 +23,8 @@
         width: 500px; 
         height: 190px;
 
-        top: 56%;
-        left: 32.7%;
+        top: 55%;
+        left: 50%;
 
         z-index: 3;
 

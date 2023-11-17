@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Type, Team } from '../lib/movement/constants/functions';
 import { addChessPieces } from '../squares/pieces';
-import ChessBoard from '../chessboard/board';
 import Board from '../lib/piecesLogic';
+import VsEngine from './vsEngine';
 
 const initialstate = [];
 
-export default function MainTemplateBoard() {
+export default function MainTemplateEngine() {
     
     const [piece, setPiece] = useState([]);
     const [highlightSquare, setHighlighSquare] = useState([]);
@@ -85,7 +85,7 @@ export default function MainTemplateBoard() {
     }, []);
 
     return (
-        <ChessBoard 
+        <VsEngine 
             setPiecesTurns={setPiecesTurns}
             piecesTurns={piecesTurns}
             piece={piece}

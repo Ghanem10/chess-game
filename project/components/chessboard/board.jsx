@@ -6,12 +6,13 @@ import updateRecordMoves from "./_updateMoves";
 import Squares from '../squares/squaresLayout';
 import Recorder from './_recorder';
 
+import { io } from "socket.io-client";
+
 import TimerPlayer from "./timer";
 import Spinner from "../animation/spinner";
 
 import '../../assets/scss/board/chessboard.scss';
 import '../../assets/scss/board/pawnPromotion.scss';
-import { io } from "socket.io-client";
 
 const websocket = io(`${import.meta.env.VITE_URL}`, { transports : ["websocket"] });
 
@@ -42,8 +43,6 @@ export default function ChessBoard(props) {
     const [ourTeam, setOurTeam] = useState(180);
     const [loading, setLoading] = useState(true);
     const [idxCount, setIdxCount] = useState(1);
-    const [recordCount, setRecordCount] = useState(0);
-    const [idxPosition, setIdxPosition] = useState(1);
 
     const chessBoard = useRef(null);
     const titleRef = useRef(null);
@@ -260,6 +259,7 @@ export default function ChessBoard(props) {
                     setisCheckMate={setisCheckMate}
                     piecesTurns={piecesTurns}
                     setOurTeam={setOurTeam}
+                    setPiecesTurns={setPiecesTurns}
                     setEnemyTeam= {setEnemyTeam}
                     ourTeam={ourTeam}
                     enemyTeam={enemyTeam}
@@ -294,10 +294,6 @@ export default function ChessBoard(props) {
                 previousPositions={previousPositions}
                 nextPosition={nextPosition}
                 opponent={opponent}
-                idxPosition={idxPosition}
-                recordCount={recordCount}
-                setIdxPosition={setIdxPosition}
-                setRecordCount={setRecordCount}
                 websocket={websocket}
                 pieceCapturedPosition={pieceCapturedPosition}
                 recordMoves={recordMoves}

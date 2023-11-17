@@ -8,6 +8,10 @@
     display: none;
 }
 
+.end-game-final-engine {
+    display: none;
+}
+
 .showtitle, .check-mate {
     position: absolute;
     display: flex;
@@ -124,4 +128,10 @@
             }
         }
     }
+}
+
+.showtitle-engine, .check-mate-engine {
+    @extend .showtitle;
+    @extend .check-mate;
+    left: 31.7%;
 }

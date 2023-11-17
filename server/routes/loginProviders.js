@@ -6,7 +6,7 @@ import {
     deleteGoogleUser, 
     getUserDataGithub, 
     getUserDataGoogle 
-} from '../controller/providers/_withProviders.js';
+} from '../controller/users/_withProviders.js';
 config();
 
 const loginProdiver = express.Router();

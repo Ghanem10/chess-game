@@ -1,5 +1,196 @@
 @import '../colors';
+@import '../board/squares.scss';
 
 .engine-main-template {
-    color: $bs-color-white;
+    
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    width: 100%;
+    height: 100vh;
+
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 8%;
+        height: 0;
+        background-color: $bs-red-dark;
+        transition: height 1s;
+    }
+    
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 20%;
+        width: 8%;
+        height: 0;
+        background-color: $bs-red-dark;
+        transition: height 1s;
+    }
+
+    &::before {
+        z-index: 1;
+        height: 100%;
+
+        transform: skewX(-35deg);
+        transform-origin: bottom right;
+    }
+
+    &::after {
+        z-index: 1;
+        height: 100%;
+
+        transform: skewX(-35deg);
+        transform-origin: top left;
+    }
+
+    .loading-page {
+        position: absolute;
+        display: flex;
+
+        top: 18%;
+        left: 31.7%;
+
+        width: 36.5%;
+        height: 76.2vh;
+
+        z-index: 4;
+        background-color: rgba(14, 13, 13, 0.829);
+
+        
+        .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            
+            width: 30px;
+            height: 30px;
+            
+            margin: -12px 0 0 -12px;
+            animation: rotate 2s linear infinite;
+            
+            
+            & .path {
+                z-index: 5;
+                
+                stroke: hsl(130, 93%, 36%);
+                stroke-linecap: round;
+                animation: dash 1s ease-in-out infinite;
+            }
+            
+        }
+        
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes dash {
+            0% {
+                stroke-dasharray: 1, 150;
+                stroke-dashoffset: 0;
+            }
+            50% {
+                stroke-dasharray: 90, 150;
+                stroke-dashoffset: -35;
+            }
+            100% {
+                stroke-dasharray: 90, 150;
+                stroke-dashoffset: -124;
+            }
+        }
+    }
+
+    .chess-board-template {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+        margin: 0 auto;
+        width: 50%;
+    
+        z-index: 2;
+
+        .chess-board-navigation {
+            position: absolute;
+
+            width: 20%;
+            height: 35px;
+            
+            top: 20%;
+            left: -2%;
+
+            border-radius: 4px;
+            z-index: 2;
+            
+            cursor: pointer;
+            outline: none;
+            border-style: none;
+    
+            color: $bs-color-white;
+            background-color: $bs-dark;
+            font-family: $bs-font-sans-serif;
+    
+            transition: transform 0.2s ease-out;
+    
+            &:hover {
+                width: 25%;
+                transition: all 0.4s ease-in-out;
+            }
+
+            &:active {
+                transform: scale(0.96);
+            }
+        }
+
+        .chess-board {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 500px;
+            height: 500px;
+
+            .row {
+                @include squares;
+                
+                .piece {
+                    width: $width;
+                    height: $height;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: 60px;
+                }
+    
+                .highlight-square::before {
+                    content: "";
+                    display: block;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background-color: rgba(0, 0, 0, 0.4);
+                    transform: translate(112%, 114%);
+                }
+    
+                .black::before,
+                .white::before {
+                    content: "";
+                    display: block;
+                    width: $width;
+                    height: $height;
+                    border-radius: 50%;
+                    border: 3px solid rgba(53, 53, 53, 0.952);
+                }
+            }
+        }
+    }
 }

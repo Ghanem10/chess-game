@@ -47,7 +47,7 @@ app.use("/auth/42v", loginProdiver);
 
 const runServer = async () => {
     try {
-        await mongoose.connect(process.env.CLOUD_URI);
+        await mongoose.connect(process.env.MONGO_URI);
         console.log(":::::::CONNECTED::::::::");
         server.listen(port);
 
@@ -61,8 +61,8 @@ const runServer = async () => {
 
         io.on("connection", (socket) => {
 
-            socket.on("Greeting", () => {
-                socket.emit("Greeting", "Hey! Chess plus is a great place to start your chess journey.")
+            socket.on("Greeting", (greetingMsg) => {
+                socket.emit("Greeting", greetingMsg)
             });
 
             socket.on("message", (msg) => {
@@ -79,7 +79,7 @@ const runServer = async () => {
         });
 
     } catch (error) {
-        console.log(`Internal server error: ${error}`)
+        console.log(`Internal server error: ${error}`);
     }
 };
 

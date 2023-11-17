@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
-import { BadRequest, Unauthorized } from "../error/error.js";
-import { SchemaUser } from "../model/userSchema.js";
+import { BadRequest, Unauthorized } from "../../error/error.js";
+import { SchemaUser } from "../../model/userSchema.js";
 
 export const login = async (req, res) => {
     const { email, password } = req.body;

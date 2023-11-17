@@ -10,7 +10,7 @@ export default function GameEnd(props) {
         setOurTeam, setEnemyTeam,
         piecesTurns, setRematch,
         updateStateTwo, isCheckMate,
-        setisCheckMate
+        setisCheckMate, VsEngine, setPiecesTurns
     } = props;
     
     const currTeam = (piecesTurns % 2 === 1) ? ourTeam : enemyTeam;
@@ -18,11 +18,16 @@ export default function GameEnd(props) {
     const checkWinner = piecesTurns % 2 === 0 ? "white" : "black";
 
     const endGameTemplate = useRef(null);
-    const endGameTitle = useRef(null);
+    let endGameTitle = useRef(null);
 
     const removeTitle = () => {
-        endGameTemplate.current.classList.remove("end");
-        endGameTitle.current.classList.remove("showtitle");
+        if (VsEngine) {
+            endGameTemplate.current.classList.remove("end");
+            endGameTitle.current.classList.remove("showtitle-engine");
+        } else {
+            endGameTemplate.current.classList.remove("end");
+            endGameTitle.current.classList.remove("showtitle");
+        }
     };
 
     /**
@@ -33,7 +38,13 @@ export default function GameEnd(props) {
 
     const newGame = () => {
         removeTitle();
+        
+        setEnemyTeam(180);
+        setOurTeam(180);
+        setRecordMoves("");
         setisCheckMate(false);
+        setRematch(preRem => !preRem);
+        setPiecesTurns(1);
 
         // another board copy
         updateStateTwo();
@@ -47,6 +58,7 @@ export default function GameEnd(props) {
         setRecordMoves("");
         setisCheckMate(false);
         setRematch(preRem => !preRem);
+        setPiecesTurns(1);
 
         // another board copy
         updateStateTwo();
@@ -87,9 +99,14 @@ export default function GameEnd(props) {
     useEffect(() => {
         const winner = () => {
             if (currTeam <= 0 || isCheckMate) {
-                endGameTemplate.current.classList.add("end");
-                endGameTitle.current.classList.add("showtitle");
-            }
+                if (VsEngine) {
+                    endGameTitle.current.classList.add("showtitle-engine");
+                    endGameTemplate.current.classList.add("end");
+                } else {
+                    endGameTemplate.current.classList.add("end");
+                    endGameTitle.current.classList.add("showtitle");
+                }
+            } 
         };
 
         winner();
@@ -99,7 +116,7 @@ export default function GameEnd(props) {
         <React.Fragment>
             {
                 (isCheckMate) ? (
-                    <div className="check-mate" ref={endGameTitle}>
+                    <div className={`${VsEngine ? "check-mate-engine": "check-mate"}`} ref={endGameTitle}>
                         <IconEndGame />
                         <div className="play-again" ref={endGameTemplate}>
                             <div className='title-end-game'>
@@ -111,7 +128,7 @@ export default function GameEnd(props) {
                         </div>
                     </div>
                 ) : (
-                    <div className='end-game-final' ref={endGameTitle}>
+                    <div className={`${VsEngine ? "end-game-final-engine": "end-game-final"}`} ref={endGameTitle}>
                         <IconEndGame />
                         <div className='game-end' ref={endGameTemplate}>
                             <div className='title-end-game'>

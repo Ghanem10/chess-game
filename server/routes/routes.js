@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, register } from '../controller/authUser.js';
+import { login, register } from '../controller/users/authUser.js';
 import { config } from 'dotenv';
 import { deleteUser, getUserData } from '../controller/users/userData.js';
 config();

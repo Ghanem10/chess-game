@@ -8,8 +8,8 @@ export default function TimerPlayer(props) {
 
     const { 
         updateStateTwo, isCheckMate, piecesTurns,
-        setisCheckMate, ourTeam, setRecordMoves,
-        enemyTeam, setOurTeam, setEnemyTeam
+        setisCheckMate, ourTeam, setRecordMoves, setPiecesTurns,
+        enemyTeam, setOurTeam, setEnemyTeam, VsEngine
     } = props;
 
     const toggleStartGame = Cookies.get("startGame");
@@ -74,13 +74,25 @@ export default function TimerPlayer(props) {
 
     return (
         <React.Fragment>
-            <div className="timers">
-                <img src={"/avatar.png"} referrerPolicy='no-referrer'/>
-                <div ref={black} className='opponent'>{formatTime(enemyTeam)}</div>
-                <div ref={white} className='ours'>{formatTime(ourTeam)}</div>
-                <img src={"/avatar.png"} referrerPolicy='no-referrer'/>
-            </div>
+            {
+                (VsEngine) ?
+                (
+                    <div className="timers-engine">
+                        <div ref={black} className='opponent'>{formatTime(enemyTeam)}</div>
+                        <div ref={white} className='ours'>{formatTime(ourTeam)}</div>
+                    </div>
+                ) : (
+                    <div className="timers">
+                        <img src={"/avatar.png"} referrerPolicy='no-referrer'/>
+                        <div ref={black} className='opponent'>{formatTime(enemyTeam)}</div>
+                        <div ref={white} className='ours'>{formatTime(ourTeam)}</div>
+                        <img src={"/avatar.png"} referrerPolicy='no-referrer'/>
+                    </div>
+                )
+            }
             <GameEnd 
+                VsEngine={VsEngine}
+                setPiecesTurns={setPiecesTurns}
                 ourTeam={ourTeam}
                 enemyTeam={enemyTeam}
                 setOurTeam={setOurTeam}

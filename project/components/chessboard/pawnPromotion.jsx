@@ -7,7 +7,7 @@ export const PawnPromotion = forwardRef((props, ref) => {
         x, y,
         pawnPromotion,
         setPawnPromotion,
-        piece
+        piece, VsEngine
     } = props;
 
     const promotPawn = (PieceType) => {
@@ -34,8 +34,8 @@ export const PawnPromotion = forwardRef((props, ref) => {
     };
     
     return (
-        <div id="Pawn-promotion" className="hide-title" ref={ref}>
-            <div className="body-promotion">
+        <div id={`${VsEngine ? "Pawn-promotion-engine": "Pawn-promotion"}`} className="hide-title" ref={ref}>
+            <div className={`${VsEngine ? "body-promotion-engine" : "body-promotion"}`}>
                 <div id="PiecesPromotion" 
                     onClick={() => promotPawn(Type.ROCK)} 
                     style={{ backgroundImage: `url(rock-${pieceTeamColor()}.png)`}}
