@@ -29,7 +29,7 @@ export default function MAP() {
             <p 
                 style={paragraphStyle}
             >
-                we don't have version for small devices.
+                No supported version for small devices.
             </p>
         </div>
     );
