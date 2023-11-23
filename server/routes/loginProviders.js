@@ -18,7 +18,7 @@ loginProdiver.route('/github').get(passport.authenticate('github', { scope: [ 'u
 loginProdiver.route('/github/callback').get(passport.authenticate("github", { 
         failureRedirect: `${process.env.MAIN_PAGE}/Login`
     }), (req, res) => { 
-        const Id = res.req.user._id.toString();
+        const Id = res.req.user._id;
         res.redirect(`${process.env.MAIN_PAGE}/Profile?id=${Id}`);
     });
 

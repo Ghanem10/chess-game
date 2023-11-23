@@ -3,6 +3,7 @@ import { Type, Team } from '../lib/movement/constants/functions';
 import { addChessPieces } from '../squares/pieces';
 import ChessBoard from '../chessboard/board';
 import Board from '../lib/piecesLogic';
+import { io } from 'socket.io-client';
 
 const initialstate = [];
 
@@ -13,7 +14,11 @@ export default function MainTemplateBoard() {
     const [isCheckMate, setisCheckMate] = useState(false);
     const [pawnPromotion, setPawnPromotion] = useState(null);
     const [piecesTurns, setPiecesTurns] = useState(1);
-        
+
+    // Socket
+    const websocket = io(`${import.meta.env.VITE_URL}`, { transports : ["websocket"] });
+    websocket.emit("createRoom", "Match");
+
     const board = new Board(
         piece, 
         setHighlighSquare, 
@@ -89,6 +94,7 @@ export default function MainTemplateBoard() {
             setPiecesTurns={setPiecesTurns}
             piecesTurns={piecesTurns}
             piece={piece}
+            websocket={websocket}
             setPiece={setPiece}
             successMove={successMove}
             isCheckMate={isCheckMate}

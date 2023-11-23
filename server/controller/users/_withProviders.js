@@ -5,7 +5,7 @@ const getUserDataGithub = async (req, res) => {
     const { id } = req.params;
     try {
         const user = await Github.findById(id);
-        res.status(StatusCodes.OK).json({ ...user.github });
+        res.status(StatusCodes.OK).json({ ...user });
     } catch (error) {
         console.log(`Error/updaingGithub: ${error}`);
     }
@@ -16,7 +16,7 @@ const getUserDataGoogle = async (req, res) => {
     const { id } = req.params;
     try {
         const user = await Google.findById(id);
-        res.status(StatusCodes.OK).json({ ...user.google });
+        res.status(StatusCodes.OK).json({ ...user });
     } catch (error) {
         console.log(`Error/updaingGoogle: ${error}`);
     }

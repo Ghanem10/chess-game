@@ -10,7 +10,10 @@ import http from 'http';
 import cors from 'cors';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
+import gameRoute from './routes/search.js';
+import tournamenetRoute from './routes/tournament.js';
 import loginProdiver from './routes/loginProviders.js';
+import { match, puzzels, tournaments, users } from './mongoDB.config.js';
 config();
 
 const app = express();
@@ -35,19 +38,25 @@ passport.use(GitHubAuth);
 passport.use(GoogleAuth);
 
 passport.serializeUser(function(user, done) {
-    return done(null, user.id);
+    return done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
     return done(null, user);
 });
 
+app.get("/test", (req, res) => {
+    res.json({ mes: "success" });
+});
+
 app.use("/auth/41v", routes);
 app.use("/auth/42v", loginProdiver);
+app.use("/tournamenet", tournamenetRoute);
+app.use("/match", gameRoute);
 
 const runServer = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI);
+        await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log(":::::::CONNECTED::::::::");
         server.listen(port);
 
@@ -64,17 +73,18 @@ const runServer = async () => {
             socket.on("Greeting", (greetingMsg) => {
                 socket.emit("Greeting", greetingMsg)
             });
-
-            socket.on("message", (msg) => {
-                socket.broadcast.emit("message", msg);
-            });
-
-            socket.on("chatBox", (chatMsg) => {
-                io.emit("chatBox", formateDate(chatMsg, socket.id));
-            });
-
-            socket.on("endMatch", () => {
-                io.emit("endMatch");
+            
+            socket.on("createRoom", (room) => {
+                
+                socket.join(room);
+    
+                socket.on("message", (msg) => {
+                    socket.broadcast.emit("message", msg);
+                });
+    
+                socket.on("chatBox", (chatMsg) => {
+                    io.emit("chatBox", formateDate(chatMsg, socket.id));
+                });                
             });
         });
 

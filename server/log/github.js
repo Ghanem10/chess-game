@@ -10,27 +10,24 @@ const GitHubAuth = new GithubStrategy(
         callbackURL: process.env.GITHUB_URL
     }, 
     async (accessToken, refreshToken, profile, done) => {
-        let user = await Github.findOne({ "github.id": profile.id });
+        let user = await Github.findOne({ id: profile.id });
 
         try {
             if (user) {
-                user.github.accessToken = accessToken;
+                user.accessToken = accessToken;
                 await user.save();
                 return done(null, user);
             } else {
-                user = new Github({
-                    github: { 
-                        id: profile.id,
-                        username: profile.displayName,
-                        accessToken: accessToken,
-                        picture: profile.photos[0].value,
-                        email: profile._json.email || profile._json.login + "@gmail.com",
-                        location: profile._json.location,
-                    }
+                user = Github.create({
+                    id: profile.id,
+                    username: profile.displayName,
+                    accessToken: accessToken,
+                    picture: profile.photos[0].value,
+                    email: profile._json.email || profile._json.login + "@gmail.com",
+                    location: profile._json.location,
                 });
             }
 
-            await user.save();
             return done(null, user);
         } catch (error) {
             return done(error);

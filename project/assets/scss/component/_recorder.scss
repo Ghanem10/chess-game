@@ -62,7 +62,7 @@
         .btns-record-moves {
             display: flex;
             flex-direction: row;
-            
+            width: 94%;
             margin: 15px auto;
             gap: 10px;
 
@@ -73,7 +73,7 @@
 
                 .record-#{$i} {
                     
-                    width: 100px;
+                    width: 100%;
 
                     cursor: pointer;
                     outline: none;

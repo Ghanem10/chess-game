@@ -25,7 +25,7 @@ export default function Profile() {
             try {
                 const axiosResponse = await instanceAPI.get(`/auth/42v/userInfo/${provider}/${ID}`);
                 if (axiosResponse.status === 200) {
-                    setAuthUserData(axiosResponse.data);
+                    setAuthUserData(axiosResponse.data._doc);
                     setLoading(false);
                 }
             } catch (error) {
@@ -46,7 +46,7 @@ export default function Profile() {
                         break;
                     case "JWT":
                         try {
-                            const axiosResponse = await instanceAPI.get(`/auth/41v/userInfo/JWT/${ID}`);
+                            const axiosResponse = await instanceAPI.get(`/auth/41v/userInfo/${ID}`);
                             if (axiosResponse.status === 200) {
                                 setAuthUserData(axiosResponse.data);
                                 setLoading(false);
@@ -73,8 +73,8 @@ export default function Profile() {
             {
                 (loading) ? (
                     <React.Fragment>
-                        <div className='profile-page-header-animate'></div>
-                        <div className='profile-page-body-animate'></div>
+                        <div className='profile-page-header'></div>
+                        <div className='profile-page-body'></div>
                     </React.Fragment>
                 ) : (
                     <React.Fragment>

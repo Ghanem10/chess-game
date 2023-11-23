@@ -1,32 +1,19 @@
 import mongoose from "mongoose";
+import { config } from "dotenv";
+config();
 
-mongoose.connect(process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
-const users = db.useDb("users_login");
 
-users.on("error", console.error.bind(console, "connection users_login error:"));
-users.once("open", async () => {
-    console.log("connection established to users_login DB");
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", async () => {
+    console.log("connection established to DB");
 });
 
 const match = db.useDb("match");
-
-users.on("error", console.error.bind(console, "connection match error:"));
-match.once("open", async () => {
-    console.log("connection established to match DB");
-});
-
+const users = db.useDb("users_login");
 const tournaments = db.useDb("tournaments");
-
-users.on("error", console.error.bind(console, "connection tournaments error:"));
-tournaments.once("open", async () => {
-    console.log("connection established to tournaments DB");
-});
-
 const puzzels = db.useDb("puzzels");
 
-users.on("error", console.error.bind(console, "connection puzzels error:"));
-puzzels.once("open", async () => {
-    console.log("connection established to puzzels DB");
-});
+export { users, match, puzzels, tournaments };

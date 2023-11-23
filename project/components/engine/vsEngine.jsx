@@ -46,9 +46,10 @@ export default function VsEngine(props) {
         const Element = e.target;
         const chessBoardEdges = chessBoard.current;
         const PieceExists = Element.classList.contains('piece');
+        const DataAttr = Element.getAttribute('datatype');
         const currentTeam = piecesTurns % 2 === 0 ? Team.BLACK : Team.WHITE;
 
-        if (PieceExists &&  chessBoardEdges) {
+        if (PieceExists && DataAttr === Team.WHITE && currentTeam && chessBoardEdges) {
             const gridx = Math.floor((e.clientX - chessBoardEdges.offsetLeft) / 62);
             const gridy = Math.floor((e.clientY - chessBoardEdges.offsetTop) / 62);
 

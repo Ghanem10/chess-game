@@ -73,7 +73,7 @@ export default function SectionIntro() {
                             </Link>
                         </div>
                         <div className='left'>
-                            <Link to={`/${ID ? `?id=${ID}`:''}`}>
+                            <Link to={`/Tournament${ID ? `?id=${ID}`:''}`}>
                                 <button>Tournament</button>
                             </Link>
                         </div>

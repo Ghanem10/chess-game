@@ -14,12 +14,11 @@ import Spinner from "../animation/spinner";
 import '../../assets/scss/board/chessboard.scss';
 import '../../assets/scss/board/pawnPromotion.scss';
 
-const websocket = io(`${import.meta.env.VITE_URL}`, { transports : ["websocket"] });
 
 export default function ChessBoard(props) {
 
     const { 
-        successMove, piece, setPiece,
+        successMove, piece, setPiece, websocket,
         updatePossibleMoves, setPiecesTurns,
         highlightSquare, pawnPromotion,
         setPawnPromotion, updateStateTwo,

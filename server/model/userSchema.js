@@ -1,36 +1,33 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { users } from '../mongoDB.config.js';
 
 const logWithGithub = new mongoose.Schema({
-    github: {
-        id: { type: String, unique: true },
-        username: { type: String },
-        accessToken: { type: String },
-        picture: { type: String },
-        location: { type: String },
-        email: { type: String },
-        rank: { type: Number, default: 500 },
-        wins: { type: Number, default: 0 },
-        losses: { type: Number, default: 0 },
-        draws: { type: Number, default: 0 },
-    }
+    id: { type: String, unique: true },
+    username: { type: String },
+    accessToken: { type: String },
+    picture: { type: String },
+    location: { type: String },
+    email: { type: String },
+    rank: { type: Number, default: 500 },
+    wins: { type: Number, default: 0 },
+    losses: { type: Number, default: 0 },
+    draws: { type: Number, default: 0 },
 });
 
 
 const logWithGoogle = new mongoose.Schema({
-    google: {
-        id: { type: String, unique: true },
-        username: { type: String },
-        accessToken: { type: String },
-        picture: { type: String },
-        location: { type: String },
-        email: { type: String },
-        rank: { type: Number, default: 500 },
-        wins: { type: Number, default: 0 },
-        losses: { type: Number, default: 0 },
-        draws: { type: Number, default: 0 },
-    }
+    id: { type: String, unique: true },
+    username: { type: String },
+    accessToken: { type: String },
+    picture: { type: String },
+    location: { type: String },
+    email: { type: String },
+    rank: { type: Number, default: 500 },
+    wins: { type: Number, default: 0 },
+    losses: { type: Number, default: 0 },
+    draws: { type: Number, default: 0 },
 });
 
 const UserSchema = new mongoose.Schema({
@@ -68,7 +65,7 @@ UserSchema.pre('save', async function() {
     this.password = hashedPassword;
 });
 
-UserSchema.methods.createJWT = function createJWT () {
+UserSchema.methods.createJWT = function() {
     const payload = {
         user: { 
             id: this._id,
@@ -81,13 +78,13 @@ UserSchema.methods.createJWT = function createJWT () {
     });
 }
 
-UserSchema.methods.comparePassword = async function comparePassword (candatespassword) {
+UserSchema.methods.comparePassword = async function(candatespassword) {
     const isMatch = await bcryptjs.compare(candatespassword, this.password);
     return isMatch;
 }
 
-const SchemaUser = mongoose.model('User', UserSchema);
-const Github = mongoose.model("GithubProvider", logWithGithub);
-const Google = mongoose.model("GoogleProvider", logWithGoogle);
+const SchemaUser = users.model('User', UserSchema);
+const Github = users.model("Github", logWithGithub);
+const Google = users.model("Google", logWithGoogle);
 
 export { SchemaUser, Github, Google };

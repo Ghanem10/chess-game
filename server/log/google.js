@@ -12,27 +12,24 @@ const GoogleAuth = new GoogleStrategy(
         scope: ['profile']
     },
     async (accessToken, refreshToken, profile, done) => {
-        let user = await Google.findOne({ "google.id": profile.id });
+        let user = await Google.findOne({ id: profile.id });
         
         try {
             if (user) {
-                user.google.accessToken = accessToken;
+                user.accessToken = accessToken;
 
                 await user.save();
                 return done(null, user);
             } else {
-                user = new Google({
-                    google: {
-                        id: profile.id,
-                        username: profile.displayName,
-                        accessToken: accessToken,
-                        picture: profile.picture,
-                        email: profile.given_name + "@gmail.com",
-                    }
+                user = Google.create({
+                    id: profile.id,
+                    username: profile.displayName,
+                    accessToken: accessToken,
+                    picture: profile.picture,
+                    email: profile.given_name + "@gmail.com",
                 });
             }
 
-            await user.save();
             return done(null, user);
         } catch (error) {
             return done(error);

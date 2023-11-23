@@ -5,6 +5,4 @@ const matchSchema = mongoose.Schema({
     recordMoves: { type: [String] },
 });
 
-const tournamentSchema = mongoose.Schema({});
-
-export const match = mongoose.model("match", matchSchema);
+export const tournamentSchema = mongoose.model("match", matchSchema);
