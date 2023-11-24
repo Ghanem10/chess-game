@@ -6,6 +6,7 @@ import Board from '../lib/piecesLogic';
 import { io } from 'socket.io-client';
 
 const initialstate = [];
+const websocket = io(`${import.meta.env.VITE_URL}`, { transports : ["websocket"] });
 
 export default function MainTemplateBoard() {
     
@@ -16,7 +17,6 @@ export default function MainTemplateBoard() {
     const [piecesTurns, setPiecesTurns] = useState(1);
 
     // Socket
-    const websocket = io(`${import.meta.env.VITE_URL}`, { transports : ["websocket"] });
     websocket.emit("createRoom", "Match");
 
     const board = new Board(

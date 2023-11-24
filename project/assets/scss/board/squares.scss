@@ -1,7 +1,9 @@
 
 $width: 62px;
 $height: 62px;
-
+$phone-width: 40px;
+$phone-height: 40px;
+$phone-siz: 40px;
 
 @mixin squares {
     .white-square,
@@ -15,6 +17,18 @@ $height: 62px;
         height: $height;
     }
     
+    @media (max-width: 900px) {
+        .white-square,
+        .lightskyblue-square,
+        .lightgreen-square,
+        .green-square,
+        .brown-square,
+        .purple-square,
+        .black-square {
+            width: $phone-width;
+            height: $phone-height;
+        }
+    }
     .white-square {
         background-color: #eeeed2;
     }
