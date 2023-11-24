@@ -7,10 +7,10 @@
     flex-direction: column;
 
     top: 12%;
-    left: 23%;
+    left: 20%;
 
-    width: 750px;
-    height: 500px;
+    width: 60%;
+    height: auto;
     padding: 10px;
 
     z-index: 3;
@@ -53,7 +53,7 @@
         justify-content: center;
         align-items: center;
 
-        height:  200px;
+        height:  auto;
         border-bottom: 1px solid $bs-gray-border;
 
         gap: 50px;
@@ -81,8 +81,29 @@
                 &:hover {
                     opacity: 1;
                     cursor: pointer;
-
                     transition: all 0.3s ease;
+                }
+            }
+        
+            @media (max-width: 900px) {
+                & {
+                    display: flex;
+                    flex-wrap: wrap;
+                    width: 100%;
+                    height: auto;
+                    padding: 1rem;
+                    
+                    img {
+                        width: 22.33%;
+                        height: auto;
+                        opacity: 0.4;
+                
+                        &:hover {
+                            opacity: 1;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        }
+                    }
                 }
             }
         }
@@ -97,6 +118,13 @@
             margin: 5rem 0;
             font-size: 19px;
             color: $bs-gray-dark;
+        }
+    }
+
+    @media (max-width: 900px) {
+        & {
+            top: 25%;
+            left: 15%;
         }
     }
 }

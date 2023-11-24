@@ -4,6 +4,20 @@
     display: none;
 }
 
+.highlight {
+    position: absolute;
+    
+    width: 100%;
+    height: 100vh;
+
+    z-index: 3;
+    background-color: rgba(7, 6, 6, 0.863);
+
+    &::after {
+        height: 100vh;
+    }
+}
+
 .main-tournament-section {
     position: relative;
     display: flex;
@@ -84,6 +98,7 @@
             width: 30%;
             height: 55vh;
             padding: 20px;
+            z-index: 4;
 
             gap: 10px;
             border-radius: 10px;
@@ -140,6 +155,29 @@
                     }
                 }
             }
+            
+            @media (max-width: 900px) {
+                & {
+                    left: 15%;
+                    width: 60%;
+                    height: auto;
+                }
+            }
+        }
+        
+        @media (max-width: 900px) {
+            & {
+                width: 70%;
+            }
+        }
+    }
+
+    @media (max-width: 900px) {
+        & {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
         }
     }
 }

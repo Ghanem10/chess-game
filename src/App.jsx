@@ -12,17 +12,11 @@ export default function App() {
     
     return (
         <React.Fragment>
-            {
-                (width <= 1090) ? (
-                    <MAP />
-                ) : (
-                    <Routes>
-                        {publicRoutes.map((element, idx) => (
-                            <Route key={idx} path={element.path} element={element.component}/>
-                        ))}
-                    </Routes>
-                )
-            }
+            <Routes>
+                {publicRoutes.map((element, idx) => (
+                    <Route key={idx} path={element.path} element={element.component}/>
+                ))}
+            </Routes>
         </React.Fragment>
     );
 }

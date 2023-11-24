@@ -47,6 +47,17 @@
         transform-origin: top left;
     }
 
+    @media (max-width: 900px) {
+        & {
+            margin-top: 4rem;
+        }
+        &::before, &::after {
+            left: 40%;
+            right: 10%;
+            transform: skewX(-12deg);
+        }
+    }
+
     .profile-page-header {
         @include profileSection;
         flex-direction: row;
@@ -56,6 +67,20 @@
 
         z-index: 2;
 
+        @media (max-width: 900px) {
+            & {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            & {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+        
         .profile-info {
             display: flex;
             flex-direction: row;
@@ -118,42 +143,88 @@
        
         height: 400px;
 
-        .profile-page-status {
+        
+        .profile-status-bg {
             display: flex;
-            flex-direction: row;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            gap: 4em;
+            
+            gap: 1rem;
+            
+            .profile-page-status {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                gap: 4em;
+    
+                span {
+                    font-size: 20px;
+    
+                    strong {
+                        color: $bs-green-hover;
+                    }
+                }
+            }
 
-            span {
-                font-size: 20px;
-
-                strong {
-                    color: $bs-green-hover;
+            .profile-page-bdg {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                gap: 1em;
+    
+                @for $i from 1 through 3 {
+                    .svg-bdg-#{$i} {
+                        width: 120px;
+                        height: 120px;
+                    }
                 }
             }
         }
 
-        .profile-page-bdg {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            gap: 1em;
-
-            @for $i from 1 through 3 {
-                .svg-bdg-#{$i} {
-                    width: 120px;
-                    height: 120px;
-                }
-            }
-        }
 
         span {
             font-size: 20px;
 
             strong {
                 color: $bs-gold;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            & {
+                display: flex;
+                flex-direction: column;
+                width: 90%;
+                
+                .profile-status-bg {
+                    display: flex;
+                    flex-direction: row;
+
+                    padding: 20px;
+                    .profile-page-status {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 1.4em;
+                    }
+    
+                    .profile-page-bdg {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        margin-top: 1rem;
+                        gap: 10px;
+    
+                        @for $i from 1 through 3 {
+                            .svg-bdg-#{$i} {
+                                width: 50px;
+                                height: 50px;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
