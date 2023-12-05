@@ -278,7 +278,7 @@
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
-
+        margin-top: 10rem;
         $bs-body-el-count: 3;
 
         @for $el from 1 through $bs-body-el-count {
