@@ -17,6 +17,11 @@ const tournamentSchema = new mongoose.Schema({
         },
     ],
 
+    date: {
+        type: Date,
+        default: Date.now(),
+    },
+
 }, { timestamps: true });
 
 export default mongoose.model("Tournament", tournamentSchema);

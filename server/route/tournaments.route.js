@@ -3,26 +3,26 @@ import express, { Router } from "express";
 import { 
     deleteTournament,
     createNewTournament,
-    getTournamentInfo,
-    getConnectedUsers,
+    getTournamentById,
  } from '../controllers/tournament.controller.js';
 
-import { inviteLimiter } from '../middleware/limiter/limiter.js';
 import decodeToken from '../middleware/auth/decodeToken.js';
 import passport from "passport";
 
 const router = express.Router();
 const requireAuth = passport.authenticate("jwt", { session: false }, null);
 
-router.get("/:id/tournament-info", requireAuth, decodeToken, getTournamentInfo);
-router.get("/:id/connected-friends", requireAuth, decodeToken, getConnectedUsers);
-
+/**
+ * @route tournament/:id
+ * @route tournament/:id/create-tournament
+ * @route tournament/:id/remove-tournament
+*/
 
 router.post("/:id/create-tournament", requireAuth, decodeToken, createNewTournament);
+router.get("/:id", requireAuth, decodeToken, getTournamentById);
 
-router.delete(deleteTournament);
 
-router.use(inviteLimiter);
+router.delete("/:id/remove-tournament", requireAuth, decodeToken, deleteTournament);
 
 export default router;
 

@@ -1,58 +1,87 @@
-import Relationship from "../models/relationship.model.js";
 import Tournament from "../models/tournament.model.js";
 
 /** 
- * @route GET /user/:id/connected-friends 
+ * @route GET tournament/:id/create-tournament   
  * @async
  * @function createNewTournament
 */
 
 const createNewTournament = async (req, res) => {
 
-    const newTournament = new Tournament({
-        title: req.body.title,
-        members: req.body.members,
-        createdAt: Date.now(),
-    });
-
-    await newTournament.save();
-    
-    res.status(201).json({ message: "Tournament created successfully." });
-};
-
-
-/** 
- * @route GET /tournament/:id/connected-friends 
- * @async
- * @function getConnectedUsers
- * 
- * @param {String} req.body.id - the id of the current user.
- * 
- * @description Returns all the connected friends to the current user.
-*/
-
-const getConnectedUsers = async (req, res) => {
     try {
-        const userId = req.body.id;
-        const connectedFriendsIds = await Relationship.find({ connectedfriends: userId });
+        const tournamentId = req.body.id;
+        const tournamentExist = await Tournament.exists({ _id: tournamentId });
 
-        if (connectedFriendsIds.length <= 0) {
-            return res.status(404).json({ message: "There is no friends to display." });
+        if (tournamentExist) {
+            res.status(400).json({ message: "Tournament already exists." });
         }
 
-        res.status(200).json(connectedFriendsIds);
+        const newTournament = new Tournament({
+            title: req.body.title,
+            members: req.body.members,
+        });
+    
+        await newTournament.save();
+        
+        res.status(201).json({ message: "Tournament created successfully." });
     } catch (error) {
         res.status(500).json({ message: "Something went wrong." });
     }
 };
 
+/** 
+ * @route GET /tournament/:id
+ * @async
+ * @function getTournamentById
+ * 
+ * @param {String} req.body.id - the id of the current tournament.
+ * 
+ * @description Returns all the members inside the tournament.
+*/
 
-const getTournamentInfo = async (req, res) => {};
-const deleteTournament = async (req, res) => {};
+const getTournamentById = async (req, res) => {
+    try {
+        const tournamentId = req.body.id;
+        const tournament = await Tournament.find({ _id: tournamentId });
+
+        if (!tournament) {
+            res.status(404).json({ message: "Tournament was not found." });
+        }
+
+        res.status(200).json(tournament);
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong, please try again later." });
+    }
+};
+
+
+/** 
+ * @route GET /tournament/:id/remove-tournament
+ * @async
+ * @function deleteTournament
+ * 
+ * @param {String} req.body.id - the id of the current tournament.
+*/
+
+const deleteTournament = async (req, res) => {
+    try {
+        const tournamentId = req.body.id;
+        const tournamentName = req.body.name;
+
+        const tournamentExist = await Tournament.exists({ title: tournamentName });
+        if (!tournamentExist) {
+            res.status(404).json({ message: "Tournament was not found." });
+        }
+        
+        await Tournament.deleteOne({ _id: tournamentId });
+        res.status(200).json({ message: "Tournament removed successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong." });
+    }
+};
 
 export {
     createNewTournament,
-    getConnectedUsers,
-    getTournamentInfo,
+    getTournamentById,
     deleteTournament,
 };

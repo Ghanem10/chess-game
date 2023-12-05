@@ -25,7 +25,7 @@ passport.use(new JwtStrategy(opitions, async function(jwt_payload, done) {
 
             const refreshPayload = jwt.verify(
                 refreshTokenFromDB.refreshToken,
-                process.env.REFRESH_TOKEN
+                process.env.REFRESH_SECRET
             );
 
             if (refreshPayload.email !== jwt_payload.email) {
