@@ -52,18 +52,18 @@
          https://github.com/Ghanem10/chess-game.git
      
   2. Install dependencies for both the main directory and server.
-
-          npm install
-
-          cd server
-          npm install
-     
-  3. Create a `.env` file in the `server folder` and add the environment variables as shown in the `.env.example` file.
-  4. Start the server.
+     ```
+     npm install
+     ```
+         cd server
+         npm install
+         
+  4. Create a `.env` file in the `server folder` and add the environment variables as shown in the `.env.example` file.
+  5. Start the server.
 
            cd server
            npm run dev:start
-  5. Start the client by running `npm run dev` in the main directory.
+  6. Start the client by running `npm run dev` in the main directory.
 
            npm run dev
 
