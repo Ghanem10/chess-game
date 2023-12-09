@@ -24,4 +24,5 @@ const tournamentSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
-export default mongoose.model("Tournament", tournamentSchema);
+const indexTournament = tournamentSchema.index({ title: "text" })
+export default mongoose.model("Tournament", indexTournament);

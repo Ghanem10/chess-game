@@ -67,6 +67,13 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+
+    tournaments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Tournament",
+        },
+    ],
     
 }, { timestamps: true });
 

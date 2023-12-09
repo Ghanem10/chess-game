@@ -80,8 +80,23 @@ const deleteTournament = async (req, res) => {
     }
 };
 
+const getPublicTournaments = async (req, res) => {
+    try {
+        const tournaments = await Tournament.find({});
+
+        if (!tournaments) {
+            res.status(404).json({ message: "No Tournaments were found." });
+        }
+
+        res.status(200).json(tournaments);
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong, please try again later." });
+    }
+};
+
 export {
     createNewTournament,
     getTournamentById,
     deleteTournament,
+    getPublicTournaments,
 };

@@ -4,6 +4,7 @@ import {
     deleteTournament,
     createNewTournament,
     getTournamentById,
+    getPublicTournaments
  } from '../controllers/tournament.controller.js';
 
 import decodeToken from '../middleware/auth/decodeToken.js';
@@ -14,11 +15,13 @@ const requireAuth = passport.authenticate("jwt", { session: false }, null);
 
 /**
  * @route tournament/:id
+ * @route tournament/public-tournaments
  * @route tournament/:id/create-tournament
  * @route tournament/:id/remove-tournament
 */
 
 router.post("/:id/create-tournament", requireAuth, decodeToken, createNewTournament);
+router.post("/public-tournaments", requireAuth, decodeToken, getPublicTournaments);
 router.get("/:id", requireAuth, decodeToken, getTournamentById);
 
 
