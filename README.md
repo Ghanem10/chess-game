@@ -24,6 +24,8 @@
 - [x] Add/Remove Friends
 - [x] Create Tournaments
 - [x] Invite Players
+- [x] Resign, draws
+- [x] Mobile and user friendly
 
 ## Technologies
 - React.js
