@@ -31,7 +31,8 @@ const searchForActivePlayers = async (req, res) => {
             .limit(1)
             .lean();
             
-        if (matchedPlayer && matchedPlayer.length === 0) {
+        console.log(matchedPlayer);
+        if (matchedPlayer.length === 0) {
 
             await User.findByIdAndUpdate(
                 userId, { 

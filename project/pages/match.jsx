@@ -333,9 +333,9 @@ export default function MainTemplateBoard() {
                     },
                 );
 
-                // if (data.isEmpty) {
-                //     navigate("/");
-                // }
+                if (data.isEmpty) {
+                    navigate("/");
+                }
 
                 localStorage.setItem("secondPlayer", JSON.stringify(data));
 
