@@ -1,4 +1,6 @@
-export function addChessPieces(initialstate) {
+const initialstate = [];
+
+export const addChessPieces = () => {
     for (let i = 0; i < 8; i++) {
         initialstate.push({
             image: './pawn-b.png', 
@@ -24,24 +26,64 @@ export function addChessPieces(initialstate) {
             'king','bishop', 'knight', 'rock'
         ];
 
-        initialstate.push({
-            image: `./${pieces[k]}-b.png`, 
-            x: k, 
-            y: 0, 
-            possibleMoves: [],
-            Piece: `${pieces[k]}`, 
-            hasmoved: false,
-            team: 'black',
-        });
-        initialstate.push({
-            image: `./${pieces[k]}-w.png`, 
-            x: k, y: 7, 
-            possibleMoves: [],
-            Piece: `${pieces[k]}`, 
-            hasmoved: false,
-            team: 'white',
-        });
+        if (pieces[k] === "king") {
+            initialstate.push({
+                image: `./${pieces[k]}-b.png`, 
+                x: k, 
+                y: 0, 
+                possibleMoves: [],
+                Piece: `${pieces[k]}`, 
+                hasmoved: false,
+                isCaslt: false,
+                team: 'black',
+            });
+            initialstate.push({
+                image: `./${pieces[k]}-w.png`, 
+                x: k, y: 7, 
+                possibleMoves: [],
+                Piece: `${pieces[k]}`,
+                hasmoved: false,
+                isCaslt: false,
+                team: 'white',
+            });
+        }
+
+        if (pieces[k] === "rock" || pieces[k] === "king") {
+            initialstate.push({
+                image: `./${pieces[k]}-b.png`, 
+                x: k, 
+                y: 0, 
+                possibleMoves: [],
+                Piece: `${pieces[k]}`, 
+                hasmoved: false,
+                team: 'black',
+            });
+            initialstate.push({
+                image: `./${pieces[k]}-w.png`, 
+                x: k, y: 7, 
+                possibleMoves: [],
+                Piece: `${pieces[k]}`, 
+                hasmoved: false,
+                team: 'white',
+            });
+        } else {
+            initialstate.push({
+                image: `./${pieces[k]}-b.png`, 
+                x: k, 
+                y: 0, 
+                possibleMoves: [],
+                Piece: `${pieces[k]}`, 
+                team: 'black',
+            });
+            initialstate.push({
+                image: `./${pieces[k]}-w.png`, 
+                x: k, y: 7, 
+                possibleMoves: [],
+                Piece: `${pieces[k]}`, 
+                team: 'white',
+            });
+        }
     }
     
     return initialstate;
-}
+};

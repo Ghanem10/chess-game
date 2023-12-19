@@ -192,14 +192,14 @@ const removeFriend = async (req, res) => {
 const updatePlayerStatus = async (req, res) => {
     try {
         const userId = req.body.id;
-        const payloadStatus = JSON.parse(req.body.payload);
+        const payloadStatus = req.body;
 
         const newWinsNumber = payloadStatus.wins;
         const newLossesNumber = payloadStatus.losses;
         const newDrawsNumber = payloadStatus.draws;
         const newPointsNumber = payloadStatus.points;
 
-        await User.findByIdAndUpdate(
+        const updatedPlayerStatus = await User.findByIdAndUpdate(
             userId,
             {
                 $set: {
@@ -212,14 +212,43 @@ const updatePlayerStatus = async (req, res) => {
             {
                 new: true,
             },
-        );
+        )
+        .select("wins losses draws points")
+        .lean();
 
-        res.status(200).json({ message: "Player status updated sucessfully." });
+        res.status(200).json(
+            { 
+                message: "Player status updated sucessfully.", 
+                updatedPlayerStatus 
+            }
+        );
     } catch (error) {
         res.status(500).json({ message: "Something went wrong while updating player status." });
     }
 };
 
+
+const userSearchStatus = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        const t = await User.findByIdAndUpdate(
+            userId,
+            {
+                $set: {
+                    searching: false,
+                },
+            },
+            {
+                new: true,
+            },
+        );
+
+        res.status(200).json({ message: "Update success!" });
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong." });
+    }
+};
 
 export { 
     addFriend, 
@@ -228,4 +257,5 @@ export {
     getPublicFriends, 
     getUsersFriends,
     updatePlayerStatus,
+    userSearchStatus,
 };

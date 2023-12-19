@@ -1,21 +1,17 @@
 import React from "react";
 import { Team } from "../lib/movement/constants/functions";
 import { checkCurrentSquare } from "../../util/_helper_common";
-import Cookies from "js-cookie";
 
 export default function Squares(props) {
     const {
         highlightSquare, grabbingPiece,
         MovingPiece, droppingPiece, piecesTurns,
-        piece, x, y, position, state,
+        piece, x, y, position, activePiece,
     } = props;
 
-    const totalNumberOfSquares = 8;
     let updatedClassName, squaresOccupiedByEnemy = "";
 
-    let updateBoardColor = Cookies.get("color") 
-            ? Cookies.get("color") 
-            : "lightskyblue";
+    let updateBoardColor =  "lightskyblue";
 
     const availableSquares = highlightSquare
         .some((square) => square.x === x && square.y === y);
@@ -26,7 +22,7 @@ export default function Squares(props) {
         squareColor 
     ] = checkCurrentSquare(piece, piecesTurns, position, x, y);
 
-    for (let i = 1; i < totalNumberOfSquares; i++) {
+    for (let i = 1; i < 8; i++) {
 
         if (!squareColor) {
             updatedClassName = `${updateBoardColor}-square`;
@@ -35,8 +31,8 @@ export default function Squares(props) {
         }
     }
 
-    if (state.activePiece !== null) {
-        const isMatched = state.activePiece.getAttribute("datatype");
+    if (activePiece !== null) {
+        const isMatched = activePiece.getAttribute("datatype");
         if (isMatched === currentTeam && availableSquares) {
 
             if (currentPiece) {

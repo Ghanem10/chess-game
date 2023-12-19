@@ -86,9 +86,11 @@ export default class Board {
 
                     if (p.Piece === currentPiece.Piece && pathNotBlocked) {
                         p.x = newKingPosition;
+                        p.isCaslt = true;
 
                     } else if (this.samePosition(p, targetRook.x, targetRook.y) && pathNotBlocked) {
                         p.x = newKingPosition - direction;
+                        p.isCaslt = true;
                     }
                 }
                 

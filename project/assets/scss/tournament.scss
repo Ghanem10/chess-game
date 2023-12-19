@@ -20,6 +20,7 @@
 
 .main-tournament-section {
     position: relative;
+    
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -28,9 +29,73 @@
     width: 100%;
     height: 100vh;
 
-
-    background-color: rgb(20, 19, 18);
     font-family: $bs-font-sans-serif;
+
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 8%;
+        height: 0;
+        background-color: $bs-gold;
+        transition: height 1s;
+    }
+    
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 20%;
+        width: 8%;
+        height: 0;
+        background-color: $bs-gold;
+        transition: height 1s;
+    }
+
+    &::before {
+        z-index: 1;
+        height: 100%;
+
+        transform: skewX(-35deg);
+        transform-origin: bottom right;
+    }
+
+    &::after {
+        z-index: 1;
+        height: 100%;
+
+        transform: skewX(-35deg);
+        transform-origin: top left;
+    }
+
+    @media (max-width: 1120px) {
+        &::before {
+            left: 20%;
+        }
+
+        &::after {
+            right: 30%;
+        }
+
+        &::before, &::after {
+            transform: skewX(-16deg);
+        }
+    }
+
+    @media (max-width: 900px) {
+        &::before {
+            left: 20%;
+        }
+
+        &::after {
+            right: 30%;
+        }
+
+        &::before, &::after {
+            transform: skewX(-10deg);
+        }
+    }
 
     .tournaments-section {
         display: flex;
@@ -39,8 +104,13 @@
         width: 70%;
         height: 70vh;
 
+        z-index: 2;
+
+        background-color: rgba(0, 0, 0, 0.486);
+        backdrop-filter: blur(5px);
+        
         border: dashed;
-        border-color: rgba(245, 222, 179, 0.089);
+        border-color: rgba(71, 70, 70, 0.26);
 
         span {
             padding: 10px;
@@ -56,30 +126,42 @@
 
         width: 20%;
         height: auto;
-
-        @for $i from 1 through 2 {
-
-            .button-#{$i} {
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            
+            width: 100%;
+            height: auto;
+            
+            gap: 2rem;
+            z-index: 2;
+            .button-1 {
                 width: 100%;
                 height: 40px;
                 outline: none;
                 border-style: none;
                 cursor: pointer;
-
+    
                 border-radius: 8px;
                 color: $bs-color-white;
-            }
-
-            .button-1 {
                 background-color: rgb(19, 17, 17);
-
+    
                 &:hover {
                     transition: all 0.5s ease-out;
                     background-color: #1d2127;
                 }
             }
-
+    
             .button-2 {
+                width: 100%;
+                height: 40px;
+                outline: none;
+                border-style: none;
+                cursor: pointer;
+    
+                border-radius: 8px;
+                color: $bs-color-white;
                 background-color: #1d2127;
                 
                 &:hover {
@@ -177,7 +259,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-
         }
     }
 }

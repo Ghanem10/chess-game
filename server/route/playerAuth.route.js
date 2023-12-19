@@ -17,6 +17,7 @@ import {
     addFriend,
     removeFriend,
     updatePlayerStatus,
+    userSearchStatus,
 } from '../controllers/profile.controller.js';
 
 import {
@@ -40,7 +41,7 @@ const requireAuth = passport.authenticate("jwt", { session: false }, null);
 router.get("/connected-friends", requireAuth, decodeToken, getUsersFriends);
 router.get("/public-friend/:id", requireAuth,decodeToken, getPublicFriendById);
 router.get("/public-friends", requireAuth, decodeToken, getPublicFriends);
-router.get("/:id", requireAuth, getUser);
+router.get("/:id", getUser);
 
 router.post(
     "/signup",
@@ -57,14 +58,16 @@ router.post(
     signin
 );
 
-router.use(inviteLimiter);
-
 router.post("/logout", logout);
-router.post("/refresh-token", refreshToken);
+router.post("/refresh-token", requireAuth, decodeToken, refreshToken);
+
+router.patch("/user-search-status/:id", userSearchStatus);
+
+router.put("/:id/update-status", updatePlayerStatus);
+
+router.use(inviteLimiter);
 
 router.patch("/:id/add-friend", requireAuth, decodeToken, addFriend);
 router.patch("/:id/remove-friend", requireAuth, decodeToken, removeFriend);
-
-router.put("/:id/update-status", requireAuth, decodeToken, updatePlayerStatus);
 
 export default router;

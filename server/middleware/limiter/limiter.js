@@ -9,7 +9,7 @@ const createLimiter = (windowMs, maxRate, message) => {
     });
 };
 
-const inviteLimiter = createLimiter(15 * 60 * 1000, 100, MESSAGE);
-const signUpAndSignInLimiter = createLimiter(15 * 60 * 1000, 100, MESSAGE);
+const inviteLimiter = createLimiter(15 * 60 * 1000, 300, MESSAGE);
+const signUpAndSignInLimiter = createLimiter(15 * 60 * 1000, 300, MESSAGE);
 
 export { inviteLimiter, signUpAndSignInLimiter };

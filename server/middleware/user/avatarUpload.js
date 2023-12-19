@@ -3,18 +3,23 @@ import multer from 'multer';
 import path from 'path';
 
 function avatarUpload(req, res, next) {
+    const __dirname = path.resolve();
     
-    const up_avatars = path.join(__dirname, "../../assets/usersAvatars");
+    const up_avatars = path.join(__dirname, "/assets/usersAvatars");
+
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
+
             if (!fs.existsSync(up_avatars)) {
                 fs.mkdirSync(up_avatars, { recursive: true });
             }
+
+            cb(null, up_avatars);
         },
         filename: (req, file, cb) => {
             const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * "1e9");
             const ext = path.extname(file.originalname);
-            
+
             cb(null, file.fieldname + "-" + uniqueSuffix + ext);
         },
     });
@@ -42,7 +47,7 @@ function avatarUpload(req, res, next) {
             res.status(500).json({
                 success: false,
                 message: "Error uploading file",
-                error: error.message,
+                error: error,
             });
         } else {
             next();

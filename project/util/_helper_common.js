@@ -1,6 +1,6 @@
 import { Team } from "../components/lib/movement/constants/functions";
 
-export const checkCurrentSquare = (piece, piecesTurns, position,x, y) => {
+export const checkCurrentSquare = (piece, piecesTurns, position, x, y) => {
 
     const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 

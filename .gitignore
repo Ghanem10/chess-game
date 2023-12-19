@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 
+_.txt
+server/assets/*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

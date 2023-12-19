@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import * as Icon from 'react-bootstrap-icons';
-import Cookies from 'js-cookie';
 
 import '../../assets/scss/profile&settings/settings.scss';
 
@@ -23,7 +22,7 @@ export default function Setting({ setOpenSettings }) {
                 images[i].style.transform = "scale(0.96)";
 
                 const img = images[i].getAttribute("datatype");
-                Cookies.set("color", img);
+                // Cookies.set("color", img);
             });
         }
 

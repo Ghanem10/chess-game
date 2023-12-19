@@ -47,14 +47,31 @@
         transform-origin: top left;
     }
 
-    @media (max-width: 900px) {
-        & {
-            margin-top: 4rem;
+    @media (max-width: 1120px) {
+        &::before {
+            left: 20%;
         }
+
+        &::after {
+            right: 30%;
+        }
+
         &::before, &::after {
-            left: 40%;
-            right: 10%;
-            transform: skewX(-12deg);
+            transform: skewX(-16deg);
+        }
+    }
+
+    @media (max-width: 900px) {
+        &::before {
+            left: 20%;
+        }
+
+        &::after {
+            right: 30%;
+        }
+
+        &::before, &::after {
+            transform: skewX(-10deg);
         }
     }
 

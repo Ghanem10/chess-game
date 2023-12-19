@@ -18,7 +18,7 @@ const signin = async (req, res) => {
         const { email, password } = req.body;
         const existingUser = await User.findOne({ email: { $eq: email } });
 
-        if (!userExists) {
+        if (!existingUser) {
             return res.status(404).json({ message: "Invalid credentials." });
         }
 
@@ -37,12 +37,12 @@ const signin = async (req, res) => {
             expiresIn: "5h",
         });
 
-        const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
+        const refreshToken = jwt.sign(payload, process.env.REFRESH_SECRET, {
             expiresIn: "6d",
         });
 
         const newRefreshToken = new Token({
-            _id: existingUser.id,
+            user: existingUser.id,
             accessToken,
             refreshToken,
         });
@@ -58,6 +58,10 @@ const signin = async (req, res) => {
                 name: existingUser.name,
                 email: existingUser.email,
                 avatar: existingUser.avatar,
+                points: existingUser.points,
+                wins: existingUser.wins,
+                losses: existingUser.losses,
+                draws: existingUser.draws,
             },
         })
     } catch (error) {
@@ -83,9 +87,9 @@ const addUser = async (req, res, next) => {
 
     const defaultAvatar = "https://raw.githubusercontent.com/nz-m/public-files/main/dp.jpg";
     const fileUrl = req.files?.[0]?.filename 
-            ? `${req.portocl}://${req.get("host")}/assets/usersAvatars/${req.files[0].filename}`
+            ? `${req.protocol}://${req.get("host")}/assets/usersAvatars/${req.files[0].filename}`
             : defaultAvatar;
-    
+
     const newUser = new User({
         name: req.body.name,
         email: req.body.email,
@@ -93,9 +97,9 @@ const addUser = async (req, res, next) => {
         avatar: fileUrl,
     });
 
-    await newUser.save();
-
     try {
+        await newUser.save();
+
         if (newUser.isNew) {
             throw new Error("Filed to add user.");
         }

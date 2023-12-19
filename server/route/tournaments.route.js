@@ -21,7 +21,7 @@ const requireAuth = passport.authenticate("jwt", { session: false }, null);
 */
 
 router.post("/:id/create-tournament", requireAuth, decodeToken, createNewTournament);
-router.post("/public-tournaments", requireAuth, decodeToken, getPublicTournaments);
+router.get("/public-tournaments", getPublicTournaments);
 router.get("/:id", requireAuth, decodeToken, getTournamentById);
 
 
