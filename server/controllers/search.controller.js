@@ -30,7 +30,7 @@ const searchForActivePlayers = async (req, res) => {
             .select("_id name points avatar")
             .limit(1)
             .lean();
-            
+
         if (matchedPlayer.length === 0) {
 
             await User.findByIdAndUpdate(
@@ -47,6 +47,7 @@ const searchForActivePlayers = async (req, res) => {
 
         res.status(200).json({ isEmpty, matchedPlayer });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: "Something went wrong while seaching for player." });
     }
 };
