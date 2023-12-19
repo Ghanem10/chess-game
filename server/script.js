@@ -41,8 +41,6 @@ db.connect().catch((error) => {
     console.log("Error connecting to database", error);
 });
 
-app.set("trust proxy", true);
-
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
