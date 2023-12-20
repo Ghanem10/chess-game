@@ -8,7 +8,7 @@ export default function TimerComponent({ isCheckMate, piecesTurns, rematch,
     const gamestart = localStorage.getItem("gamestart");
 
     const firstPlayer = JSON.parse(localStorage.getItem("token")).user;
-    const secondPlayer = JSON.parse(localStorage.getItem("secondPlayer")).matchedPlayer[0];
+    const secondPlayer = JSON.parse(localStorage.getItem("secondPlayer"))?.matchedPlayer[0];
 
     let intervalId;
 
