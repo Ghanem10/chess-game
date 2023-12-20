@@ -323,6 +323,7 @@ export default function MainTemplateBoard() {
             }
     
             dispatch(updateBoardState(Board));
+            setLoading(false);
         };
 
         const search = async () => {
