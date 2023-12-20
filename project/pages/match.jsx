@@ -323,7 +323,6 @@ export default function MainTemplateBoard() {
             }
     
             dispatch(updateBoardState(Board));
-            setLoading(false);
         };
 
         const search = async () => {
@@ -367,7 +366,7 @@ export default function MainTemplateBoard() {
             });
         });
 
-        // search();
+        search();
         createBoard();
     }, []);
 
