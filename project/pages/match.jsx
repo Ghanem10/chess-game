@@ -333,7 +333,6 @@ export default function MainTemplateBoard() {
                     },
                 );
 
-                console.log(data)
                 if (data.isEmpty) {
                     navigate("/");
                 }
@@ -367,7 +366,7 @@ export default function MainTemplateBoard() {
             });
         });
 
-        search();
+        // search();
         createBoard();
     }, []);
 
