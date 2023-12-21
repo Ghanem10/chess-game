@@ -22,13 +22,12 @@ export default function AppContiner() {
 
     useEffect(() => {
         const checkServerStatus = async () => {
-            setLoading(false);
             try {
                 await axios.get(`${import.meta.env.VITE_URL}/test`);
             } catch (error) {
                 setError("Server is down at the moment, please try again later.");
             } finally {
-                // setLoading(false);
+                setLoading(false);
             }
         };
         
