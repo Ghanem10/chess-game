@@ -1,8 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
-export const useCreateChessBoard = () => {
+import Squares from "../components/squares/squaresLayout";
 
-    const [squares, setSquares] = useState([]);
+import { updateBoardState } from "../redux/actions/matchAction";
+import { useDispatch, useSelector } from "react-redux";
+
+export const CreateChessBoard = ({ 
+    grabbingPiece, 
+    MovingPiece, 
+    droppingPiece, 
+    activePiece, 
+    highlightSquare, 
+    chessBoard, 
+    pieces,
+    piecesTurns }) => {
+
+    const state = useSelector((state) => state.match);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const createBoard = () => {
@@ -22,11 +36,35 @@ export const useCreateChessBoard = () => {
                 }
                 Board.push(square);
             }
-            setSquares(Board);    
+            dispatch(updateBoardState(Board));
         }
 
         createBoard();
     }, []);
 
-    return squares;
+    return (
+        <div className="chess-board" ref={chessBoard} >
+
+            {state.squares.map((row, index) => (
+
+                <div className="row" key={index}>
+                    {row.map(({ position, x, y }) => (
+                        <Squares
+                            key={`${x}-${y}`}
+                            piece={pieces}
+                            x={x} y={y}
+                            piecesTurns={piecesTurns}
+                            highlightSquare={highlightSquare}
+                            position={position}
+                            activePiece={activePiece}
+                            grabbingPiece={grabbingPiece}
+                            MovingPiece={MovingPiece}
+                            droppingPiece={droppingPiece}
+                        />
+                    ))}
+                </div>
+            ))}
+
+        </div>
+    );
 };
