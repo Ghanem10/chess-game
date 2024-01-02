@@ -7,7 +7,7 @@
     align-items: center;
 
     margin: 1.5rem 0;
-    gap: 1.5rem;
+    gap: 1rem;
 
     &::before {
         content: "";
@@ -16,7 +16,7 @@
         left: 50%;
         width: 8%;
         height: 0;
-        background-color: $bs-gold;
+        background-color: $bs-blue;
         transition: height 1s;
     }
     
@@ -27,7 +27,7 @@
         right: 20%;
         width: 8%;
         height: 0;
-        background-color: $bs-gold;
+        background-color: $bs-blue;
         transition: height 1s;
     }
 
@@ -47,38 +47,14 @@
         transform-origin: top left;
     }
 
-    @media (max-width: 1120px) {
-        &::before {
-            left: 20%;
-        }
-
-        &::after {
-            right: 30%;
-        }
-
-        &::before, &::after {
-            transform: skewX(-16deg);
-        }
-    }
-
-    @media (max-width: 900px) {
-        &::before {
-            left: 20%;
-        }
-
-        &::after {
-            right: 30%;
-        }
-
-        &::before, &::after {
-            transform: skewX(-10deg);
-        }
-    }
+    @include SamllSizesIntroSection;
 
     .profile-page-header {
         @include profileSection;
+        
         flex-direction: row;
         justify-content: space-between;
+
         min-height: 133px;
         height: auto;
 
@@ -95,6 +71,8 @@
                 display: flex;
                 flex-direction: column;
                 gap: 20px;
+
+                margin-top: 2rem;
             }
         }
         
@@ -122,7 +100,18 @@
 
                 h2 {
                     padding-bottom: .3em;
+                    font-family: $bs-font-monospace;
+                    font-size: 1.3rem;
                     border-bottom: 1px solid rgba(192, 192, 192, 0.541);
+                }
+
+                span {
+                    font-size: .8rem;
+
+                    strong {
+                        font-size: .8rem;
+                        color: $bs-blue;
+                    }
                 }
             }
         }
@@ -140,108 +129,173 @@
                 border-radius: 6px;
                 color: $bs-color-white;
                 cursor: pointer;
-                background-color: #141516;
+                background-color: #081829;
                 border: 1px solid rgba(192, 192, 192, 0.301);
 
                 &:hover {
-                    color: $bs-gray-dark;
-                    background-color: #0c0d0f;
+                    background-color: #051942;
                     transition: all 0.3s ease;
                 }
             }
         }
     }
 
-    .profile-page-body {
+    /*************************************
+    *         Profile Page Body         *
+    *************************************/
+
+    .profile-body-section {
         @include profileSection;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: space-evenly;
+        align-items: center;
         z-index: 2;
        
-        height: 400px;
+        min-height: 400px;
+        height: auto;
 
-        
-        .profile-status-bg {
+        .profile-page-body {
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
             
-            gap: 1rem;
-            
-            .profile-page-status {
+            height: 50vh;
+            font-family: $bs-font-monospace;
+            border-right: 1px solid rgba(192, 192, 192, 0.301);
+            padding-right: 1rem;
+            gap: 1.1rem;  
+
+            .profile-status-bg {
                 display: flex;
-                flex-direction: row;
-                justify-content: center;
+                flex-direction: column;
                 align-items: center;
-                gap: 4em;
-    
-                span {
-                    font-size: 20px;
-    
-                    strong {
-                        color: $bs-green-hover;
-                    }
-                }
-            }
-
-            .profile-page-bdg {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                gap: 1em;
-    
-                @for $i from 1 through 3 {
-                    .svg-bdg-#{$i} {
-                        width: 120px;
-                        height: 120px;
-                    }
-                }
-            }
-        }
-
-
-        span {
-            font-size: 20px;
-
-            strong {
-                color: $bs-gold;
-            }
-        }
+                
+                gap: 1rem;
+                
+                .profile-page-status {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 4em;
         
+                    span {
+                        text-align: center;
+                        font-size: 20px;
+        
+                        strong {
+                            color: $bs-blue;
+                        }
+                    }
+                }
+
+                @media (max-width: 900px) {
+                    & {
+                        width: 100%;
+                    }
+                }
+            }
+
+
+            span {
+                font-size: 20px;
+
+                strong {
+                    color: $bs-gold;
+                }
+            }
+
+            @media (max-width: 900px) {
+                & {
+                    border-right: none;
+                }
+            }
+        }
+
+        .profile-body-friends {
+            display: flex;
+            flex-direction: column;
+
+            width: 50%;
+            height: 50vh;
+
+            padding-left: 1rem;
+
+            h1 {
+                text-align: center;
+                background-color: #051942;
+                padding-top: 3px;
+                padding-bottom: 3px;
+                font-size: 1.1rem;
+                font-weight: 700;
+                font-family: $bs-font-monospace;
+            }
+
+
+            .friends-list {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+
+                height: 100%;
+                padding: 5px;
+                font-family: $bs-font-monospace;
+
+                overflow-y: scroll;
+                overflow-x: hidden;
+                background-color: #111213;
+
+                gap: 5px;
+
+                .friend {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    
+                    width: 100%;
+                    height: 50px;
+                    gap: 1rem;
+
+                    padding: 5px;
+
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: #0058dbe5;
+                        transition: all 0.3s ease;
+                    }
+
+                    img {
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+
+            .no-friends {
+                text-align: center;
+                height: 100%;
+                background-color: #141516;     
+            }
+
+            @media (max-width: 900px) {
+                & {
+                    padding-left: 0;
+                    width: 100%;
+                }
+            }
+        }
+
+
         @media (max-width: 900px) {
             & {
                 display: flex;
                 flex-direction: column;
                 width: 90%;
-                
-                .profile-status-bg {
-                    display: flex;
-                    flex-direction: row;
 
-                    padding: 20px;
-                    .profile-page-status {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 1.4em;
-                    }
-    
-                    .profile-page-bdg {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;
-                        margin-top: 1rem;
-                        gap: 10px;
-    
-                        @for $i from 1 through 3 {
-                            .svg-bdg-#{$i} {
-                                width: 50px;
-                                height: 50px;
-                            }
-                        }
-                    }
-                }
             }
         }
     }
