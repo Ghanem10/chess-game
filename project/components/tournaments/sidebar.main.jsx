@@ -27,12 +27,12 @@ export default function TournamentSidebarMain({
                     Delete Tournament
                 </button>
                 {testModBoolen ? (
-                    <button onClick={switchToTestMode}>
-                        Switch to test mode
+                    <button onClick={swtichToNormalMode}>
+                        Switch to normal mode
                     </button>
                     ) : (
-                        <button onClick={swtichToNormalMode}>
-                        Switch to normal mode
+                    <button onClick={switchToTestMode}>
+                        Switch to test mode
                     </button>
                 )}
                 <Link to='/'>

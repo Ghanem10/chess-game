@@ -24,9 +24,6 @@ export default function FriendsComponent({ user, data }) {
                 ) : (
                     <div className='friends-list'>
                         {
-                            console.log(data)
-                        }
-                        {
                             data.map((friend, index) => (
                                     <div className='friend' key={index}>
                                         <img 

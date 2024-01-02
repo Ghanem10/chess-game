@@ -91,7 +91,7 @@ export default function TournamentRooms() {
         };
         
         getTournaments();
-    }, [saveButton]);
+    }, [saveButton, testModBoolen]);
 
     return (
         <React.Fragment>
@@ -110,7 +110,7 @@ export default function TournamentRooms() {
                             deleteTournaments={deleteTournaments}
                         />
                         
-                        {userTournaments.length > 0 ? (
+                        {userTournaments?.length > 0 ? (
                             <TournamentsMain 
                                 tournaments={userTournaments}
                                 searchTerm={searchTerm}
