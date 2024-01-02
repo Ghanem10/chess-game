@@ -1,0 +1,48 @@
+@import '../colors';
+
+.resign-draw-component {
+    display: flex;
+    flex-direction: column;
+    width: 10%;
+    z-index: 2;
+
+    margin-bottom: 1rem;
+
+    .resign-button,
+    .draw-button,
+    .engine-button {
+        width: 100%;
+        height: 50px;
+        outline: none;
+        border-style: none;
+        cursor: pointer;
+
+        margin-left: -1rem;
+        color: $bs-color-white;
+        background-color: #111316;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    .resign-button {
+        border-top-right-radius: 8px;
+    }
+
+    @media (max-width: 900px) {
+        & {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 50%;
+            gap: 2rem;
+
+            .resign-button,
+            .draw-button {
+                border-radius: 0;
+            }
+        }
+    }
+}
