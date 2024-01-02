@@ -1,14 +1,22 @@
 
 import React, { useEffect } from 'react';
 
-export default function TimerComponent({ isCheckMate, piecesTurns, rematch, 
-    setOurTeam, setEnemyTeam, enemyTeam, ourTeam, white, black, webSocket
-}) {
+export default function TimerComponent({ 
+    isCheckMate, 
+    piecesTurns, 
+    rematch, 
+    setOurTeam, 
+    setEnemyTeam, 
+    enemyTeam, 
+    ourTeam, 
+    white, 
+    black }) {
     
     const gamestart = localStorage.getItem("gamestart");
 
     const firstPlayer = JSON.parse(localStorage.getItem("token")).user;
     const secondPlayer = JSON.parse(localStorage.getItem("secondPlayer"))?.matchedPlayer[0];
+    const defaultAvatar = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
 
     let intervalId;
 
@@ -68,7 +76,7 @@ export default function TimerComponent({ isCheckMate, piecesTurns, rematch,
 
     return (
         <div className="timers">
-            <img src={secondPlayer?.avatar || "/avatar.png"} referrerPolicy='no-referrer'/>
+            <img src={secondPlayer?.avatar || defaultAvatar} referrerPolicy='no-referrer'/>
                 <div 
                     ref={black} 
                     className='opponent'
@@ -81,7 +89,7 @@ export default function TimerComponent({ isCheckMate, piecesTurns, rematch,
                 >
                     {formatTime(ourTeam)}
                 </div>
-            <img src={firstPlayer?.avatar || "/avatar.png"} referrerPolicy='no-referrer'/>
+            <img src={firstPlayer?.avatar || defaultAvatar} referrerPolicy='no-referrer'/>
         </div>
     )
 }
