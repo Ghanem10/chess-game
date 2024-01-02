@@ -22,7 +22,7 @@ export default function Setting({ setOpenSettings }) {
                 images[i].style.transform = "scale(0.96)";
 
                 const img = images[i].getAttribute("datatype");
-                // Cookies.set("color", img);
+                localStorage.setItem("color", img);
             });
         }
 
