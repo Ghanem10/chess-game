@@ -6,6 +6,7 @@ $bs-pink: #d63384;
 $bs-red-light: #ff2727;
 $bs-red-dark: #dd0a0acb;
 $bs-orange: #ff8100;
+$bs-orange-buttons: rgb(194, 113, 27);
 $bs-orange-hover:  #ce6e0e;
 $bs-yellow: #ffc107;
 $bs-gold: #fdfa4a;
@@ -39,15 +40,139 @@ $bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Ari
 $bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 $bs-gradient: linear-gradient(180deg, rgba(197, 1, 1, 0.753), rgba(182, 2, 2, 0.795));
 
-section {
-    height: 90vh;
-    background-color: $bs-intro;
+
+/****************************************************
+ *              Phone display width                 *
+ ****************************************************/
+$phone-display-width: 20px;
+$phone-display-height: 20px;
+
+
+
+/****************************************************
+ *                                                  *
+ *              ContainerBackground                 *
+ *                                                  *
+ ****************************************************/
+
+@mixin containerBackground($skew, $left, $right, $value, $index) {
+
+    $leftColor: $bs-red-dark;
+    $rightColor: $bs-gold;
+
+    @if $value % 2 == 0 {
+        $leftColor: $bs-red-dark;
+        $rightColor: $bs-gold;
+    } @else {
+        $leftColor: $bs-gold;
+        $rightColor: $bs-red-dark;
+    }
+
+    &::before,
+    &::after  {
+        content: "";
+        position: absolute;
+        width: 10%;
+        height: 0;
+        transition: height 1s;
+    }
+
+    &::before {
+        z-index: $index;
+        bottom: 0;
+        left: $left;
+        transform: skewX($skew);
+        transform-origin: bottom left;
+        background-color: $leftColor;
+    }
+
+    &::after {
+        z-index: $index;
+        top: 0;
+        right: $right;
+        transform: skewX($skew);
+        transform-origin: top right;
+        background-color: $rightColor;
+    }
 }
 
 
-/* Handle scroll browser */
+/****************************************************
+ *                                                  *
+ *              SamllSizesScreen                    *
+ *                                                  *
+ ****************************************************/
+
+ @mixin SamllSizesIntroSection {
+
+    @media (max-width: 1200px) {
+        &::before { left: 20%; }
+        &::after { right: 30%; }
+
+        &::before, 
+        &::after { transform: skewX(16deg); }
+    }
+
+    @media (max-width: 992px) {
+        &::before { left: 20%; }
+        &::after { right: 30%; }
+
+        &::before, 
+        &::after { transform: skewX(0deg); }
+    }
+
+    @media (max-width: 768px) {
+        &::before { left: 20%; }
+        &::after { right: 30%; }
+
+        &::before, 
+        &::after { transform: skewX(0deg); }
+    }
+
+    @media (max-width: 576px) {
+        &::before { left: 20%; }
+        &::after { right: 30%; }
+
+        &::before, 
+        &::after { transform: skewX(0deg); }
+    }
+}
+
+@mixin SmallSizesBodySection {
+    
+    @media (max-width: 1200px) {
+        &::before { left: 64.2%; }
+        &::after { right: 70%; }
+
+        &::before, 
+        &::after { transform: skewX(-16deg); }
+    }
+
+    @media (max-width: 992px) {
+        &::before { left: 59.9%; }
+        &::after { right: 70%; }
+
+        &::before, 
+        &::after {transform: skewX(0deg); }
+    }
+
+    @media (max-width: 376px) {
+        &::before { left: 73%; }
+        &::after { right: 10%; }
+
+        &::before, 
+        &::after { transform: skewX(0deg); }
+    }
+}
+
+/****************************************************
+ *                                                  *
+ *                  Browser Scroller                *
+ *                                                  *
+ ****************************************************/
+
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -63,6 +188,13 @@ section {
 ::-webkit-scrollbar-thumb:hover {
     background: $bs-gray-dark; 
 }
+
+
+/****************************************************
+ *                                                  *
+ *           SignIn & SignUp Button Style           *
+ *                                                  *
+ ****************************************************/
 
 @mixin buttonStyle {
     width: 82%;
@@ -83,6 +215,13 @@ section {
     }
 }
 
+
+/****************************************************
+ *                                                  *
+ *                  Profile Section                 *
+ *                                                  *
+ ****************************************************/
+
 @mixin profileSection {
     display: flex;
     align-items: center;
@@ -96,3 +235,133 @@ section {
     font-family: $bs-font-sans-serif;
     background-color: $bs-gray-settings;
 }
+
+
+/****************************************************
+ *                                                  *
+ *                  Loading Spinner                 *
+ *                                                  *
+ ****************************************************/
+
+ @mixin LoadingSpinner {
+    .loading-page {
+        position: absolute;
+        display: flex;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100vh;
+
+        z-index: 4;
+        background-color: rgba(14, 13, 13, 0.829);
+
+        
+        .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            
+            width: 30px;
+            height: 30px;
+            
+            margin: -12px 0 0 -12px;
+            animation: rotate 2s linear infinite;
+            
+            
+            & .path {
+                z-index: 5;
+                
+                stroke: hsl(130, 93%, 36%);
+                stroke-linecap: round;
+                animation: dash 1s ease-in-out infinite;
+            }
+            
+        }
+        
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes dash {
+            0% {
+                stroke-dasharray: 1, 150;
+                stroke-dashoffset: 0;
+            }
+            50% {
+                stroke-dasharray: 90, 150;
+                stroke-dashoffset: -35;
+            }
+            100% {
+                stroke-dasharray: 90, 150;
+                stroke-dashoffset: -124;
+            }
+        }
+    }
+}
+
+
+/****************************************************
+ *                                                  *
+ *                  Tournament Section              *
+ *                                                  *
+ ****************************************************/
+
+ @mixin TournamentBackground {
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 8%;
+        height: 0;
+        background-color: $bs-orange;
+        transition: height 1s;
+    }
+    
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 20%;
+        width: 8%;
+        height: 0;
+        background-color: $bs-orange;
+        transition: height 1s;
+    }
+
+    &::before {
+        z-index: 1;
+        height: 100%;
+
+        transform: skewX(-35deg);
+        transform-origin: bottom right;
+    }
+
+    &::after {
+        z-index: 1;
+        height: 100%;
+
+        transform: skewX(-35deg);
+        transform-origin: top left;
+    }
+
+    @media (max-width: 1120px) {
+        &::before { left: 20%; }
+        &::after { right: 30%; }
+        &::before, &::after {
+            transform: skewX(-16deg);
+        }
+    }
+
+    @media (max-width: 900px) {
+        &::before { left: 20%; }
+        &::after { right: 30%; }
+        &::before, &::after {
+            transform: skewX(-10deg);
+        }
+    }
+ }
