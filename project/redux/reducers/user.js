@@ -1,9 +1,11 @@
 import * as types from "../constant/userConstant";
+import * as tournamentTypes from "../constant/tournamentConstant";
 import { LOGOUT } from "../constant/authConstant";
 
 const initialState = {
     user: {},
     connectedUsers: [],
+    tournaments: [],
     userError: null,
 };
 
@@ -78,6 +80,12 @@ const userReducer = (state = initialState, action) => {
                 userError: payload,
             };
 
+        case tournamentTypes.GET_PUBLIC_TOURNAMENTS_SUCCESS:
+            return {
+                ...state,
+                tournaments: payload,
+            };
+        
         default:
             return state;
     };

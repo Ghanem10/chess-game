@@ -3,7 +3,7 @@ import * as types from "../constant/tournamentConstant";
 
 export const getPublicTournaments = () => async (dispatch) => {
     try {
-        const { error, data } = await api.getPublicTournaments();
+        const { error, data } = await api.callPublicTournaments();
 
         if (error) {
             throw new Error(error);
@@ -21,9 +21,9 @@ export const getPublicTournaments = () => async (dispatch) => {
     }
 };
 
-export const createTournament = (id) => async (dispatch) => {
+export const createTournamentWithId = (id, title) => async (dispatch) => {
     try {
-        const { error, data } = await api.createNewTournament(id);
+        const { error, data } = await api.createNewTournament(id, title);
 
         if (error) {
             throw new Error(error);
@@ -43,7 +43,7 @@ export const createTournament = (id) => async (dispatch) => {
 
 export const removeTournament = (id) => async (dispatch) => {
     try {
-        const { error, data } = await api.removeTournamentById(id);
+        const { error } = await api.removeTournamentById(id);
 
         if (error) {
             throw new Error(error);
@@ -51,7 +51,6 @@ export const removeTournament = (id) => async (dispatch) => {
 
         dispatch({
             type: types.GET_REMOVED_TOURNEMENT_BY_ID_SUCCESS,
-            payload: data,
         });
     } catch (error) {
         dispatch({

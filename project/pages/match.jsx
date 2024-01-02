@@ -6,18 +6,22 @@ import { addChessPieces } from '../components/squares/pieces';
 
 import Board from '../components/lib/piecesLogic';
 import ClonePieces from '../components/lib/clonePieces';
-import Squares from '../components/squares/squaresLayout';
 
 import { Team, Type, samePosition } from '../components/lib/movement/constants/functions';
 import { PawnPromotion } from '../components/pawnpromotion/pawnPromotion';
-import updateRecordMoves from '../components/recorder/_updateMoves';
 
+import ResignOrDraw from '../components/resign&Draw/resignOrDraw';
+import GameEndTemplate from '../components/endGame/gameEndTemplate';
+import updateRecordMoves from '../components/recorder/_updateMoves';
+import ResponsiveMobile from '../components/mobile/responsiveMobile';
 import RecorderMovesTemplate from '../components/recorder/_recorder';
 import TimerPlayer from '../components/timer/index';
+import Loading from '../components/spinner/loading';
+
+import { updatePieceValidMove } from '../util/updatePiecesValidMoves';
+import { CreateChessBoard } from '../hooks/createChessBoard';
 
 import { 
-    updateBoardState, 
-    updateBoardStatePieces, 
     updateNextPosition, 
     updatePreviousPosition
 } from '../redux/actions/matchAction';
@@ -32,13 +36,13 @@ import '../../project/assets/scss/main/chat.scss';
 import '../../project/assets/scss/main/_recorder.scss';
 import '../../project/assets/scss/main/_timer.scss';
 import '../../project/assets/scss/main/_endGame.scss';
+import '../../project/assets/scss/main/responsiveMobile.scss';
+import '../../project/assets/scss/main/resignOrDraw.scss';
 
 
-const websocket = io(`${import.meta.env.VITE_URL}`, 
-    {
+const websocket = io(`${import.meta.env.VITE_URL}`, {
         transports : ["websocket"] 
-    },
-);
+});
 
 export default function MainTemplateBoard() {
 
@@ -60,8 +64,21 @@ export default function MainTemplateBoard() {
     const [loading, setLoading] = useState(true);
     const [pauseReview, setPauseReview] = useState(false);
     
+    const [ourTeamTimer, setOurTeamTimer] = useState(180);
+    const [enemyTeamTimer, setEnemyTeamTimer] = useState(180);
+    const [rematch, setRematch] = useState(false);
+
+    const [width, setWidth] = useState(window.innerWidth);
+
     const state = useSelector((state) => state.match);
     const user = JSON.parse(localStorage.getItem("token")).user;
+
+    const currentTeam = (piecesTurns % 2 === 1) 
+            ? ourTeamTimer 
+            : enemyTeamTimer;
+
+    const chessBoard = useRef(null);
+    const pawnPromotionTitleRef = useRef(null);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -76,40 +93,33 @@ export default function MainTemplateBoard() {
     useEffect(() => {
         const updateState = () => {
             const newState = addChessPieces();
-            const copy = new ClonePieces(newState).clone();
-            
-            dispatch(updateBoardStatePieces(copy));
-            setPieces(copy);
+            const copyBoardPieces = new ClonePieces(newState).clone();
+            setPieces(copyBoardPieces);
         };
 
         updateState();
     }, []);
 
-    const updatePieceValidMove = (s, b, c) => {
-        const m = s.some(a => a.x === b && a.y === c);
-        return m ? true : false;
-    }
-
     websocket.emit("online-players");
     
-    function successMove(state, x, y, currentPiece, titleRef) {
+    function successMove(state, x, y, currentPiece, pawnPromotionTitleRef) {
         
         const promotePawn = (piece) => {
             const promotionPawn = piece.team === Team.WHITE ? 0 : 7;
 
             if (y === promotionPawn && piece.Piece === Type.PAWN) {
-                titleRef.current.classList.remove("hide-title");
+                pawnPromotionTitleRef.current.classList.remove("hide-title");
                 setPawnPromotion(piece);
             }
         };
 
-        if (currentPiece.team === Team.WHITE && piecesTurns % 2 !== 1) {
+        if (currentPiece?.team === Team.WHITE && piecesTurns % 2 !== 1) {
             return false;
-        } else if (currentPiece.team === Team.BLACK && piecesTurns % 2 !== 0) {
+        } else if (currentPiece?.team === Team.BLACK && piecesTurns % 2 !== 0) {
             return false;
         }
 
-        const validMove = updatePieceValidMove(currentPiece.possibleMoves, x, y);
+        const validMove = updatePieceValidMove(currentPiece?.possibleMoves, x, y);
 
         const playMove = board.playMove(
             x, y, 
@@ -120,34 +130,39 @@ export default function MainTemplateBoard() {
             validMove,
         );
 
-        if (playMove) {
-            setPiecesTurns((pre) => pre + 1);
-        } else {
-            return false;
-        }
-
-        return playMove;
+        return !!playMove && setPiecesTurns((pre) => pre + 1);
     }
 
-    const chessBoard = useRef(null);
-    const titleRef = useRef(null);
+    /**
+     * @var {number} offset - offset for the piece to be moved to the mouse position.
+    */
+   
+    const squaresOnPhoneWidth = 47;
+    const squaresOnDesktopWidth = 62;
+    const offset = width < 500 ? 25 : 40;
 
     const grabbingPiece = (e) => {
         e.stopPropagation();
         e.preventDefault(); 
 
-        const Element = e.target;
+        const targetElement = e.target;
         const chessBoardEdges = chessBoard.current;
-        const DataAttr = Element.getAttribute('datatype');
-        const PieceExists = Element.classList.contains('piece');
-        const currentTeam = piecesTurns % 2 === 0 ? Team.BLACK : Team.WHITE;
+
+        const DataAttr = targetElement.getAttribute('datatype');
+        const PieceExists = targetElement.classList.contains('piece');
+
+        const currentTeam = piecesTurns % 2 === 0 
+                            ? Team.BLACK 
+                            : Team.WHITE;
 
         if (PieceExists && currentTeam === DataAttr && chessBoardEdges && !pauseReview) {
-            const gridx = Math.floor((e.clientX - chessBoardEdges.offsetLeft) / 62);
-            const gridy = Math.floor((e.clientY - chessBoardEdges.offsetTop) / 62);
+            const newWidthAndHeight = width < 500 ? squaresOnPhoneWidth : squaresOnDesktopWidth;
+
+            const gridx = Math.floor((e.clientX - chessBoardEdges.offsetLeft) / newWidthAndHeight);
+            const gridy = Math.floor((e.clientY - chessBoardEdges.offsetTop) / newWidthAndHeight);
 
             dispatch(updatePreviousPosition({ GridX: gridx, GridY: gridy }));
-            setActivePiece(Element);
+            setActivePiece(targetElement);
 
             if (currentTeam === DataAttr) {
                 board.calculateAllMoves(gridx, gridy);
@@ -160,13 +175,19 @@ export default function MainTemplateBoard() {
 
         if (activePiece && chessBoardEdges) {
             
+            // Min and Max X and Y for chess board edges 
+            // Pieces can't go beyond these edges
+
             const MinX = chessBoardEdges.offsetLeft - 50;
             const MinY = chessBoardEdges.offsetTop - 85;
             const MaxX = chessBoardEdges.offsetLeft + chessBoardEdges.clientWidth - 40;
             const MaxY = chessBoardEdges.offsetTop + chessBoardEdges.clientHeight - 45; 
             
-            const x = e.clientX - 40;
-            const y = e.clientY - 40;
+            // X and Y are calculated based on the mouse position
+            // The piece will be moved to the mouse position
+
+            const x = e.clientX - offset;
+            const y = e.clientY - offset;
             
             activePiece.style.position = 'absolute';
             activePiece.style.zIndex = '4';
@@ -196,7 +217,7 @@ export default function MainTemplateBoard() {
         team: null,
     });
 
-    const match = {
+    const matchData = {
         move: null,
         message: null,
     };
@@ -209,9 +230,10 @@ export default function MainTemplateBoard() {
         let isCastling;
 
         if (activePiece && chessBoardEdges) {
+            const newWidthAndHeight = width < 500 ? squaresOnPhoneWidth : squaresOnDesktopWidth;
 
-            const x = Math.floor((e.clientX - chessBoardEdges.offsetLeft) / 65);
-            const y = Math.floor((e.clientY - chessBoardEdges.offsetTop) / 65);
+            const x = Math.floor((e.clientX - chessBoardEdges.offsetLeft) / newWidthAndHeight);
+            const y = Math.floor((e.clientY - chessBoardEdges.offsetTop) / newWidthAndHeight);
 
             dispatch(updateNextPosition({ x: x, y: y }));
 
@@ -223,7 +245,7 @@ export default function MainTemplateBoard() {
                 (t) => samePosition(t, x, y) && t.team !== currentPiece.team
             );
 
-            const playMove = successMove(state, x, y, currentPiece, titleRef);
+            const playMove = successMove(state, x, y, currentPiece, pawnPromotionTitleRef);
 
             if (playMove) {
                 if (
@@ -250,8 +272,8 @@ export default function MainTemplateBoard() {
                     caslting: isCastling,
                 };
 
-                match.move = payload;
-                websocket.emit("room-game-moves", matchInfo.room, match.move);
+                matchData.move = payload;
+                websocket.emit("room-game-moves", matchInfo.room, matchData.move);
 
                 board.calculateAllMoves(state.coordinates.GridX, state.coordinates.GridY);
 
@@ -275,6 +297,29 @@ export default function MainTemplateBoard() {
             setActivePiece(null);
         }
     };
+
+    const resignMatch = () => {
+        setOurTeamTimer(0);
+    };
+
+    const drawMatch = () => {
+        setOurTeamTimer(0);
+        setEnemyTeamTimer(0);
+    };
+    
+    useEffect(() => {
+        
+        const handleResize = () => {
+            setWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+        
+    }, []);
 
     useEffect(() => {
         websocket.on("room-game-moves", (move) => {
@@ -302,33 +347,9 @@ export default function MainTemplateBoard() {
 
 
     useEffect(() => {
-        const createBoard = () => {
-            const NumbersAxie = ['8', '7', '6', '5', '4', '3', '2', '1'];
-            const CharsAxie = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-
-            const Board = [];
-            
-            for (let x = 0; x < NumbersAxie.length; x++) {
-                const square = [];
-
-                for (let y = 0; y < CharsAxie.length; y++) {
-
-                    square.push({
-                        position: `${[CharsAxie[x]] + [NumbersAxie[y]]}`, 
-                        x: x, y: y
-                    });
-                }
-
-                Board.push(square);
-            }
-    
-            dispatch(updateBoardState(Board));
-        };
-
         const search = async () => {
             try {
-                const { data } = await axios
-                    .post(`${import.meta.env.VITE_URL}/search`, { 
+                const { data } = await axios.post(`${import.meta.env.VITE_URL}/search`, { 
                         id: user._id 
                     },
                 );
@@ -367,34 +388,30 @@ export default function MainTemplateBoard() {
         });
 
         search();
-        createBoard();
     }, []);
 
     return (
         <div className="chess-board-page">
 
-            <div className={`${ loading ? "loading-page" : "" }`}>
-                <svg className="spinner" viewBox="0 0 50 50">
-                    <circle 
-                        className="path" 
-                        cx="25" cy="25" 
-                        r="20" fill="none" 
-                        strokeWidth="5"
-                    ></circle>
-                </svg>
-            </div>
+            <Loading loading={loading} />
+
+            <ResignOrDraw 
+                resign={resignMatch} 
+                draw={drawMatch} 
+                vsengine={false} 
+            />
 
             <div className="chess-board-template">
 
                 <TimerPlayer 
-                    setRecordMoves={setRecordMoves}
                     isCheckMate={isCheckMate}
-                    setisCheckMate={setisCheckMate}
                     piecesTurns={piecesTurns}
-                    matchInfo={matchInfo}
-                    setPieces={setPieces}
+                    setOurTeam={setOurTeamTimer}
+                    setEnemyTeam={setEnemyTeamTimer}
+                    enemyTeam={enemyTeamTimer}
+                    ourTeam={ourTeamTimer}
+                    rematch={rematch}
                     websocket={websocket}
-                    setPiecesTurns={setPiecesTurns}
                 />
 
                 <PawnPromotion
@@ -402,47 +419,58 @@ export default function MainTemplateBoard() {
                     y={state.nextPosition.y}
                     pawnPromotion={pawnPromotion}
                     setPawnPromotion={setPawnPromotion}
-                    ref={titleRef}
+                    ref={pawnPromotionTitleRef}
                     piece={pieces}
                     vsEngine={false}
                 />
 
-                <div className="chess-board" ref={chessBoard} >
+                <CreateChessBoard 
+                    grabbingPiece={grabbingPiece}
+                    MovingPiece={MovingPiece}
+                    droppingPiece={droppingPiece}
+                    activePiece={activePiece}
+                    highlightSquare={highlightSquare}
+                    chessBoard={chessBoard}
+                    pieces={pieces}
+                    piecesTurns={piecesTurns}
+                />
 
-                    {state.squares.map((row, index) => (
-
-                        <div className="row" key={index}>
-                            {row.map(({ position, x, y }) => (
-                                <Squares
-                                    key={`${x}-${y}`}
-                                    piece={pieces}
-                                    x={x} y={y}
-                                    piecesTurns={piecesTurns}
-                                    highlightSquare={highlightSquare}
-                                    position={position}
-                                    activePiece={activePiece}
-                                    grabbingPiece={grabbingPiece}
-                                    MovingPiece={MovingPiece}
-                                    droppingPiece={droppingPiece}
-                                />
-                            ))}
-                        </div>
-                    ))}
-
-                </div>
+                {
+                    (isCheckMate || ourTeamTimer <= 0 || enemyTeamTimer <= 0) && (
+                        <GameEndTemplate
+                            isCheckMate={isCheckMate}
+                            piecesTurns={piecesTurns}
+                            currentTeam={currentTeam}
+                            ourTeamTimer={ourTeamTimer}
+                            enemyTeamTimer={enemyTeamTimer} 
+                            setRematch={setRematch}
+                            setisCheckMate={setisCheckMate}
+                            setRecordMoves={setRecordMoves}
+                            setPiecesTurns={setPiecesTurns}
+                            setOurTeam={setOurTeamTimer}
+                            setPieces={setPieces}
+                            setEnemyTeam={setEnemyTeamTimer}
+                            matchInfo={matchInfo}
+                        />
+                    )
+                }
             </div>
 
-            <RecorderMovesTemplate
-                setRecordMoves={setRecordMoves}
-                setPieces={setPieces}
-                ws={websocket}
-                recordMoves={recordMoves}
-                pieceToPlay={pieceToPlay}
-                pieces={pieces}
-                setPauseReview={setPauseReview}
-                pauseReview={pauseReview}
-                match={matchInfo}
-            />
+            {
+                (!(width < 700)) ? (
+                    <RecorderMovesTemplate
+                        setRecordMoves={setRecordMoves}
+                        setPieces={setPieces}
+                        ws={websocket}
+                        recordMoves={recordMoves}
+                        pieceToPlay={pieceToPlay}
+                        pieces={pieces}
+                        setPauseReview={setPauseReview}
+                        pauseReview={pauseReview}
+                        match={matchInfo}
+                    />
+                ) : <ResponsiveMobile />
+            }
 
         </div>
     );
