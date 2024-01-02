@@ -45,9 +45,9 @@ export default class Board {
     }
 
     isEnpassantMove(state, x, y, currentPiece, chessBoard) {
-        const PawnDiraction = currentPiece.team === Team.WHITE ? -1 : 1;
+        const PawnDiraction = currentPiece?.team === Team.WHITE ? -1 : 1;
         
-        if (currentPiece.Piece === Type.PAWN) {
+        if (currentPiece?.Piece === Type.PAWN) {
 
             if ((x - state.coordinates.GridX === -1 || x - state.coordinates.GridX === 1)
                 && y - state.coordinates.GridY === PawnDiraction) {
@@ -66,25 +66,25 @@ export default class Board {
 
     playMove(x, y, state, currentPiece, promotePawn, setPiece, validMove) {
         
-        const PawnDir = currentPiece.team === Team.WHITE ? -1 : 1;
+        const PawnDir = currentPiece?.team === Team.WHITE ? -1 : 1;
         const enpassant = this.isEnpassantMove(state, x, y, currentPiece, this.pieces);
 
-        const targetRook = this.pieces.find((r) => this.samePosition(r, x, y) && r.team === currentPiece.team);
+        const targetRook = this.pieces.find((r) => this.samePosition(r, x, y) && r.team === currentPiece?.team);
         
-        const pathNotBlocked = currentPiece.Piece === Type.KING && currentPiece.possibleMoves.some(
+        const pathNotBlocked = currentPiece?.Piece === Type.KING && currentPiece?.possibleMoves.some(
             (t) => this.samePosition(t, targetRook?.x, targetRook?.y)
         );
 
-        if (currentPiece.Piece === Type.KING && targetRook?.Piece === Type.ROCK && this.currentTeam) {
+        if (currentPiece?.Piece === Type.KING && targetRook?.Piece === Type.ROCK && this.currentTeam) {
 
-            const direction = (targetRook.x - currentPiece.x > 0) ? 1 : -1;
-            const newKingPosition = currentPiece.x + direction * 2;
+            const direction = (targetRook.x - currentPiece?.x > 0) ? 1 : -1;
+            const newKingPosition = currentPiece?.x + direction * 2;
 
             this.pieces.map((p) => {
 
                 if (p.team === this.currentTeam) {
 
-                    if (p.Piece === currentPiece.Piece && pathNotBlocked) {
+                    if (p.Piece === currentPiece?.Piece && pathNotBlocked) {
                         p.x = newKingPosition;
                         p.isCaslt = true;
 
