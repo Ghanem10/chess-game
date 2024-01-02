@@ -1,0 +1,38 @@
+[
+    {
+      "title": "Summer League",
+      "members": ["user5_id", "user8_id", "user12_id"],
+      "date": "2024-07-15"
+    },
+    {
+      "title": "Winter Cup",
+      "members": ["user3_id", "user6_id", "user10_id"],
+      "date": "2024-12-05"
+    },
+    {
+      "title": "City Championship",
+      "members": ["user1_id", "user7_id", "user11_id"],
+      "date": "2024-09-22"
+    },
+    {
+      "title": "Spring Invitational",
+      "members": ["user2_id", "user9_id", "user13_id"],
+      "date": "2024-04-10"
+    },
+    {
+      "title": "Autumn Classic",
+      "members": ["user4_id", "user8_id", "user14_id"],
+      "date": "2024-10-18"
+    },
+    {
+      "title": "Regional Masters",
+      "members": ["user5_id", "user10_id", "user15_id"],
+      "date": "2024-06-07"
+    },
+    {
+      "title": "Grand Slam Finale",
+      "members": ["user6_id", "user11_id", "user16_id"],
+      "date": "2024-11-30"
+    }
+]
+  
