@@ -1,8 +1,8 @@
 
 $width: 62px;
 $height: 62px;
-$phone-width: 40px;
-$phone-height: 40px;
+$phone-width: 47px;
+$phone-height: 47px;
 $phone-siz: 40px;
 
 @mixin squares {
@@ -17,32 +17,33 @@ $phone-siz: 40px;
         height: $height;
     }
     
-    // @media (max-width: 900px) {
-    //     .white-square,
-    //     .lightskyblue-square,
-    //     .lightgreen-square,
-    //     .green-square,
-    //     .brown-square,
-    //     .purple-square,
-    //     .black-square {
-    //         width: $phone-width;
-    //         height: $phone-height;
-    //     }
-    // }
+    @media (max-width: 700px) {
+        .white-square,
+        .lightskyblue-square,
+        .lightgreen-square,
+        .green-square,
+        .brown-square,
+        .purple-square,
+        .black-square {
+            width: $phone-width;
+            height: $phone-height;
+        }
+    }
+
     .white-square {
         background-color: #eeeed2;
     }
         
     .lightgreen-square {
-        background-color: #769656;
+        background-color: rgba(46, 182, 46, 0.979);
     }
         
     .green-square {
-        background-color: rgb(18, 87, 18);
+        background-color: #769656;
     }
     
     .lightskyblue-square {
-        background-color: #014181;
+        background-color: #05468bf8;
     }
     
     .brown-square {
@@ -50,10 +51,10 @@ $phone-siz: 40px;
     }
     
     .purple-square {
-        background-color: rgb(175, 80, 175);
+        background-color: rgba(88, 4, 88, 0.986);
     }
     
     .black-square {
-        background-color: rgb(46, 44, 44);
+        background-color: rgba(37, 37, 37, 0.986);
     }
 }
