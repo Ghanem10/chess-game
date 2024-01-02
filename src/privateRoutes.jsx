@@ -29,11 +29,9 @@ const PrivateRoutes = ({ userData }) => {
         isAuthenticated
     ]);
 
-    return isAuthenticated(userData, accessToken) ? (
-        <Outlet />
-    ) : (
+    return !isAuthenticated(userData, accessToken) ? (
         <Navigate to="/signin" />
-    );
+    ) : <Outlet />;
 };
 
 export default PrivateRoutes;

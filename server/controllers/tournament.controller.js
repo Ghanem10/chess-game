@@ -65,16 +65,14 @@ const getTournamentById = async (req, res) => {
 
 const deleteTournament = async (req, res) => {
     try {
-        const tournamentId = req.body.id;
-        const tournamentName = req.body.name;
+        const tournamentId = req.params.id;
+        const tournamentExist = await Tournament.find({ _id: tournamentId });
 
-        const tournamentExist = await Tournament.exists({ title: tournamentName });
         if (!tournamentExist) {
             res.status(404).json({ message: "Tournament was not found." });
         }
         
         await Tournament.deleteOne({ _id: tournamentId });
-        res.status(200).json({ message: "Tournament removed successfully" });
     } catch (error) {
         res.status(500).json({ message: "Something went wrong." });
     }

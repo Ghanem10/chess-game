@@ -85,7 +85,7 @@ const getUser = async (req, res, next) => {
 const addUser = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    const defaultAvatar = "https://raw.githubusercontent.com/nz-m/public-files/main/dp.jpg";
+    const defaultAvatar = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
     const fileUrl = req.files?.[0]?.filename 
             ? `${req.protocol}://${req.get("host")}/assets/usersAvatars/${req.files[0].filename}`
             : defaultAvatar;
