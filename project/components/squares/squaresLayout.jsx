@@ -2,16 +2,19 @@ import React from "react";
 import { Team } from "../lib/movement/constants/functions";
 import { checkCurrentSquare } from "../../util/_helper_common";
 
-export default function Squares(props) {
-    const {
-        highlightSquare, grabbingPiece,
-        MovingPiece, droppingPiece, piecesTurns,
-        piece, x, y, position, activePiece,
-    } = props;
+export default function Squares({
+        highlightSquare, 
+        grabbingPiece,
+        MovingPiece, 
+        droppingPiece, 
+        piecesTurns,
+        piece, x, y, 
+        position, 
+        activePiece }) {
 
     let updatedClassName, squaresOccupiedByEnemy = "";
 
-    let updateBoardColor =  "lightskyblue";
+    let updateBoardColor =  localStorage.getItem("color") || "lightskyblue";
 
     const availableSquares = highlightSquare
         .some((square) => square.x === x && square.y === y);
