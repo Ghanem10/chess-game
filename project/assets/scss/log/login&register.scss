@@ -1,5 +1,11 @@
 @import '../colors';
 
+/******************************************
+ *                                        *
+ *         Login small screens            *
+ *                                        *
+ ******************************************/
+
 .login-page-container {
     margin: 0 auto;
     margin-top: 11rem;
@@ -9,24 +15,38 @@
     @media (max-width: 900px) {
         & {
             width: 80%;
-            margin-top: 11rem;
+            margin-top: 14rem;
         }
     }
 }
+
+/******************************************
+ *                                        *
+ *         Regsiter small screens         *
+ *                                        *
+ ******************************************/
 
 .register-page-container {
+    background-color: red;
+    z-index: 10;
     margin: 0 auto;
     margin-top: 3.9rem;
-     
+
     width: 43%;
 
-    @media (max-width: 900px) {
+    @media (max-width: 500px) {
         & {
             width: 80%;
-            margin-top: 4rem;
+            margin-top: 9rem;
         }
     }
 }
+
+/******************************************
+ *                                        *
+ *      Login & Register containers       *
+ *                                        *
+ ******************************************/
 
 .login-page-container, 
 .register-page-container {
@@ -80,34 +100,8 @@
         z-index: -1;
         height: 100%;
     }
-
-    @media (max-width: 1120px) {
-        &::before {
-            left: 20%;
-        }
-
-        &::after {
-            right: 30%;
-        }
-
-        &::before, &::after {
-            transform: skewX(16deg);
-        }
-    }
-
-    @media (max-width: 900px) {
-        &::before {
-            left: 20%;
-        }
-
-        &::after {
-            right: 30%;
-        }
-
-        &::before, &::after {
-            transform: skewX(10deg);
-        }
-    }
+    
+    @include SamllSizesIntroSection;
 
     .form-title {
         font-size: 18px;
