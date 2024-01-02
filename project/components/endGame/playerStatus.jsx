@@ -3,16 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserAction } from "../../redux/actions/userAction";
 
-export const UpdatePlayerStatus = ({ wonTeam, matchInfo }) => {
+export const UpdatePlayerStatus = ({ wonTeam, matchInfo, isDraw }) => {
 
-    const user = useSelector(
-        (state) => state.user.user?.updatedPlayerStatus
-    );
-
+    const user = useSelector((state) => state.user.user?.updatedPlayerStatus);
     const demoUser = JSON.parse(localStorage.getItem("token")).user;
 
     const [playerData, setPlayerData] = useState(user || demoUser);
-
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -27,16 +23,17 @@ export const UpdatePlayerStatus = ({ wonTeam, matchInfo }) => {
                 wins: playerData?.wins,
             };
 
-            if (wonTeam === "WHITE" && matchInfo.team === "WHITE") {
+            if (wonTeam === "WHITE" && matchInfo.team === "WHITE" && !isDraw) {
                 payload.points = playerData?.points + 16;
                 payload.wins = 1;
-            } else {
+            } else if (isDraw) {
+                payload.points = playerData?.points - 1;
+            }else {
                 payload.points = playerData?.points - 15;
                 payload.losses = 1;
             }
 
             await dispatch(updateUserAction(userId, payload));
-            
             setPlayerData(user);
         };
 
