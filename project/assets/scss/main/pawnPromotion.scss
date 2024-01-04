@@ -44,4 +44,18 @@
         cursor: pointer;
         background-color: rgba(230, 230, 230, 0.5);
     }
+
+    @media (max-width: 600px) {
+        & {
+
+            .body-promotion {
+                width: 400px; 
+                height: 20vh;
+
+                #PiecesPromotion {
+                    background-size: 50px;
+                }
+            }
+        }
+    }
 }

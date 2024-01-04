@@ -11,7 +11,6 @@ export const CreateChessBoard = ({
     droppingPiece, 
     activePiece, 
     highlightSquare, 
-    chessBoard, 
     pieces,
     piecesTurns }) => {
 
@@ -43,28 +42,25 @@ export const CreateChessBoard = ({
     }, []);
 
     return (
-        <div className="chess-board" ref={chessBoard} >
-
-            {state.squares.map((row, index) => (
-
-                <div className="row" key={index}>
-                    {row.map(({ position, x, y }) => (
-                        <Squares
-                            key={`${x}-${y}`}
-                            piece={pieces}
-                            x={x} y={y}
-                            piecesTurns={piecesTurns}
-                            highlightSquare={highlightSquare}
-                            position={position}
-                            activePiece={activePiece}
-                            grabbingPiece={grabbingPiece}
-                            MovingPiece={MovingPiece}
-                            droppingPiece={droppingPiece}
-                        />
-                    ))}
-                </div>
-            ))}
-
-        </div>
+        <React.Fragment>
+                {state.squares.map((row, index) => (
+                    <div className="row" key={index}>
+                        {row.map(({ position, x, y }) => (
+                            <Squares
+                                key={`${x}-${y}`}
+                                piece={pieces}
+                                x={x} y={y}
+                                piecesTurns={piecesTurns}
+                                highlightSquare={highlightSquare}
+                                position={position}
+                                activePiece={activePiece}
+                                grabbingPiece={grabbingPiece}
+                                MovingPiece={MovingPiece}
+                                droppingPiece={droppingPiece}
+                            />
+                        ))}
+                    </div>
+                ))}
+        </React.Fragment>
     );
 };

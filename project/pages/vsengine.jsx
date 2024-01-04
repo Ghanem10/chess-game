@@ -242,34 +242,34 @@ export default function Vsengine() {
             />
 
             <div className="chess-board-template">
+                <div className="chess-board" ref={chessBoard} >
+                    <PawnPromotion
+                        x={state.nextPosition.x}
+                        y={state.nextPosition.y}
+                        pawnPromotion={pawnPromotion}
+                        setPawnPromotion={setPawnPromotion}
+                        ref={pawnPromotionTitleRef}
+                        piece={pieces}
+                        vsEngine={false}
+                    />
 
-                <PawnPromotion
-                    x={state.nextPosition.x}
-                    y={state.nextPosition.y}
-                    pawnPromotion={pawnPromotion}
-                    setPawnPromotion={setPawnPromotion}
-                    ref={pawnPromotionTitleRef}
-                    piece={pieces}
-                    vsEngine={false}
-                />
+                    <EngineEndgame
+                        isCheckMate={isCheckMate}
+                        setisCheckMate={setisCheckMate}  
+                        resign={resign}
+                        draw={draw}
+                    />
 
-                <EngineEndgame
-                    isCheckMate={isCheckMate}
-                    setisCheckMate={setisCheckMate}  
-                    resign={resign}
-                    draw={draw}
-                />
-
-                <CreateChessBoard 
-                    grabbingPiece={grabbingPiece}
-                    MovingPiece={MovingPiece}
-                    droppingPiece={droppingPiece}
-                    activePiece={activePiece}
-                    highlightSquare={highlightSquare}
-                    chessBoard={chessBoard}
-                    pieces={pieces}
-                    piecesTurns={piecesTurns}
-                />
+                    <CreateChessBoard 
+                        grabbingPiece={grabbingPiece}
+                        MovingPiece={MovingPiece}
+                        droppingPiece={droppingPiece}
+                        activePiece={activePiece}
+                        highlightSquare={highlightSquare}
+                        pieces={pieces}
+                        piecesTurns={piecesTurns}
+                    />
+                </div>
             </div>
 
             {

@@ -9,21 +9,13 @@
 .end-game-final {
     position: absolute;
     display: flex;
+    flex-direction: column;
 
-    top: 17%;
-    left: 19.5%;
-    width: 36.5%;
-    height: 78vh;
+    width: 100%;
+    height: 100%;
 
     z-index: 2;
     background-color: rgba(14, 13, 13, 0.8);
-
-    @media (max-width: 500px) {
-        top: 21%;
-        left: 0%;
-        width: 100%;
-        height: 42vh;
-    }
 
     #end-game-icon {
         position: absolute;
@@ -46,10 +38,9 @@
     }
 
     .game-end, .play-again {
-        position: absolute;
 
         width: 63%;
-        height: 67vh;
+        height: auto;
 
         top: 50%;
         left: 57%;
@@ -72,14 +63,14 @@
 
             h2 {
                 font-family: $bs-font-sans-serif;
-                font-size: 30px;
+                font-size: clamp(1.6rem, 1.4rem, .9rem); 
                 color: white;
             }
 
             p {
                 color: #cec7c0;
                 font-family: $bs-font-sans-serif;
-                font-size: large;
+                font-size: clamp(1.1rem, 1rem, .7rem); 
                 font-weight: 700;
             }
 
@@ -93,6 +84,7 @@
                 h3 {
                     text-align: center;
                     color: #e0e0e0;
+                    font-size: clamp(1.2rem, 1.1rem, .8rem); 
                     font-family: $bs-font-sans-serif;
                 }
             }
@@ -137,15 +129,22 @@
         }
 
 
+        @media (max-width: 700px) {
+            & {
+                height: auto;
+                gap: 0;
+
+                .title-end-game { gap: 0; }
+                
+            }
+        }
+
         @media (max-width: 500px) {
             & {
-                width: 63%;
-                height: 39vh;
-                top: 50%;
+                height: auto;
+                gap: 0;
 
-                .title-end-game {
-                    gap: 0;
-                }
+                .title-end-game { gap: 0; }
             }
         }
     }

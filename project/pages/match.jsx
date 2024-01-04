@@ -414,46 +414,48 @@ export default function MainTemplateBoard() {
                     websocket={websocket}
                 />
 
-                <PawnPromotion
-                    x={state.nextPosition.x}
-                    y={state.nextPosition.y}
-                    pawnPromotion={pawnPromotion}
-                    setPawnPromotion={setPawnPromotion}
-                    ref={pawnPromotionTitleRef}
-                    piece={pieces}
-                    vsEngine={false}
-                />
+                <div className="chess-board" ref={chessBoard} >
+                    <PawnPromotion
+                        x={state.nextPosition.x}
+                        y={state.nextPosition.y}
+                        pawnPromotion={pawnPromotion}
+                        setPawnPromotion={setPawnPromotion}
+                        ref={pawnPromotionTitleRef}
+                        piece={pieces}
+                        vsEngine={false}
+                    />
 
-                <CreateChessBoard 
-                    grabbingPiece={grabbingPiece}
-                    MovingPiece={MovingPiece}
-                    droppingPiece={droppingPiece}
-                    activePiece={activePiece}
-                    highlightSquare={highlightSquare}
-                    chessBoard={chessBoard}
-                    pieces={pieces}
-                    piecesTurns={piecesTurns}
-                />
+                    <CreateChessBoard 
+                        grabbingPiece={grabbingPiece}
+                        MovingPiece={MovingPiece}
+                        droppingPiece={droppingPiece}
+                        activePiece={activePiece}
+                        highlightSquare={highlightSquare}
+                        chessBoard={chessBoard}
+                        pieces={pieces}
+                        piecesTurns={piecesTurns}
+                    />
 
-                {
-                    (isCheckMate || ourTeamTimer <= 0 || enemyTeamTimer <= 0) && (
-                        <GameEndTemplate
-                            isCheckMate={isCheckMate}
-                            piecesTurns={piecesTurns}
-                            currentTeam={currentTeam}
-                            ourTeamTimer={ourTeamTimer}
-                            enemyTeamTimer={enemyTeamTimer} 
-                            setRematch={setRematch}
-                            setisCheckMate={setisCheckMate}
-                            setRecordMoves={setRecordMoves}
-                            setPiecesTurns={setPiecesTurns}
-                            setOurTeam={setOurTeamTimer}
-                            setPieces={setPieces}
-                            setEnemyTeam={setEnemyTeamTimer}
-                            matchInfo={matchInfo}
-                        />
-                    )
-                }
+                    {
+                        (isCheckMate || ourTeamTimer <= 0 || enemyTeamTimer <= 0) && (
+                            <GameEndTemplate
+                                isCheckMate={isCheckMate}
+                                piecesTurns={piecesTurns}
+                                currentTeam={currentTeam}
+                                ourTeamTimer={ourTeamTimer}
+                                enemyTeamTimer={enemyTeamTimer} 
+                                setRematch={setRematch}
+                                setisCheckMate={setisCheckMate}
+                                setRecordMoves={setRecordMoves}
+                                setPiecesTurns={setPiecesTurns}
+                                setOurTeam={setOurTeamTimer}
+                                setPieces={setPieces}
+                                setEnemyTeam={setEnemyTeamTimer}
+                                matchInfo={matchInfo}
+                            />
+                        )
+                    }
+                </div>
             </div>
 
             {
