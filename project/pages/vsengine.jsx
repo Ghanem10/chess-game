@@ -250,12 +250,13 @@ export default function Vsengine() {
                         setPawnPromotion={setPawnPromotion}
                         ref={pawnPromotionTitleRef}
                         piece={pieces}
-                        vsEngine={false}
+                        vsEngine={true}
                     />
 
                     <EngineEndgame
                         isCheckMate={isCheckMate}
                         setisCheckMate={setisCheckMate}  
+                        setPieces={setPieces}
                         resign={resign}
                         draw={draw}
                     />

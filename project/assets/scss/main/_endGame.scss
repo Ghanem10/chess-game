@@ -149,14 +149,3 @@
         }
     }
 }
-
-.check-mate-engine {
-    @extend .end-game-final;
-    .game-end, .play-again {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    left: 36.8%;
-    top: 11%;
-}
