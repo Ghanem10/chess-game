@@ -130,7 +130,7 @@ export default function MainTemplateBoard() {
             validMove,
         );
 
-        return !!playMove && setPiecesTurns((pre) => pre + 1);
+        return !!playMove;
     }
 
     /**
@@ -280,6 +280,7 @@ export default function MainTemplateBoard() {
                 board.calculateAllMoves(state.coordinates.GridX, state.coordinates.GridY);
 
                 setPieceToPlay(pre => [...pre, payload]);
+                setPiecesTurns((pre) => pre + 1);
 
                 updateRecordMoves( 
                     state,

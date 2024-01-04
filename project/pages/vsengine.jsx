@@ -96,7 +96,7 @@ export default function Vsengine() {
             validMove,
         );
         
-        return !!playMove && setPiecesTurns((pre) => pre + 1);
+        return !!playMove;
     }
 
     /**
@@ -182,6 +182,7 @@ export default function Vsengine() {
             if (playMove) {
 
                 board.calculateAllMoves(state.coordinates.GridX, state.coordinates.GridY);
+                setPiecesTurns((pre) => pre + 1);
 
             } else {
                 activePiece.style.position = 'relative';

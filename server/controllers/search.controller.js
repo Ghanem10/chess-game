@@ -20,10 +20,10 @@ const searchForActivePlayers = async (req, res) => {
                     _id: { 
                         $ne: currentUser 
                     },
-                    points: { 
-                        $gte: currentUser.points - 100,
-                        $lt: currentUser.points + 100,
-                    },
+                    // points: { 
+                    //     $gte: currentUser.points - 100,
+                    //     $lt: currentUser.points + 100,
+                    // },
                     searching: true,
                 },
             )
