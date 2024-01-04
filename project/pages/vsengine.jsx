@@ -105,7 +105,7 @@ export default function Vsengine() {
    
     const squaresOnPhoneWidth = 47;
     const squaresOnDesktopWidth = 62;
-    const offset = width < 500 ? 25 : 40;
+    const offset = 30;
 
     const grabbingPiece = (e) => {
         e.stopPropagation();
@@ -141,32 +141,23 @@ export default function Vsengine() {
 
         if (activePiece && chessBoardEdges) {
             
-            // Min and Max X and Y for chess board edges 
-            // Pieces can't go beyond these edges
-
-            const MinX = chessBoardEdges.offsetLeft - 50;
-            const MinY = chessBoardEdges.offsetTop - 85;
-            const MaxX = chessBoardEdges.offsetLeft + chessBoardEdges.clientWidth - 40;
-            const MaxY = chessBoardEdges.offsetTop + chessBoardEdges.clientHeight - 45; 
-            
             // X and Y are calculated based on the mouse position
             // The piece will be moved to the mouse position
 
-            const x = e.clientX - offset;
-            const y = e.clientY - offset;
-            
+            const x = e.clientX - chessBoardEdges.offsetLeft - offset;
+            const y = e.clientY - chessBoardEdges.offsetTop - offset;
+
             activePiece.style.position = 'absolute';
             activePiece.style.zIndex = '4';
 
-            if (x < MinX || x > MaxX || y < MinY || y > MaxY) {
-                activePiece.style.removeProperty('left');
-                activePiece.style.removeProperty('top');
+            activePiece.style.left = `${x}px`;
+            activePiece.style.top = `${y}px`;
 
-                setActivePiece(null);
-            } else {
-                activePiece.style.left = `${x}px`;
-                activePiece.style.top = `${y}px`;
-            }
+        } else {
+            activePiece?.style.removeProperty('left');
+            activePiece?.style.removeProperty('top');
+
+            setActivePiece(null);
         }
     };
     
