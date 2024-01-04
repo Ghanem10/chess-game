@@ -1,45 +1,13 @@
 @import '../colors';
 
-/******************************************
- *                                        *
- *         Login small screens            *
- *                                        *
- ******************************************/
-
-.login-page-container {
-    margin: 0 auto;
-    margin-top: 11rem;
-
-    width: 43%;
-
-    @media (max-width: 900px) {
-        & {
-            width: 80%;
-            margin-top: 14rem;
-        }
-    }
-}
-
-/******************************************
- *                                        *
- *         Regsiter small screens         *
- *                                        *
- ******************************************/
-
+.login-page-container, 
 .register-page-container {
-    background-color: red;
-    z-index: 10;
-    margin: 0 auto;
-    margin-top: 3.9rem;
-
-    width: 43%;
-
-    @media (max-width: 500px) {
-        & {
-            width: 80%;
-            margin-top: 9rem;
-        }
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    height: 100vh;
 }
 
 /******************************************
@@ -48,11 +16,11 @@
  *                                        *
  ******************************************/
 
-.login-page-container, 
-.register-page-container {
+.form-contrainer {
     display: flex;
     flex-direction: column;
     
+    width: 43%;
     padding: 10px;
     height: auto;
     
@@ -102,6 +70,10 @@
     }
     
     @include SamllSizesIntroSection;
+
+    @media (max-width: 500px) {
+        & { width: 80%; }
+    }
 
     .form-title {
         font-size: 18px;

@@ -97,6 +97,7 @@ export default function SignUp() {
 
     return(
         <div className="register-page-container">
+            <div className='form-contrainer'>
             <span className="form-title">Sign up form</span>
             <form onSubmit={handleSubmit} className="register-page-container-form">
                 <label 
@@ -210,6 +211,7 @@ export default function SignUp() {
                 >
                     Already have an account?
                 </button>
+            </div>
             </div>
         </div>
     );

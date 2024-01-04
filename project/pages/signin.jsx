@@ -70,6 +70,7 @@ export default function SignIn() {
 
     return (
         <div className="login-page-container">
+            <div className='form-contrainer'>
             <span className="form-title">Sign in form</span>
             <form onSubmit={handleSubmit} className="login-page-form">
 
@@ -114,6 +115,7 @@ export default function SignIn() {
             </form>
             {(signInError || error)  && <span className="error-message">{(signInError || error)}</span>}
             <span className="signup-link">Don't have an account? <Link to={"/signup"}>Sign up</Link></span>
+            </div>
         </div>  
     );
 }
