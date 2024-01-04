@@ -1,7 +1,12 @@
 @import '../colors';
 
+.check-mate,
+.end-game {
+    display: none;
+}
+
 .showtitle-final, 
-.check-mate {
+.end-game-final {
     position: absolute;
     display: flex;
 
@@ -147,7 +152,7 @@
 }
 
 .check-mate-engine {
-    @extend .check-mate;
+    @extend .end-game-final;
     .game-end, .play-again {
         display: flex;
         flex-direction: column;

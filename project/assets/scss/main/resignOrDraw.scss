@@ -3,10 +3,8 @@
 .resign-draw-component {
     display: flex;
     flex-direction: column;
-    width: 10%;
+    width: 20%;
     z-index: 2;
-
-    margin-bottom: 1rem;
 
     .resign-button,
     .draw-button,
@@ -33,16 +31,7 @@
 
     @media (max-width: 900px) {
         & {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            width: 50%;
-            gap: 2rem;
-
-            .resign-button,
-            .draw-button {
-                border-radius: 0;
-            }
+            display: none;
         }
     }
 }

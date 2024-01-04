@@ -113,7 +113,7 @@ export default function GameEndTemplate({
                         </div>
                     </div>
                 ) : (
-                    <div className={"end-game-final"} ref={endGameTitle} >
+                    <div className={"end-game"} ref={endGameTitle} >
                         <Icons.XCircle id='end-game-icon' onClick={removeTitle} />
                         
                         <div className='game-end' ref={endGameTemplate} >

@@ -52,35 +52,22 @@
     }
 
     @media (max-width: 1120px) {
-        &::before {
-            left: 20%;
-        }
-
-        &::after {
-            right: 30%;
-        }
-
-        &::before, &::after {
-            transform: skewX(-16deg);
-        }
+        &::before { left: 40%; }
+        &::after { right: 30%; }
+        &::before, &::after { transform: skewX(-16deg); }
     }
 
     @media (max-width: 900px) {
-        & {
-            flex-direction: column;
-        }
-        
-        &::before {
-            left: 20%;
-        }
-
-        &::after {
-            right: 30%;
+        & { 
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
         }
 
-        &::before, &::after {
-            transform: skewX(-10deg);
-        }
+        &::before { left: 40% }
+        &::after { right: 30% }
+        &::before, &::after { transform: skewX(-10deg) }
     }
 
     @include LoadingSpinner;
