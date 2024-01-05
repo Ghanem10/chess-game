@@ -5,7 +5,7 @@ export const tokenMiddleware = (store) => (next) => async (action) => {
     
     if (action.meta && action.meta.requiresAuth) {
 
-        const state = store?.getState();
+        const state = store.getState();
         const token = state.auth?.accessToken;
         const refreshToken = state.auth?.refreshToken;
 
