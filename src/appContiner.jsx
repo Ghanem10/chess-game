@@ -23,7 +23,7 @@ export default function AppContiner() {
     useEffect(() => {
         const checkServerStatus = async () => {
             try {
-                setLoading(true);
+                setLoading(false);
                 await axios.get(`${import.meta.env.VITE_URL}/test`);
             } catch (error) {
                 setError("Server is down at the moment, please try again later.");
@@ -39,7 +39,7 @@ export default function AppContiner() {
     useEffect(() => {
         const initializeStore = async () => {
             try {
-                setLoading(true);
+                setLoading(false);
                 const appStore = await createAppStore();
                 setStore(appStore);
             } catch (error) {
