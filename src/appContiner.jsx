@@ -24,9 +24,10 @@ export default function AppContiner() {
         const checkServerStatus = async () => {
             try {
                 await axios.get(`${import.meta.env.VITE_URL}/test`);
-                setLoading(false);
             } catch (error) {
                 setError("Server is down at the moment, please try again later.");
+            } finally {
+                setLoading(false);
             }
         };
         
@@ -39,9 +40,10 @@ export default function AppContiner() {
             try {
                 const appStore = await createAppStore();
                 setStore(appStore);
-                setLoading(false);
             } catch (error) {
                 setError(`Error initializing the app: ${error}`);
+            } finally {
+                setLoading(false);
             }
         };
 
