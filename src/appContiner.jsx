@@ -23,11 +23,12 @@ export default function AppContiner() {
     useEffect(() => {
         const checkServerStatus = async () => {
             try {
+                setLoading(true);
                 await axios.get(`${import.meta.env.VITE_URL}/test`);
             } catch (error) {
                 setError("Server is down at the moment, please try again later.");
             } finally {
-                setLoading(false);
+                // setLoading(false);
             }
         };
         
@@ -38,12 +39,13 @@ export default function AppContiner() {
     useEffect(() => {
         const initializeStore = async () => {
             try {
+                setLoading(true);
                 const appStore = await createAppStore();
                 setStore(appStore);
             } catch (error) {
                 setError(`Error initializing the app: ${error}`);
             } finally {
-                setLoading(false);
+                // setLoading(false);
             }
         };
 
