@@ -26,8 +26,6 @@ export default function AppContiner() {
                 await axios.get(`${import.meta.env.VITE_URL}/test`);
             } catch (error) {
                 setError("Server is down at the moment, please try again later.");
-            } finally {
-                setLoading(false);
             }
         };
         

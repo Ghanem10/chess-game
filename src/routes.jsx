@@ -1,14 +1,14 @@
-import { lazy } from "react";
+import NotFound from "../project/pages/notFound";
+import Home from "../project/pages/Home";
 
 import Puzzle from "../project/pages/puzzle";
-import Profile from "../project/pages/profile";
-import NotFound from "../project/pages/notFound";
 import Community from "../project/pages/community";
 
 import MainTemplateBoard from "../project/pages/match";
 import MatchVsEngine from '../project/pages/vsengine';
 import Tournaments from "../project/pages/tournaments";
 
+import Profile from "../project/pages/profile";
 
 const privateRoutes = [
     { 
@@ -41,4 +41,23 @@ const privateRoutes = [
     }
 ];
 
-export { privateRoutes };
+const publicRoutes = [
+    {
+        path: "/",
+        component: <Home />
+    },
+    {
+        path: "puzzle",
+        component: <Puzzle />
+    },
+    {
+        path: "community",
+        component: <Community />
+    },
+    {
+        path: "*",
+        component: <NotFound />
+    }
+];
+
+export { privateRoutes, publicRoutes };
