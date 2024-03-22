@@ -41,6 +41,13 @@
 ## Authentication
 - The application uses token-based authentication - Auth and JWT tokens to verify and ensure the security of user access.
 
+## Improvements
+- Install docker and run the project in a container to reduce compatibility issues, and a fun thing to add is an engine with Rust.
+  How to do the engine with Rust? Here are some basic steps to get you started:
+  - Create a different project that can help you create tables faster for every possible position on the board.
+  - Iteration over these tables to handle/control certain movements of pieces.
+  - Consider the goal of the engine..
+
 ## Getting Started
  ### Prerequisites
   Before running the application, make sure you have the following installed:
